@@ -1,0 +1,77 @@
+import React from 'react'
+import { Link, NavLink } from 'react-router-dom';
+import { TooltipComponent } from '@syncfusion/ej2-react-popups';
+import { useStateContext } from '../context/ContextProvider'
+
+import Logo from '../data/icons/electerlogo.png'
+import MyEnterprise from '../data/icons/MyEnterprise.png'
+import Logout from '../data/icons/Logout.png'
+
+import { links } from '../data/dummy'
+
+const Sidebar = () => {
+    const { activeMenu, setActiveMenu, screenSize } = useStateContext()
+
+    const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-xs m-2 font-semibold uppercase';
+
+    const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-gray-700 dark:text-gray-200 dark:hover:text-black text-xs hover:bg-gray-50 m-2 font-semibold uppercase';
+
+    return (
+        <div className='ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10'>
+            {activeMenu && (
+                <>
+                    <div className="my-10 flex flex-col justify-center items-center">
+                        <div>
+                            {/* Logo */}
+                            <img src={Logo} alt="" className="w-[150px]" />
+                        </div>
+                        <div className="flex items-center justify-around border-t-4 border-white mt-2">
+                            <TooltipComponent
+                                content="My Enterprise"
+                                position='BottomCenter'
+                            >
+                            <NavLink
+                                to='/my_enterprise?tab=firm'
+                                className={({ isActive }) => isActive ? activeLink : normalLink}
+                            >
+                                <img src={MyEnterprise} className="w-[25px]" />
+                            </NavLink>
+
+                            </TooltipComponent>
+                            <TooltipComponent
+                                content="Logout"
+                                position='BottomCenter'
+                            >
+                            <NavLink
+                                to='/'
+                                className={({ isActive }) => isActive ? activeLink : normalLink}
+                            >
+                                <img src={Logout} className="w-[25px]" />
+                            </NavLink>
+
+                            </TooltipComponent>
+                        </div>
+                    </div>
+                    <div className="mt-10">
+                        {links.map((item, index) => (
+                            <NavLink
+                                to={`/${item.link}`}
+                                key={index}
+                                className={({ isActive }) => isActive ? activeLink : normalLink}
+                                style={({ isActive }) => ({
+                                    backgroundColor: isActive ? '#03C9D7' : '',
+                                    color: isActive ? 'white' : '',
+                                })}
+                            >
+                                <img className="h-[25px]" src={item.icon} alt={item.title} />
+                                <span>{item.title}</span>
+                            </NavLink>
+                        ))}
+                    </div>
+                </>
+            )}
+        </div>
+    )
+}
+
+export default Sidebar
