@@ -15,7 +15,7 @@ import Category from '../data/icons/inventory/category.png'
 
 const Inventory = () => {
   return (
-    <div>
+    <div className="w-full overflow-hidden">
       <PageHeader pageTitle="Inventory" icon={InventoryIcon} />
 
       {/* inventory overview data box */}

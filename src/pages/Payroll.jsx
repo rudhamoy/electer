@@ -11,7 +11,7 @@ const Payroll = () => {
       <PageHeader pageTitle="Payroll" icon={PayrollIcon} />
 
       {/* Table */}
-      {/* <div className="bg-gray-100 rounded-sm p-3 w-[65%]">
+      <div className="bg-gray-100 rounded-sm p-3 mt-20 w-[65%]">
         <GridComponent
           dataSource={PayrollData}
           allowPaging
@@ -32,7 +32,7 @@ const Payroll = () => {
           </ColumnsDirective>
           <Inject services={[Page, Toolbar, Selection, Edit, Sort, Filter, Search]} />
         </GridComponent>
-    </div> */}
+    </div>
     </div>
   )
 }

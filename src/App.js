@@ -14,11 +14,11 @@ const App = () => {
       <BrowserRouter>
         <div className="flex relative dark:bg-main-dark-bg">
           {activeMenu && (
-            <div className="w-72 fixed sibebar dark:bg-secondary-dark-bg bg-gray-100">
+            <div className="w-[20%] fixed sibebar dark:bg-secondary-dark-bg bg-gray-100">
             <Sidebar />
           </div>
           )}
-          <div className={`${activeMenu ? 'md:ml-72' : 'flex-2'} w-full min-h-screen`}>
+          <div className={`${activeMenu ? 'md:ml-[20%] w-[80%]' : 'flex-2 w-[100%]'}  min-h-screen`}>
             <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg  w-full">
             <Navbar />
             </div>

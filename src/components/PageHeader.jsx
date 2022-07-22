@@ -3,7 +3,7 @@ import { BsFillArrowLeftCircleFill } from 'react-icons/bs'
 
 const PageHeader = ({pageTitle, pageDetail, icon}) => {
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center w-[100%]">
         <div className="flex items-center gap-2">
         <img src={icon} alt={pageTitle} className="w-[35px]" />
         <h1 className="uppercase font-semibold">{pageTitle}</h1>
