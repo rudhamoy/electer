@@ -1,10 +1,9 @@
 import React from 'react'
-import { GridComponent, ColumnsDirective, ColumnDirective, Page, Selection, Inject, Edit, Toolbar, Sort, Filter, Search } from '@syncfusion/ej2-react-grids'
 
 import PageHeader from '../components/PageHeader'
 import { InventoryTableGrid } from '../data/table/Table'
 import InventoryIcon from '../data/icons/Inventory.png'
-import { InventoryDataBox } from '../components/inventory'
+import { InventoryDataBox, InventoryTable } from '../components/inventory'
 
 import StockValue from '../data/icons/inventory/stockvalue.png'
 import NoStock from '../data/icons/inventory/nostock.png'
@@ -30,25 +29,7 @@ const Inventory = () => {
 
       {/* Table */}
       <div className="my-10 mt-20 bg-gray-100 rounded-sm p-3">
-        <GridComponent
-          allowPaging
-          allowSorting
-          toolbar={['Add', 'Edit', 'Delete', 'Search']}
-          editSettings={{
-            allowDeleting: true,
-            allowEditing: true,
-            allowAdding: true,
-            mode: 'Dialog'
-          }}
-          width="auto"
-        >
-          <ColumnsDirective>
-            {InventoryTableGrid.map((item, index) => (
-              <ColumnDirective key={index} {...item} />
-            ))}
-          </ColumnsDirective>
-          <Inject services={[Page, Toolbar, Selection, Edit, Sort, Filter, Search]} />
-        </GridComponent>
+        <InventoryTable />
       </div>
     </div>
   )

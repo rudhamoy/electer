@@ -1,5 +1,5 @@
 import React from 'react'
-import { TooltipComponent } from '@syncfusion/ej2-react-popups'
+import { Tooltip } from 'antd';
 import Avatar from '../data/avatar3.png'
 import { AiFillBell, AiOutlineSearch, AiOutlineMenu } from 'react-icons/ai'
 import { useStateContext } from '../context/ContextProvider'
@@ -20,7 +20,7 @@ const Navbar = () => {
     return (
         <div className="flex justify-between items-center p-2 md:mx-6">
             <div className="flex gap-2 items-center">
-                <TooltipComponent content="Menu" position="BottomCenter">
+                <Tooltip title="Menu" color="cyan" placement="bottom">
                     <button 
                     type="button"
                     className="relative text-xl rounded-full p-3 hover:bg-light-gray"
@@ -28,18 +28,19 @@ const Navbar = () => {
                     >
                         <AiOutlineMenu className='text-[#03C9D7]' />
                     </button>
-                </TooltipComponent>
+                </Tooltip>
                 <p className="text-gray-400 text-sm font-semibold">Thursday / 07/07/22</p>
             </div>
             <div className='flex items-center gap-3'>
                 <SearchBar />
-                <TooltipComponent
-                    content="Profile"
-                    position='BottomCenter'
+                <Tooltip
+                    title="Profile"
+                    placement='bottom'
+                    color="cyan"
                 >
                     <img src={Avatar} className="w-[40px] h-[40px] rounded-full cursor-pointer" />
-                </TooltipComponent>
-                <TooltipComponent content="Notifications" position="BottomCenter">
+                </Tooltip>
+                <Tooltip title="Notifications" placement="bottom" color="cyan">
                     <button type="button"
                         className="relative text-xl rounded-full hover:bg-light-gray"
                     >
@@ -48,7 +49,7 @@ const Navbar = () => {
                         />
                         <AiFillBell className="text-3xl" />
                     </button>
-                </TooltipComponent>
+                </Tooltip>
             </div>
         </div>
     )

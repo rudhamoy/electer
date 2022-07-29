@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom';
-import { TooltipComponent } from '@syncfusion/ej2-react-popups';
+import { Tooltip } from 'antd';
 import { useStateContext } from '../context/ContextProvider'
 
 import Logo from '../data/icons/electerlogo.png'
@@ -26,10 +26,7 @@ const Sidebar = () => {
                             <img src={Logo} alt="" className="w-[150px]" />
                         </div>
                         <div className="flex items-center justify-around border-t-4 border-white mt-2">
-                            <TooltipComponent
-                                content="My Enterprise"
-                                position='BottomCenter'
-                            >
+                        <Tooltip title="My Enterprise" color="cyan" placement="bottom">
                             <NavLink
                                 to='/my_enterprise?tab=firm'
                                 className={({ isActive }) => isActive ? activeLink : normalLink}
@@ -37,19 +34,17 @@ const Sidebar = () => {
                                 <img src={MyEnterprise} className="w-[25px]" />
                             </NavLink>
 
-                            </TooltipComponent>
-                            <TooltipComponent
-                                content="Logout"
-                                position='BottomCenter'
-                            >
+                            </Tooltip>
+                            <Tooltip title="Logout" color="cyan" placement="bottom">
                             <NavLink
                                 to='/'
-                                className={({ isActive }) => isActive ? activeLink : normalLink}
+                                // className={({ isActive }) => isActive ? activeLink : normalLink}
+                                className={normalLink}
                             >
                                 <img src={Logout} className="w-[25px]" />
                             </NavLink>
 
-                            </TooltipComponent>
+                            </Tooltip>
                         </div>
                     </div>
                     <div className="mt-10">

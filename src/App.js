@@ -1,5 +1,6 @@
 import React from 'react'
 import './App.css'
+import 'antd/dist/antd.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import { Accounts, Dashboard, MyClients, MyEnterprise, Payroll, Bills, Inventory } from './pages'

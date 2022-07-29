@@ -1,184 +1,192 @@
-import PayInfo from '../icons/payroll/info.png'
-import SlipIcon from '../icons/payroll/slip.png'
+import { Space, Table, Tag } from 'antd';
 
 // Inventory
-export const InventoryTableGrid = [
-    {type: 'checkbox', width: '50'},
-    {
-    headerText: 'SL NO',
-    width: '80',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'SkuNo',
-    headerText: 'SKU NO',
-    width: '80',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'Particular',
-    headerText: 'Particular',
-    width: '150',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'Category',
-    headerText: 'Category',
-    width: '150',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'Sub-Category',
-    headerText: 'Sub-Category',
-    width: '150',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'QTY',
-    headerText: 'QTY',
-    width: '80',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'UnitPrice',
-    headerText: 'Unit Price',
-    width: '80',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'TotalAmount',
-    headerText: 'Total Amount',
-    width: '100',
-    textAlign: 'Center' 
-    },
-]
 
-// My Clients
-export const MyClientsTableGrid = [
-    {type: 'checkbox', width: '50'},
-    {
-    headerText: 'SL NO',
-    width: '100',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'ClientId',
-    headerText: 'Client ID',
-    width: '100',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'Name',
-    headerText: 'Name',
-    width: '150',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'ContactPerson',
-    headerText: 'Contact Person',
-    width: '150',
-    textAlign: 'Center' 
-    },
-    { 
-    field: 'MOB',
-    headerText: 'MOB',
-    width: '150',
-    textAlign: 'Center' 
-    },
-]
+export const inventoryColumnList = [
+  {
+    title: 'Sl No',
+    dataIndex: 'slNo',
+    key: 'slNo',
+  },
+  {
+    title: 'SKU No',
+    dataIndex: 'skuNo',
+    key: 'skuNo',
+  },
+  {
+    title: 'Particular',
+    dataIndex: 'particular',
+    key: 'particular',
+  },
+  {
+    title: 'Category',
+    dataIndex: 'category',
+    key: 'category',
+  },
+  {
+    title: 'Sub-Category',
+    dataIndex: 'subcategory',
+    key: 'subcategory',
+  },
+  {
+    title: 'Qty',
+    dataIndex: 'qty',
+    key: 'qty',
+  },
+  {
+    title: 'Unit Price',
+    dataIndex: 'unitPrice',
+    key: 'unitPrice',
+  },
+  {
+    title: 'Total Amount',
+    dataIndex: 'TotalAmount',
+    key: 'TotalAmount',
+  },
+];
+
+export const inventoryData = [
+  {
+    key: '1',
+    slNo: '01',
+    skuNo: 'ZE0010',
+    particular: 'Chair',
+    category: 'Furniture',
+    subcategory: 'Plastic',
+    qty: 32,
+    unitPrice: 450,
+    TotalAmount: 11250,
+  },
+  {
+    key: '2',
+    slNo: '02',
+    skuNo: 'ZE0011',
+    particular: 'Chair',
+    category: 'Furniture',
+    subcategory: 'Carbon',
+    qty: 21,
+    unitPrice: 900,
+    TotalAmount: 18900,
+  },
+  {
+    key: '3',
+    slNo: '03',
+    skuNo: 'ZE0012',
+    particular: 'Chair',
+    category: 'Furniture',
+    subcategory: 'Wood',
+    qty: 45,
+    unitPrice: 790,
+    TotalAmount: 28250,
+  },
+];
 
 // Payroll
 
-const payrollGridImage = (props) => (
-    <div className="">
-      <img
-        className="rounded-full w-8 h-8"
-        src={PayInfo}
-        alt="payroll"
-      />
-    </div>
-  );
+export const payrollColumnList = [
+  // {
+  //   title: 'Info',
+  //   dataIndex: 'info',
+  //   key: 'info',
+  // },
+  {
+    title: 'Code',
+    dataIndex: 'code',
+    key: 'code',
+  },
+  {
+    title: 'Employe Name',
+    dataIndex: 'employeName',
+    key: 'employeName',
+  },
+  {
+    title: 'Post',
+    dataIndex: 'post',
+    key: 'post',
+  },
+  {
+    title: 'Attendance',
+    dataIndex: 'attendance',
+    key: 'attendance',
+  },
+  {
+    title: 'Leaves',
+    dataIndex: 'leaves',
+    key: 'leaves',
+  },
+  {
+    title: 'Half Days',
+    dataIndex: 'halfDays',
+    key: 'halfDays',
+  },
+  {
+      title: 'Salary',
+    dataIndex: 'salary',
+    key: 'salary',
+    render: (text) => <p className="text-cyan-500 -mb-1 font-semibold">₹{text}</p>,
+  },
+];
 
-const summaryIcon = (props) => {
-    return (
-        <div className="">
-          <img
-            className="w-5 h-5"
-            src={SlipIcon}
-            alt="payroll"
-          />
-        </div>
-      )
-}
+export const payrollData = [
+  {
+    code: 'ZE0010',
+    employeName: 'Samuel Jeldi',
+    post: 'Engineer',
+    attendance: 'June - 78%',
+    leaves: '3 Days',
+    halfDays: "4 Days",
+    salary: 21250,
+  },
+  {
+    code: 'ZE0020',
+    employeName: 'Nikhilesh Debbarma',
+    post: 'Full Stack Dev',
+    attendance: 'June - 78%',
+    leaves: '3 Days',
+    halfDays: "4 Days",
+    salary: 18960,
+  },
+  {
+    code: 'ZE0030',
+    employeName: 'Rudhamoy Debbarma',
+    post: 'Frontend Dev',
+    attendance: 'June - 78%',
+    leaves: '3 Days',
+    halfDays: "5 Days",
+    salary: 17960,
+  },
+];
 
-export const PayrollTableGrid = [
-    // {type: 'checkbox', width: '40'},
-    {
-    headerText: 'Info',
-    width: '80',
-    template: payrollGridImage,
-    textAlign: 'Left'
-    },
-    { 
-    field: 'Code',
-    headerText: 'Code',
+// My Clients
+export const MyClientsTableGrid = [
+  { type: 'checkbox', width: '50' },
+  {
+    headerText: 'SL NO',
     width: '100',
-    textAlign: 'Left' 
-    },
-    { 
-    field: 'EmployeName',
-    headerText: 'Employe Name',
-    width: '150',
-    textAlign: 'Left' 
-    },
-    { 
-    field: 'Post',
-    headerText: 'Post',
-    width: '150',
-    textAlign: 'Left' 
-    },
-    { 
-    field: 'Attendance',
-    headerText: 'Attendance',
-    width: '150',
-    textAlign: 'Left' 
-    },
-    { 
-    field: 'Leaves',
-    headerText: 'Leaves',
-    width: '150',
-    textAlign: 'Left' 
-    },
-    { 
-    field: 'HalfDays',
-    headerText: 'Half Days',
-    width: '150',
-    textAlign: 'Left' 
-    },
-    { 
-    field: 'SalaryThisMonth',
-    headerText: 'Salary This Month',
-    width: '150',
-    textAlign: 'Left' 
-    },
-    { 
-    field: 'SalarySlip',
-    headerText: 'SalarySlip/Summary',
+    textAlign: 'Center'
+  },
+  {
+    field: 'ClientId',
+    headerText: 'Client ID',
     width: '100',
-    template: summaryIcon,
-    textAlign: 'Left' 
-    },
-]
-
-export const PayrollData = [
-    {
-        
-        Code: 1001,
-        EmployeName: 'Nirav Joshi',
-        Post: 'Frontend Dev',
-        Attendance: "July=80%",
-        Leaves: '3 days',
-        HalfDays: '4 days',
-        SalaryThisMonth: '24,500',
-      },
+    textAlign: 'Center'
+  },
+  {
+    field: 'Name',
+    headerText: 'Name',
+    width: '150',
+    textAlign: 'Center'
+  },
+  {
+    field: 'ContactPerson',
+    headerText: 'Contact Person',
+    width: '150',
+    textAlign: 'Center'
+  },
+  {
+    field: 'MOB',
+    headerText: 'MOB',
+    width: '150',
+    textAlign: 'Center'
+  },
 ]
