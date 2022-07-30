@@ -4,21 +4,37 @@ import { Space, Table, Tag, Modal } from 'antd';
 import { payrollColumnList, payrollData } from '../../data/table/Table'
 import InfoIcon from '../../data/icons/payroll/info.png'
 import EmployeeInfo from './EmployeeInfo';
+import SalarySlip from './SalarySlip';
+
+// salary info modal
+const info = (data) => {
+    Modal.info({
+      title: 'Salary Slip',
+      width: "600px",
+      content: (
+        <div>
+          <SalarySlip salaryData={data} />
+        </div>
+      ),
+  
+      onOk() {},
+    });
+  };
+
 
 const PayrollTable = () => {
     let newColumns = []
 
     const [modalData, setModalData] = useState([])
-    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isEmployeInfoVisible, setIsEmployeInfoVisible] = useState(false);
 
     const handleOk = () => {
-        setIsModalVisible(false);
+        setIsEmployeInfoVisible(false);
     };
 
     const handleCancel = () => {
-        setIsModalVisible(false);
+        setIsEmployeInfoVisible(false);
     };
-
 
     // map the column list - push to array list
     payrollColumnList.map(item => (
@@ -34,7 +50,7 @@ const PayrollTable = () => {
                 return (<Space size="middle">
                     <button className="" onClick={() => {
                         setModalData(record);
-                        setIsModalVisible(true)
+                        setIsEmployeInfoVisible(true)
                     }}>
                         <img src={InfoIcon} className="w-[30px]" alt="info" />
                     </button>
@@ -47,11 +63,8 @@ const PayrollTable = () => {
             title: 'Action',
             key: 'action',
             render: (_, record) => {
-                return (<Space size="middle">
-                    <button className="text-green-500 border px-1 rounded-sm border-green-500" onClick={() => {
-                        setModalData(record);
-                        setIsModalVisible(true)
-                    }}>Salary Slip</button>
+                return (<Space wrap>
+                    <button className="text-green-500 border px-1 rounded-sm border-green-500" onClick={() => info(record)}>Salary Slip</button>
                     <button className="text-blue-500 border px-1 rounded-sm border-blue-500">Edit</button>
                     <button className="text-red-500 border px-1 rounded-sm border-red-500">Delete</button>
                 </Space>
@@ -62,9 +75,9 @@ const PayrollTable = () => {
 
     return (
         <div>
-            {modalData && isModalVisible === true && (
-
-                <Modal title="Employee Profile" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+            {/* Info Modal */}
+            {modalData && isEmployeInfoVisible === true && (
+                <Modal  title="Employee Profile" visible={isEmployeInfoVisible} onOk={handleOk} onCancel={handleCancel}>
                     <EmployeeInfo />
                 </Modal>
             )}
