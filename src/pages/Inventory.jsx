@@ -28,7 +28,7 @@ const Inventory = () => {
       </div>
 
       {/* Table */}
-      <div className="my-10 mt-20 bg-gray-100 rounded-sm p-3">
+      <div className="my-10 mt-20 bg-white rounded-md p-3">
         <InventoryTable />
       </div>
     </div>

@@ -2,7 +2,6 @@ import React from 'react'
 import LogoSlip from '../../data/icons/logp.png'
 
 const SalarySlip = ({ salaryData }) => {
-    console.log("SalarySlip = ", salaryData)
     return (
         <div className='border-2 w-[100%]'>
             {/* FIrst box */}

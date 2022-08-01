@@ -33,7 +33,7 @@ const MyEnterprise = () => {
        <ButtonTab tabName="Personal Details" tabLink="personal" query={tabContent} />
         <ButtonTab tabName="Role Management" tabLink="role" query={tabContent} />
       </div>
-      <div className="border rounded-sm p-4">
+      <div className="border bg-white rounded-md p-4">
       {tabContent === 'firm' ? <AddFirm /> : tabContent === 'personal' ?  <PersonalDetail /> : <RoleManagement />}
       </div>
     </div>
