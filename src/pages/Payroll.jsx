@@ -9,7 +9,7 @@ const Payroll = () => {
       <PageHeader pageTitle="Payroll" icon={PayrollIcon} />
 
       {/* Table */}
-      <div className="bg-gray-100 rounded-sm p-3 mt-20">
+      <div className="bg-white rounded-md p-3 mt-20">
         <PayrollTable />
     </div>
     </div>

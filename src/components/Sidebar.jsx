@@ -29,7 +29,7 @@ const Sidebar = () => {
                         <Tooltip title="My Enterprise" color="cyan" placement="bottom">
                             <NavLink
                                 to='/my_enterprise?tab=firm'
-                                className={({ isActive }) => isActive ? activeLink : normalLink}
+                                // className={({ isActive }) => isActive ? activeLink : normalLink}
                             >
                                 <img src={MyEnterprise} className="w-[25px]" />
                             </NavLink>
