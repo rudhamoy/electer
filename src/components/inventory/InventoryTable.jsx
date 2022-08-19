@@ -10,12 +10,13 @@ import InventoryForm from './InventoryForm'
 const InventoryTable = () => {
     let filterSample = []
     let newColumns = []
-    const { inventoryFilData } = useStateContext()
+    // const { inventoryFilData } = useStateContext()
 
 
     const [modalData, setModalData] = useState([])
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [showSelect, setShowSelect] = useState(false)
+    const [inventoryFilData, setInventoryFilData] = useState()
 
     const showModal = () => {
         setIsModalVisible(true);

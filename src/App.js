@@ -1,14 +1,14 @@
 import React from 'react'
 import './App.css'
 import 'antd/dist/antd.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { Accounts, Dashboard, MyClients, MyEnterprise, Payroll, Bills, Inventory } from './pages'
+import { Accounts, Dashboard, MyClients, MyEnterprise, Payroll, Bills, Inventory, Login, Register } from './pages'
 import { Navbar, Sidebar } from './components'
-import { useStateContext } from './context/ContextProvider'
 
 const App = () => {
-  const { activeMenu } = useStateContext()
+  const { activeMenu } = useSelector(state => state.activity)
 
   return (
     <div className="bg-[#EFEFF7]">
@@ -32,6 +32,8 @@ const App = () => {
                 <Route path="/payroll" element={<Payroll />} />
                 <Route path="/bills" element={<Bills />} />
                 <Route path="/inventory" element={<Inventory />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
               </Routes>
             </div>
           </div>

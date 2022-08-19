@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Tooltip } from 'antd';
 import Avatar from '../data/avatar3.png'
 import { AiFillBell, AiOutlineSearch, AiOutlineMenu } from 'react-icons/ai'
-import { useStateContext } from '../context/ContextProvider'
+import { useDispatch } from 'react-redux'
+import { Link, useLocation } from 'react-router-dom'
+import { activeMenuFunc } from '../features/activity/activitySlice';
 
 const SearchBar = () => (
     <div className="flex border border-gray-100 w-80 h-8 overflow-hidden">
@@ -14,17 +16,27 @@ const SearchBar = () => (
 )
 
 const Navbar = () => {
+    const dispatch = useDispatch();
+    const location = useLocation()
+    const [showNav, setShowNav] = useState(true)
 
-    const { setActiveMenu } = useStateContext()
+    useEffect(() => {
+        if(location.pathname === '/register') {
+            setShowNav(false)
+        }
+    }, [location])
 
     return (
-        <div className="flex justify-between items-center p-2 md:mx-6">
+        <>
+        {showNav === true && (
+            <div className="flex justify-between items-center p-2 md:mx-6">
             <div className="flex gap-2 items-center">
                 <Tooltip title="Menu" color="cyan" placement="bottom">
                     <button 
                     type="button"
                     className="relative text-xl rounded-full p-3 hover:bg-light-gray"
-                    onClick={() => setActiveMenu(prevActiveMenu => !prevActiveMenu )}
+                    // onClick={() => setActiveMenu(prevActiveMenu => !prevActiveMenu )}
+                    onClick={() => dispatch(activeMenuFunc())}
                     >
                         <AiOutlineMenu className='text-[#03C9D7]' />
                     </button>
@@ -38,7 +50,9 @@ const Navbar = () => {
                     placement='bottom'
                     color="cyan"
                 >
+                    <Link to="/register">
                     <img src={Avatar} className="w-[40px] h-[40px] rounded-full cursor-pointer" />
+                    </Link>
                 </Tooltip>
                 <Tooltip title="Notifications" placement="bottom" color="cyan">
                     <button type="button"
@@ -52,6 +66,8 @@ const Navbar = () => {
                 </Tooltip>
             </div>
         </div>
+        )}
+        </>
     )
 }
 

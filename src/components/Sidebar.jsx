@@ -1,16 +1,25 @@
-import React from 'react'
-import { Link, NavLink } from 'react-router-dom';
+import React,{ useEffect } from 'react'
+import { NavLink, useLocation } from 'react-router-dom';
 import { Tooltip } from 'antd';
-import { useStateContext } from '../context/ContextProvider'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Logo from '../data/icons/electerlogo.png'
 import MyEnterprise from '../data/icons/MyEnterprise.png'
 import Logout from '../data/icons/Logout.png'
 
 import { links } from '../data/dummy'
+import { hideSidebar } from '../features/activity/activitySlice';
 
 const Sidebar = () => {
-    const { activeMenu, setActiveMenu, screenSize } = useStateContext()
+    const dispatch = useDispatch()
+    const {activeMenu} = useSelector(state => state.activity)
+    const location = useLocation()
+
+    useEffect(() => {
+        if(location.pathname === '/register') {
+            dispatch(hideSidebar(false))
+        }
+    }, [location])
 
     const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-xs m-2 font-semibold uppercase';
 
