@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink, Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import PageHeader from '../components/PageHeader'
 import MyEnterpriseIcon from '../data/icons/MyEnterprise.png'

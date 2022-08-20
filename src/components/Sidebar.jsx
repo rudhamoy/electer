@@ -16,7 +16,7 @@ const Sidebar = () => {
     const location = useLocation()
 
     useEffect(() => {
-        if(location.pathname === '/register') {
+        if(location.pathname === '/register' || location.pathname === '/login') {
             dispatch(hideSidebar(false))
         }
     }, [location])
