@@ -23,6 +23,8 @@ const Navbar = () => {
     useEffect(() => {
         if(location.pathname === '/register' || location.pathname === '/login') {
             setShowNav(false)
+        } else {
+            setShowNav(true)
         }
     }, [location])
 

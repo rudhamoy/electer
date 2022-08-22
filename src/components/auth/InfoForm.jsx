@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Input } from 'antd';
 import axios from 'axios';
 import { useSelector } from 'react-redux'
+import { Navigate } from 'react-router-dom'
 
 import ImageUploader from '../ImageUploader';
 
@@ -28,6 +29,7 @@ const InfoForm = () => {
           })
           console.log(res)
     }
+
   return (
     <section className='shadow-md rounded-sm w-[300px] p-2'>
         <h1 className="font-bold text-lg text-center">Add Info</h1>

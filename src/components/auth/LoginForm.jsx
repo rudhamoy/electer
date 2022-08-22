@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from 'antd';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
@@ -25,25 +25,36 @@ const LoginForm = () => {
       const res = await axios.post('http://37.44.244.212/api/auth/token/login/', {email, password})
       const res2 = await axios.get(`http://37.44.244.212/api/get-user-by-email/${email}`, {email})
       console.log(res, res2)
+      window.localStorage.setItem('user', JSON.stringify({token: res.data.auth_token, id: res2.data.id, isLogged: true}))
       dispatch(loginUser({authToken: res.data.auth_token, id: res2.data.id}))
-      localStorage.setItem('user', JSON.stringify({token: res.data.auth_token, id: res2.data.id}))
-      navigate('/register?tab=addInfo')
+      navigate('/')
+      // navigate('/register?tab=addInfo')
     } catch (error) {
       console.log(error)
     }
   }
 
-  const token = window.localStorage.getItem('userToken')
+  const user = window.localStorage.getItem('user')
   const getInfo = async () => {
     try {
       const res = await axios.get('http://37.44.244.212/api/custom-user/', {headers: {
-        "Authorization": `Token ${token}`
+        "Authorization": `Token ${user.token}`
       }})
       console.log(res)
     } catch (error) {
       console.log(error)
     }
   }
+
+  // const checkUser = () => {
+  //     if(!user) {
+  //     dispatch(loginUser({authToken: user.token, id: user.id}))
+  //   }
+  //   }
+
+  // useEffect(() => {
+  //   checkUser()
+  // }, [user])
 
   return (
     <div className='bg-white shadow-md rounded-sm w-[360px] p-6'>

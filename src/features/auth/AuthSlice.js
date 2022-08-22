@@ -10,7 +10,7 @@ const initialState = {
     }
 }
 
-const loggedUser = window.localStorage.getItem('user')
+const loggedUser = JSON.parse( window.localStorage.getItem('user'))
 
 if(loggedUser) {
     initialState.auth.authToken = loggedUser.token
