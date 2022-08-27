@@ -3,13 +3,14 @@ import { BsFillPersonFill } from 'react-icons/bs'
 import { GoPencil } from 'react-icons/go'
 import { Input } from 'antd';
 import ImageUploader from '../ImageUploader';
+import InputField from '../../utils/InputField'
 
-const InputField = ({ labelName }) => (
-  <div className="my-6 flex flex-col gap-y-2 w-full">
-    <label htmlFor={labelName}>{labelName}</label>
-    <Input placeholder={labelName} />
-  </div>
-)
+// const InputField = ({ labelName }) => (
+//   <div className="my-6 flex flex-col gap-y-2 w-full">
+//     <label htmlFor={labelName}>{labelName}</label>
+//     <Input placeholder={labelName} />
+//   </div>
+// )
 
 const PersonalDetail = () => {
   return (
@@ -36,7 +37,7 @@ const PersonalDetail = () => {
           <InputField labelName="Email Id" />
         </div>
 
-        <button className="p-2 px-4 rounded-full bg-blue-500 text-blue-50 font-semibold my-6">Save Changes</button>
+        <button className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6">Save Changes</button>
 
       </div>
 
@@ -57,14 +58,14 @@ const PersonalDetail = () => {
           <InputField labelName="IFSC Code" />
         </div>
 
-          <div className="my-12">
+          <div className="mt-12">
             <input type="radio" name="" />
             <p className="font-semibold">
               I accept all the terms and conditions and agree to proceed
             </p>
           </div>
 
-          <button className="p-2 px-4 rounded-full bg-blue-500 text-blue-50 font-semibold my-6">Save Bank Details</button>
+          <button className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6">Save Bank Details</button>
         </div>
       </div>
     </div>

@@ -1,88 +1,51 @@
-import { Space, Table, Tag } from 'antd';
 
 // Inventory
 
 export const inventoryColumnList = [
   {
     title: 'Sl No',
-    dataIndex: 'slNo',
-    key: 'slNo',
+    dataIndex: 'index',
+    key: 'index',
+    render: (text) => <p className=" -mb-[2px]">{text + 1}</p>,
   },
   {
     title: 'SKU No',
-    dataIndex: 'skuNo',
-    key: 'skuNo',
+    dataIndex: 'sku',
+    key: 'sku',
   },
   {
     title: 'Particular',
-    dataIndex: 'particular',
-    key: 'particular',
+    dataIndex: 'particularName',
+    key: 'particularName',
   },
   {
     title: 'Category',
-    dataIndex: 'category',
-    key: 'category',
+    dataIndex: 'catName',
+    key: 'catName',
   },
   {
     title: 'Sub-Category',
-    dataIndex: 'subcategory',
-    key: 'subcategory',
+    dataIndex: 'subCatName',
+    key: 'subCatName',
   },
   {
     title: 'Qty',
-    dataIndex: 'qty',
-    key: 'qty',
+    dataIndex: 'quantity',
+    key: 'quantity',
   },
   {
     title: 'Unit Price',
-    dataIndex: 'unitPrice',
-    key: 'unitPrice',
+    dataIndex: 'price',
+    key: 'price',
   },
   {
     title: 'Total Amount',
-    dataIndex: 'TotalAmount',
-    key: 'TotalAmount',
-  },
-];
-
-export const inventoryData = [
-  {
-    key: '1',
-    slNo: '01',
-    skuNo: 'ZE0010',
-    particular: 'Chair',
-    category: 'Furniture',
-    subcategory: 'Plastic',
-    qty: 32,
-    unitPrice: 450,
-    TotalAmount: 11250,
-  },
-  {
-    key: '2',
-    slNo: '02',
-    skuNo: 'ZE0011',
-    particular: 'Chair',
-    category: 'Furniture',
-    subcategory: 'Carbon',
-    qty: 21,
-    unitPrice: 900,
-    TotalAmount: 18900,
-  },
-  {
-    key: '3',
-    slNo: '03',
-    skuNo: 'ZE0012',
-    particular: 'Chair',
-    category: 'Furniture',
-    subcategory: 'Wood',
-    qty: 45,
-    unitPrice: 790,
-    TotalAmount: 28250,
+    dataIndex: 'total',
+    key: 'total',
   },
 ];
 
 // Payroll
-
 export const payrollColumnList = [
   // {
   //   title: 'Info',
@@ -91,13 +54,13 @@ export const payrollColumnList = [
   // },
   {
     title: 'Code',
-    dataIndex: 'code',
-    key: 'code',
+    dataIndex: 'employee_code',
+    key: 'employee_code',
   },
   {
     title: 'Employe Name',
-    dataIndex: 'employeName',
-    key: 'employeName',
+    dataIndex: 'name',
+    key: 'name',
   },
   {
     title: 'Post',
@@ -127,66 +90,32 @@ export const payrollColumnList = [
   },
 ];
 
-export const payrollData = [
-  {
-    code: 'ZE0010',
-    employeName: 'Samuel Jeldi',
-    post: 'Engineer',
-    attendance: 'June - 78%',
-    leaves: '3 Days',
-    halfDays: "4 Days",
-    salary: 21250,
-  },
-  {
-    code: 'ZE0020',
-    employeName: 'Nikhilesh Debbarma',
-    post: 'Full Stack Dev',
-    attendance: 'June - 78%',
-    leaves: '3 Days',
-    halfDays: "4 Days",
-    salary: 18960,
-  },
-  {
-    code: 'ZE0030',
-    employeName: 'Rudhamoy Debbarma',
-    post: 'Frontend Dev',
-    attendance: 'June - 78%',
-    leaves: '3 Days',
-    halfDays: "5 Days",
-    salary: 17960,
-  },
-];
-
 // My Clients
-export const MyClientsTableGrid = [
-  { type: 'checkbox', width: '50' },
+export const myClientColumn = [
   {
-    headerText: 'SL NO',
-    width: '100',
-    textAlign: 'Center'
+    title: 'Sl No',
+    dataIndex: 'index',
+    key: 'index',
+    render: (text) => <p className=" -mb-[2px]">{text + 1}</p>,
   },
   {
-    field: 'ClientId',
-    headerText: 'Client ID',
-    width: '100',
-    textAlign: 'Center'
+    title: 'Client ID',
+    dataIndex: 'id',
+    key: 'id',
   },
   {
-    field: 'Name',
-    headerText: 'Name',
-    width: '150',
-    textAlign: 'Center'
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
   },
   {
-    field: 'ContactPerson',
-    headerText: 'Contact Person',
-    width: '150',
-    textAlign: 'Center'
+    title: 'Contact Person',
+    dataIndex: 'contact_person',
+    key: 'contact_person',
   },
   {
-    field: 'MOB',
-    headerText: 'MOB',
-    width: '150',
-    textAlign: 'Center'
+    title: 'MOB',
+    dataIndex: 'mobile_no',
+    key: 'mobile_no',
   },
 ]
