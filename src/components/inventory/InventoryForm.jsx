@@ -66,8 +66,13 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
     }
     const updateHandler =  async(e) => {
         e.preventDefault()
-        const res1 = await axios.put(`${baseUrl}product-category/${data.id}`, { name: category }, { headers: { 'Authorization': `Token ${token}` } })
-        console.log(res1)
+        let res1
+        if(category !== data.category.name) {
+             res1 = await axios.put(`${baseUrl}product-category/${data.category.id}/`, { name: category }, { headers: { 'Authorization': `Token ${token}` } })
+            console.log(res1)
+        }
+        
+        
         let editData = {
             id: data.id,
             item_name: itemName,
@@ -81,7 +86,7 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             color,
             model,
             category: {
-                name: category
+                name: category !== data.category.name ? res1.data.name : category
             },
             sub_category: {
                 name: subCategory,
@@ -125,6 +130,8 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             setSubCategory(data.sub_category.name)
         }
     }, [])
+
+    console.log(category)
 
     return (
         <div className="grid grid-cols-2 gap-3">

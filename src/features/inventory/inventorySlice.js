@@ -105,10 +105,12 @@ const inventorySlice = createSlice({
                     item.material = action.payload.material;
                     item.color = action.payload.color;
                     item.model = action.payload.model;
+                    item.category.name = action.payload.category.name
+                    item.sub_category.name = action.payload.sub_category.name
                     item.perticulars.name = action.payload.perticulars.name
                 }
             });
-            state.clients = [...productListArr];
+            state.products = [...productListArr];
             state.status = 'succeeded'
         })
         .addCase(editProduct.rejected, (state, action) => {

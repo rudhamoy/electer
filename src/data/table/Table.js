@@ -47,47 +47,73 @@ export const inventoryColumnList = [
 
 // Payroll
 export const payrollColumnList = [
-  // {
-  //   title: 'Info',
-  //   dataIndex: 'info',
-  //   key: 'info',
-  // },
   {
     title: 'Code',
     dataIndex: 'employee_code',
     key: 'employee_code',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
   },
   {
     title: 'Employe Name',
     dataIndex: 'name',
     key: 'name',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
   },
   {
     title: 'Post',
     dataIndex: 'post',
     key: 'post',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
   },
   {
     title: 'Attendance',
     dataIndex: 'attendance',
     key: 'attendance',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
   },
   {
     title: 'Leaves',
     dataIndex: 'leaves',
     key: 'leaves',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
   },
   {
     title: 'Half Days',
     dataIndex: 'halfDays',
     key: 'halfDays',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
   },
   {
       title: 'Salary',
     dataIndex: 'salary',
     key: 'salary',
-    render: (text) => <p className="text-cyan-500 -mb-1 font-semibold">₹{text}</p>,
+    render: (text) => <p className="text-cyan-500 text-xs -mb-1 font-semibold">₹{text}</p>,
   },
+];
+
+// attendance table
+export const attendanceColumnList = [
+ 
+  {
+    title: 'Code',
+    dataIndex: 'employee_code',
+    key: 'employee_code',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+  {
+    title: 'Employe Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+  {
+    title: 'Post',
+    dataIndex: 'post',
+    key: 'post',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+  
+
 ];
 
 // My Clients

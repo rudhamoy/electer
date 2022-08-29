@@ -1,16 +1,18 @@
 import { FileSyncOutlined, IdcardOutlined } from '@ant-design/icons';
 import { Tabs, DatePicker, Space } from 'antd';
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios'
 
 import InputField from '../../utils/InputField'
 import UploadDocs from './UploadDocs';
 import ImageUploader from '../ImageUploader'
+import { editEmployee, createEmployee } from '../../features/payroll/payrollSlice';
 
 const { TabPane } = Tabs;
 
-const EmployeeForm = () => {
+const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
+    const dispatch = useDispatch()
 
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -71,16 +73,43 @@ const EmployeeForm = () => {
             aadhar_no: aadhaar,
             pan_details: pan
         }
+        dispatch(createEmployee(employeeData))
+        setShowAdd(false)
+    }
 
-        try {
-            const res = await axios.post(`${baseUrl}/pay-roll/employee/`, employeeData, { headers: { 
-                'Authorization': `Token ${token}`,
-                "content-type" : 'application/json'
-            } })
-            console.log(res)
-        } catch (error) {
-            console.log(error)
+    const updateHandler = async (e) => {
+        e.preventDefault();
+
+        const editData = {
+            id: data.id,
+            bank_details: {
+                bank_name: bankName,
+                account_holder_name: acHolderName,
+                account_no: parseInt(accountNo),
+                ifsc_code: ifsc
+            },
+            salary_detail: {
+                basic_salary: parseInt(basicSalary),
+                deatness_allowance: parseInt(deatAllow),
+                travelling_allowance: parseInt(travelAllow),
+                food_allowance: parseInt(foodAllow),
+                petrol_allowance: parseInt(petrolAllow),
+                provident_fund: parseInt(pf),
+                employee_state_insurance: parseInt(esi)
+            },
+            first_name: firstName,
+            sur_name: lastName,
+            department,
+            post,
+            mobile,
+            email_id: email,
+            // date_of_joining: joiningDate,
+            employee_code: employeeCode,
+            aadhar_no: aadhaar,
+            pan_details: pan
         }
+        dispatch(editEmployee(editData))
+        setShowEdit(false)
     }
 
     // Action Button - Save/edit
@@ -90,10 +119,36 @@ const EmployeeForm = () => {
             <button className={btnClass} onClick={submitHandler}>Submit</button>
         ) : (
             buttonCond === 'edit' && (
-                <button className={btnClass}>Edit</button>
+                <button className={btnClass} onClick={updateHandler}>Update</button>
             )
         )
     )
+
+     // show data or view details
+     useEffect(() => {
+        if (buttonCond === '' || buttonCond === 'edit') {
+            setFirstName(data.first_name)
+            setLastName(data.sur_name)
+            setDepartment(data.department)
+            setPost(data.post)
+            setMobile(data.mobile)
+            setEmail(data.email_id)
+            setEmployeeCode(data.employee_code)
+            setBasicSalary(data.aadhar_no)
+            setDeatAllow(data.salary_detail.deatness_allowance)
+            setTravelAllow(data.salary_detail.travelling_allowance)
+            setFoodAllow(data.salary_detail.food_allowance)
+            setPetrolAllow(data.salary_detail.petrol_allowance)
+            setPf(data.salary_detail.provident_fund)
+            setEsi(data.salary_detail.employee_state_insurance)
+            setAadhaar(data.aadhar_no)
+            setPan(data.pan_details)
+            setBankName(data.bank_details.bank_name)
+            setAcHolderName(data.bank_details.account_holder_name)
+            setAccountNo(data.bank_details.account_no)
+            setIfsc(data.bank_details.ifsc_code)
+        }
+    }, [])
 
     return (
         <Tabs defaultActiveKey="1">

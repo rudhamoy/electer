@@ -11,9 +11,9 @@ const MyClients = () => {
 
       <div className="flex justify-between mt-20">
         {/* Table */}
-      <div className="bg-gray-100 rounded-sm p-3 w-[65%]">
-        <ClientTable />
-      </div>
+        <div className="bg-gray-100 rounded-sm p-3 w-[65%]">
+          <ClientTable />
+        </div>
         {/* details overview */}
         <div>Details</div>
       </div>
