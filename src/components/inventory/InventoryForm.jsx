@@ -22,6 +22,7 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
     const [qty, setQty] = useState()
     const [uom, setUom] = useState('')
     const [unitPrice, setUnitPrice] = useState()
+    const [sellingPrice, setSellingPrice] = useState()
     const [size, setSize] = useState('')
     const [thickness, setThickness] = useState('')
     const [material, setMaterial] = useState('')
@@ -43,6 +44,7 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
                 quantity: parseInt(qty),
                 UOM: uom,
                 price: unitPrice,
+                selling_price: sellingPrice,
                 size,
                 thickness,
                 material,
@@ -62,7 +64,6 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             dispatch(createProduct(productData))
             setShowAdd(false)
         })
-        console.log('Category = ', res1)
     }
     const updateHandler =  async(e) => {
         e.preventDefault()
@@ -80,6 +81,7 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             quantity: parseInt(qty),
             UOM: uom,
             price: unitPrice,
+            selling_price: sellingPrice,
             size,
             thickness,
             material,
@@ -122,6 +124,7 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             setMaterial(data.material)
             setModel(data.model)
             setUnitPrice(data.price)
+            setSellingPrice(data.selling_price)
             setQty(data.quantity)
             setSize(data.size)
             setThickness(data.thickness)
@@ -131,25 +134,23 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
         }
     }, [])
 
-    console.log(category)
 
     return (
         <div className="grid grid-cols-2 gap-3">
             {/* Basic Details */}
             <div>
                 <h1 className="mb-3 font-semibold">Basic Details</h1>
-                <InputField type="number" labelName="SKU No" value={sku} onChange={e => setSku(e.target.value)} />
-                <InputField labelName="Item Name" value={itemName} onChange={e => setItemName(e.target.value)} />
-                <InputField labelName="Particular" value={particular} onChange={e => setParticular(e.target.value)} />
-                <div className='flex flex-col my-6'>
+                <InputField my="3" type="number" labelName="SKU No" value={sku} onChange={e => setSku(e.target.value)} />
+                <InputField my="3" labelName="Item Name" value={itemName} onChange={e => setItemName(e.target.value)} />
+                <InputField my="3" labelName="Particular" value={particular} onChange={e => setParticular(e.target.value)} />
+                <div className='flex flex-col my-3'>
                     <label className="" htmlFor="category">Category</label>
                     <SelectField placeholder="Category" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.catName : null} value={category} onChange={value => setCategory(value)} >
-                        <Option value="select">Select</Option>
                         <Option value="chair">Chair</Option>
                         <Option value="table">Table</Option>
                     </SelectField>
                 </div>
-                <div className='flex flex-col my-6'>
+                <div className='flex flex-col my-3'>
                     <label className="" htmlFor="sub-Category">Sub-Category</label>
                     <SelectField placeholder="Sub-Category" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.subCatName : null} value={subCategory} onChange={value => setSubCategory(value)}>
                         <Option value="wood">Wood</Option>
@@ -157,8 +158,8 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
                         <Option value="carbon">Carbon</Option>
                     </SelectField>
                 </div>
-                <InputField type="number" labelName="Quantity" value={qty} onChange={e => setQty(e.target.value)} />
-                <div className='flex flex-col my-6'>
+                <InputField my="3" type="number" labelName="Quantity" value={qty} onChange={e => setQty(e.target.value)} />
+                <div className='flex flex-col my-3'>
                     <label className="" htmlFor="uom">UOM</label>
                     <SelectField placeholder="UOM" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.UOM : null} value={uom} onChange={value => setUom(value)}>
                         <Option value="kilogram">KG</Option>
@@ -166,16 +167,17 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
                         <Option value="litre ">Litre </Option>
                     </SelectField>
                 </div>
-                <InputField labelName="Unit Price" value={unitPrice} onChange={e => setUnitPrice(e.target.value)} />
+                <InputField my="3" labelName="Unit Price" value={unitPrice} onChange={e => setUnitPrice(e.target.value)} />
+                <InputField my="3" labelName="Selling Price" value={sellingPrice} onChange={e => setSellingPrice(e.target.value)} />
             </div>
             {/* Specification Details */}
             <div>
                 <h1 className="mb-3 font-semibold">Specification Details</h1>
-                <InputField labelName="Size" value={size} onChange={e => setSize(e.target.value)} />
-                <InputField labelName="Thickness" value={thickness} onChange={e => setThickness(e.target.value)} />
-                <InputField labelName="Material" value={material} onChange={e => setMaterial(e.target.value)} />
-                <InputField labelName="Color" value={color} onChange={e => setColor(e.target.value)} />
-                <InputField labelName="Model" value={model} onChange={e => setModel(e.target.value)} />
+                <InputField my="3" labelName="Size" value={size} onChange={e => setSize(e.target.value)} />
+                <InputField my="3" labelName="Thickness" value={thickness} onChange={e => setThickness(e.target.value)} />
+                <InputField my="3" labelName="Material" value={material} onChange={e => setMaterial(e.target.value)} />
+                <InputField my="3" labelName="Color" value={color} onChange={e => setColor(e.target.value)} />
+                <InputField my="3" labelName="Model" value={model} onChange={e => setModel(e.target.value)} />
                 {btnContent}
             </div>
         </div>

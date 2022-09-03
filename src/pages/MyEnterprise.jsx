@@ -6,9 +6,11 @@ import PageHeader from '../components/PageHeader'
 import MyEnterpriseIcon from '../data/icons/MyEnterprise.png'
 import { AddFirm, PersonalDetail, RoleManagement } from '../components/myEnterprise'
 import { fetchBusiness } from '../features/enterprise/enterpriseSlice';
+import { modalBtnCondition } from '../features/activity/activitySlice'
 
 import EnterpriseList from '../components/myEnterprise/EnterpriseList'
 import ActionBtn from '../utils/ActionBtn'
+import Layout from '../components/Layout'
 
 const ButtonTab = ({ tabName, tabLink, query }) => {
   const activeTab = "p-2 px-4 bg-[#03C9D7] text-blue-50 font-semibold rounded-full"
@@ -33,12 +35,11 @@ const MyEnterprise = () => {
 
   const auth = useSelector(state => state.auth.auth)
   const business = useSelector(state => state.enterprise.business)
+  const { modalBtn } = useSelector(state => state.activity)
 
   useEffect(() => {
-    if (auth.id) {
-      dispatch(fetchBusiness())
-    }
-  }, [auth, dispatch])
+    dispatch(fetchBusiness())
+  }, [dispatch])
 
   useEffect(() => {
     if (business !== 0) {
@@ -47,7 +48,7 @@ const MyEnterprise = () => {
   }, [])
 
   return (
-    <div>
+    <Layout>
       <PageHeader pageTitle="My Enterprise" icon={MyEnterpriseIcon} />
       {/* button tabs */}
       <div className="flex justify-between items-center gap-x-6 my-4">
@@ -59,20 +60,27 @@ const MyEnterprise = () => {
         <div>
           <ActionBtn
             className={showAdd === false}
-            onClick={() => setShowAdd(!showAdd)}
+            onClick={() => {
+              setShowAdd(!showAdd)
+              if(showAdd === false) {
+                dispatch(modalBtnCondition('add'))
+              } else {
+                dispatch(modalBtnCondition(''))
+              }
+            }}
             btnCondition={showAdd === true}
             createName="Business"
            />
         </div>
       </div>
       <div className="border bg-white rounded-md p-4">
-        {showAdd === true ? <AddFirm /> : tabContent === 'firm' ? (
+        {(showAdd === true || modalBtn === 'edit' )? <AddFirm /> : tabContent === 'firm' ? (
           <EnterpriseList data={business} />
         ) : (
           tabContent === 'personal' ? <PersonalDetail /> : <RoleManagement />
         )}
       </div>
-    </div>
+    </Layout>
   )
 }
 

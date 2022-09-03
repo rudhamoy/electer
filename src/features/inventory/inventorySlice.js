@@ -100,6 +100,7 @@ const inventorySlice = createSlice({
                     item.quantity = action.payload.quantity;
                     item.UOM = action.payload.UOM;
                     item.price = action.payload.price;
+                    item.selling_price = action.payload.selling_price;
                     item.size = action.payload.size;
                     item.thickness = action.payload.thickness;
                     item.material = action.payload.material;

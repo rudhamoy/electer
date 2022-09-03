@@ -60,6 +60,18 @@ export const createAttendance = createAsyncThunk('payroll/createAttendance', asy
     }
 })
 
+// edit/update attendance
+export const updateAttendance = createAsyncThunk('payroll/updateAttendance', async (updateAttend, thunkAPI) => {
+    const { id } = updateAttend
+    try {
+        const token = thunkAPI.getState().auth.auth.authToken
+        const res = await axios.put(`${baseUrl}attendence/attendence/${id}/`, updateAttend, {headers: {'Authorization' : `Token ${token}`}})
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 // get attendance data 
 export const fetchAttendance = createAsyncThunk('payroll/fetchAttendance', async (_, thunkAPI) => {
     const token = thunkAPI.getState().auth.auth.authToken
@@ -186,6 +198,27 @@ const payrollSlice = createSlice({
             state.attendance = action.payload
         })
         .addCase(fetchAttendance.rejected, (state, action) => {
+            state.status = 'failed'
+            state.error = action.error.message
+        })
+        .addCase(updateAttendance.pending, (state) => {
+            state.status = 'loading'
+        })
+        .addCase(updateAttendance.fulfilled, (state, action) => {
+            const attendanceListArr = state.attendance
+                attendanceListArr.forEach((item) => {
+                    if (item.id === action.payload.id) {
+                        item.absent = action.payload.absent;
+                        item.present = action.payload.present;
+                        item.half_day = action.payload.half_day;
+                        item.attendence_date = action.payload.attendence_date;
+                        item.employee = action.payload.employee;                     
+                    }
+                });
+                state.attendance = [...attendanceListArr];
+                state.status = 'succeeded'
+        })
+        .addCase(updateAttendance.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
         })

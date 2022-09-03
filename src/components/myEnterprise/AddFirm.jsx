@@ -1,34 +1,37 @@
-import React, { useState } from 'react'
-import { Input, Select, Radio } from 'antd';
+import React, { useState, useEffect } from 'react'
+import { Select, Radio } from 'antd';
 import axios from 'axios'
-import { useSelector }  from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 import InputField from '../../utils/InputField'
+import SelectField from '../../utils/SelectField'
 import ImageUploader from '../ImageUploader'
+import { modalBtnCondition } from '../../features/activity/activitySlice';
+import { fetchBusinessById, createBusiness, fetchBizAddress } from '../../features/enterprise/enterpriseSlice';
+
 const { Option } = Select
 
-const SelectField = ({ placeholder, children, onChange }) => {
-  const onSearch = (value) => {
-    console.log('search:', value);
-  };
-  return (
-    <Select
-      showSearch
-      placeholder={placeholder}
-      optionFilterProp="children"
-      onChange={onChange}
-      onSearch={onSearch}
-      filterOption={(input, option) => option.children.toLowerCase().includes(input.toLowerCase())}
-    >
-      {children}
-    </Select>
-  )
+function useQuery() {
+  const { search } = useLocation();
+  return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
 const AddFirm = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const [ companyName, setCompanyName ] = useState("")
-  const [ businessPlace, setBusinessPlace ] = useState("")
+  const token = useSelector(state => state.auth.auth.authToken);
+  const { businessById, bizAddress } = useSelector(state => state.enterprise)
+  const { modalBtn } = useSelector(state => state.activity)
+
+  let query = useQuery()
+  let id = query.get("id")
+
+
+
+  const [companyName, setCompanyName] = useState("")
+  const [businessPlace, setBusinessPlace] = useState("")
 
   const [country, setCountry] = useState('')
   const [states, setStates] = useState('')
@@ -51,25 +54,58 @@ const AddFirm = () => {
 
   const [businessTypeId, setBusinessTypeId] = useState()
 
-  const baseUrl = 'http://37.44.244.212/api/'
-  const token = useSelector(state => state.auth.auth.authToken)
 
-  const saveHandler = async (e) => {
+  // const baseUrl = 'http://37.44.244.212/api/'
+
+  const cancelHadnler = async (e) => {
     e.preventDefault()
-    // 
+    dispatch(modalBtnCondition(''))
+    navigate('/my_enterprise?tab=firm')
   }
 
-  const nextHandler = async (e) => {
+  const nextHandler = (e) => {
     e.preventDefault()
-    const res1 = await axios.post(`${baseUrl}/business-type/`, {name: businessType}, {headers: {'Authorization' : `Token ${token}`}})
-    console.log('Business Type = ', res1)
-    const res2 = await axios.post(`${baseUrl}/industry-type/`, {name: industryTypes}, {headers: {'Authorization' : `Token ${token}`}})
-    console.log('Industry Type = ', res2)
-    const res3 =  await axios.post(`${baseUrl}/business/`, {company_name: companyName, business_type:res1.data.id, IndustryType: res2.data.id }, {headers: {'Authorization' : `Token ${token}`}})
-    console.log('Business = ', res3)
-    const res4 =  await axios.post(`${baseUrl}/business-address/`, {country, state:states, locality, pin, remarks: landmark, business: res3.data.id }, {headers: {'Authorization' : `Token ${token}`}})
-    console.log('Business Address = ', res4)
+
+    const businessData = {
+      businessType,
+      industryTypes,
+      companyName,
+      country,
+      states,
+      locality,
+      pin,
+      landmark
+    }
+
+    dispatch(createBusiness(businessData))
+    dispatch(modalBtnCondition(''))
+    navigate('/my_enterprise?tab=firm')
+
   }
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchBusinessById(id))
+      dispatch(fetchBizAddress())
+    }
+  }, [id])
+
+  useEffect(() => {
+    if (id) {
+      setCompanyName(businessById.company_name)
+      setBusinessType(businessById.business_type.name)
+      setIndustryType(businessById.IndustryType.name)
+      bizAddress.map(item => {
+        if(item.business === parseInt(id)) {
+          setCountry(item.country)
+          setStates(item.state)
+          setLocality(item.locality)
+          setPin(item.pin)
+          setLandmark(item.remarks)
+        }
+      })
+    }
+  }, [id])
 
 
   return (
@@ -92,13 +128,13 @@ const AddFirm = () => {
           {/* Address */}
           {/* <InputField labelName="Company Address" /> */}
           <div className="my-6">
-          <div className="grid grid-cols-2 gap-x-4">
-              <InputField  labelName="Country" value={country} onChange={e => setCountry(e.target.value)} />
-              <InputField  labelName="State" value={states} onChange={e => setStates(e.target.value)} />
-              <InputField  labelName="Locality" value={locality} onChange={e => setLocality(e.target.value)} />
-              <InputField  labelName="Pin" value={pin} onChange={e => setPin(e.target.value)} />
-          </div>
-          <InputField labelName="Landmarks" value={landmark} onChange={e => setLandmark(e.target.value)} />
+            <div className="grid grid-cols-2 gap-x-4">
+              <InputField labelName="Country" value={country} onChange={e => setCountry(e.target.value)} />
+              <InputField labelName="State" value={states} onChange={e => setStates(e.target.value)} />
+              <InputField labelName="Locality" value={locality} onChange={e => setLocality(e.target.value)} />
+              <InputField labelName="Pin" value={pin} onChange={e => setPin(e.target.value)} />
+            </div>
+            <InputField labelName="Landmarks" value={landmark} onChange={e => setLandmark(e.target.value)} />
           </div>
 
           {/* gst */}
@@ -129,7 +165,12 @@ const AddFirm = () => {
           {/* business type */}
           <div className='flex flex-col'>
             <label>Business Type</label>
-            <SelectField placeholder="Select business type"  onChange={value => setBusinessType(value)}>
+            <SelectField
+              placeholder="Select business type"
+              defaultValue={modalBtn === 'edit' ? businessById.business_type.name : null}
+              value={businessType}
+              onChange={value => setBusinessType(value)}
+            >
               <Option value="manufacturer">Manufacturer</Option>
               <Option value="retailer">Retailer</Option>
               <Option value="wholesaler">Wholesaler</Option>
@@ -140,7 +181,11 @@ const AddFirm = () => {
           {/* industry type */}
           <div className='flex flex-col'>
             <label>Industry Type</label>
-            <SelectField placeholder="Select industry type" value={industryTypes} onChange={value => setIndustryType(value)}>
+            <SelectField
+              placeholder="Select industry type"
+              defaultValue={modalBtn === 'edit' ? businessById.IndustryType.name : null}
+              value={industryTypes}
+              onChange={value => setIndustryType(value)}>
               <Option value="agriculture">Agriculture</Option>
               <Option value="healthcare">Healthcare</Option>
             </SelectField>
@@ -170,7 +215,7 @@ const AddFirm = () => {
         </div>
         {/* button */}
         <div className="flex justify-around gap-x-5 items-center">
-          <button onClick={saveHandler} className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6 w-full">Save</button>
+          <button onClick={cancelHadnler} className="p-2 px-4 rounded-md bg-red-500 text-blue-50 font-semibold my-6 w-full">Cancel</button>
           <button onClick={nextHandler} className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6 w-full">Next</button>
         </div>
       </div>

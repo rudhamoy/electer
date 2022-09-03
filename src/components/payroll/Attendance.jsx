@@ -6,7 +6,7 @@ import axios from 'axios'
 import { attendanceColumnList } from '../../data/table/Table'
 import InfoIcon from '../../data/icons/payroll/info.png'
 import { modalBtnCondition } from '../../features/activity/activitySlice';
-import { createAttendance, fetchAttendance, createDate, getDateList } from '../../features/payroll/payrollSlice';
+import { createAttendance, fetchAttendance, createDate, getDateList, updateAttendance } from '../../features/payroll/payrollSlice';
 
 const Attendance = () => {
     const dispatch = useDispatch()
@@ -65,7 +65,19 @@ const Attendance = () => {
                                     attendence_date: dateId,
                                     employee: record.id
                                 }
-                                dispatch(createAttendance(attendData))
+                                const updateAttend = {
+                                    id: record.attendId,
+                                    present: true,
+                                    absent: false,
+                                    attendence_date: dateId,
+                                    employee: record.id
+                                }
+                                console.log(attendData)
+                                if(record.attendId !== null) {
+                                    dispatch(updateAttendance(updateAttend))
+                                } else {
+                                    dispatch(createAttendance(attendData))
+                                }
                             }
                         }}
                     />
@@ -90,7 +102,18 @@ const Attendance = () => {
                                 attendence_date: dateId,
                                 employee: record.id
                             }
-                            dispatch(createAttendance(attendData))
+                            const updateAttend = {
+                                id: record.attendId,
+                                absent: true,
+                                present: false,
+                                attendence_date: dateId,
+                                employee: record.id
+                            }
+                            if(record.attendId !== null) {
+                                dispatch(updateAttendance(updateAttend))
+                            } else {
+                                dispatch(createAttendance(attendData))
+                            }
                         }
                     }}
                     />
@@ -121,13 +144,15 @@ const Attendance = () => {
         }
         let attendant = {
             present: false,
-            absent: false
+            absent: false,
+            attendId: null,
         }
 
         present.forEach(p => {
             if (p.employee === item.id) {
                 attendant.present = p.present
                 attendant.absent = p.absent
+                attendant.attendId = p.id
             }
         })
 
@@ -167,6 +192,11 @@ const Attendance = () => {
         }
         btnCond()
     }, [dateToday, createdDate])
+
+
+    console.log('attendance=', attendance)
+    console.log('present=', present)
+    console.log('tableData =', newEmployeesData)
 
     return (
         <div>

@@ -1,12 +1,13 @@
 import React from 'react'
 import ClientTable from '../components/myClients/ClientTable'
+import Layout from '../components/Layout'
 
 import PageHeader from '../components/PageHeader'
 import MyClientsIcon from '../data/icons/MyClients.png'
 
 const MyClients = () => {
   return (
-    <div>
+    <Layout>
       <PageHeader icon={MyClientsIcon} pageTitle="My Clients" />
 
       <div className="flex justify-between mt-20">
@@ -17,7 +18,7 @@ const MyClients = () => {
         {/* details overview */}
         <div>Details</div>
       </div>
-    </div>
+    </Layout>
   )
 }
 

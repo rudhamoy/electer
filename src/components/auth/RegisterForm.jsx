@@ -22,7 +22,7 @@ const RegisterForm = () => {
       password
     }
 
-    const res = await axios.post('http://37.44.244.212/api/auth/users/resend_activation/', userForm, {
+    const res = await axios.post('http://37.44.244.212/api/auth/users/', userForm, {
       headers: {
         'Content-Type': "application/json",
       }

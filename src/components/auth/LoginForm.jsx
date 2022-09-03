@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Input } from 'antd';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { loginUser } from '../../features/auth/AuthSlice'
 
@@ -46,15 +46,6 @@ const LoginForm = () => {
     }
   }
 
-  // const checkUser = () => {
-  //     if(!user) {
-  //     dispatch(loginUser({authToken: user.token, id: user.id}))
-  //   }
-  //   }
-
-  // useEffect(() => {
-  //   checkUser()
-  // }, [user])
 
   return (
     <div className='bg-white shadow-md rounded-sm w-[360px] p-6'>
@@ -62,6 +53,7 @@ const LoginForm = () => {
         <form onSubmit={submitHandler}>
             <InputField labelName="Email" value={email} onChange={e => setEmail(e.target.value)} />
             <InputField labelName="Password" value={password} onChange={e => setPassword(e.target.value)} />
+            <Link to="/forgot_password">Forgot Password ?</Link>
             <button className="bg-blue-500 p-2 w-full text-white rounded-sm my-4">Sign in</button>
         </form>
         <button onClick={getInfo}>Get Info</button>
