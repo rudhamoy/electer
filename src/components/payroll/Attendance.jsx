@@ -194,10 +194,6 @@ const Attendance = () => {
     }, [dateToday, createdDate])
 
 
-    console.log('attendance=', attendance)
-    console.log('present=', present)
-    console.log('tableData =', newEmployeesData)
-
     return (
         <div>
             <div className="flex justify-between mt-20">

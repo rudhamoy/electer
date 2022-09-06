@@ -1,6 +1,5 @@
 
 // Inventory
-
 export const inventoryColumnList = [
   {
     title: 'Sl No',
@@ -112,8 +111,6 @@ export const attendanceColumnList = [
     key: 'post',
     render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
   },
-  
-
 ];
 
 // My Clients

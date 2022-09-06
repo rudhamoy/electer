@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Input } from 'antd';
 import axios from 'axios';
-import { useSelector } from 'react-redux'
-import { Navigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 
 import ImageUploader from '../ImageUploader';
+import { fetchSystemUser } from '../../features/auth/AuthSlice';
 
 const InputField = ({ labelName, onChange, value }) => (
     <div className="my-6 flex flex-col gap-y-2 w-full">
@@ -17,18 +18,40 @@ const InfoForm = () => {
     const [mobile, setMobile] = useState('')
     const [profile, setProfile] = useState([])
 
-    const user = useSelector(state => state.auth.auth.id)
-    console.log(user)
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+
+    const { auth, systemUser } = useSelector(state => state.auth)
 
     const submitHandler = async (e) => {
         e.preventDefault()
-        const res = await axios.post('http://37.44.244.212/api/system-user/', {designation, mobile_no: mobile, custom_user:user }, {
+        try {
+          const res = await axios.post('http://37.44.244.212/api/system-user/', {designation, mobile_no: mobile, custom_user:auth.id }, {
             headers: {
               'Content-Type': "application/json",
+              "Authorization": `Token ${auth.authToken}`
             }
           })
           console.log(res)
+          navigate('/')
+        } catch (error) {
+          console.log(error)
+        }
     }
+
+    useEffect(() => {
+      dispatch(fetchSystemUser())
+
+      if(systemUser) {
+        navigate('/')
+      }
+    }, [systemUser])
+
+    useEffect(() => {
+      if(auth.authToken === '') {
+        navigate('/login')
+      }
+    }, [])
 
   return (
     <section className='shadow-md rounded-sm w-[300px] p-2'>

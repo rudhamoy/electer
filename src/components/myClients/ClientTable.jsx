@@ -61,7 +61,7 @@ const ClientTable = () => {
 
 
     const newClientData = []
-    clients.map((item, index) => {
+    clients?.map((item, index) => {
 
         const indexNo = {
             index: index

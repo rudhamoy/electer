@@ -1,5 +1,5 @@
 import React,{ useEffect } from 'react'
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -13,21 +13,15 @@ import { hideSidebar } from '../features/activity/activitySlice';
 const Sidebar = () => {
     const dispatch = useDispatch()
     const {activeMenu} = useSelector(state => state.activity)
-    const location = useLocation()
 
-    useEffect(() => {
-        if(location.pathname === '/register' || location.pathname === '/login') {
-            dispatch(hideSidebar(false))
-        }
-    }, [location])
 
-    const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-white text-xs m-2 font-semibold uppercase';
+    const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg bg-gray-50 text-xs m-2 font-semibold uppercase';
 
-    const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-gray-700 dark:text-gray-200 dark:hover:text-black text-xs hover:bg-gray-50 m-2 font-semibold uppercase';
+    const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-gray-700 dark:text-gray-200 dark:hover:text-black text-xs hover:bg-gray-100 m-2 font-semibold uppercase';
 
     return (
-        <div className='ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10'>
-            {activeMenu && (
+        <div className='ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10 '>
+            {/* {activeMenu && ( */}
                 <>
                     <div className="my-10 flex flex-col justify-center items-center">
                         <div>
@@ -38,7 +32,6 @@ const Sidebar = () => {
                         <Tooltip title="My Enterprise" color="cyan" placement="bottom">
                             <NavLink
                                 to='/my_enterprise?tab=firm'
-                                // className={({ isActive }) => isActive ? activeLink : normalLink}
                             >
                                 <img src={MyEnterprise} className="w-[25px]" />
                             </NavLink>
@@ -47,7 +40,6 @@ const Sidebar = () => {
                             <Tooltip title="Logout" color="cyan" placement="bottom">
                             <NavLink
                                 to='/'
-                                // className={({ isActive }) => isActive ? activeLink : normalLink}
                                 className={normalLink}
                             >
                                 <img src={Logout} className="w-[25px]" />
@@ -63,8 +55,8 @@ const Sidebar = () => {
                                 key={index}
                                 className={({ isActive }) => isActive ? activeLink : normalLink}
                                 style={({ isActive }) => ({
-                                    backgroundColor: isActive ? '#03C9D7' : '',
-                                    color: isActive ? 'white' : '',
+                                    // backgroundColor: isActive ? 'white' : '',
+                                    color: isActive ? '#03C9D7' : '',
                                 })}
                             >
                                 <img className="h-[25px]" src={item.icon} alt={item.title} />
@@ -73,7 +65,7 @@ const Sidebar = () => {
                         ))}
                     </div>
                 </>
-            )}
+            {/* )} */}
         </div>
     )
 }

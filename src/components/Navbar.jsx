@@ -20,29 +20,19 @@ const Navbar = () => {
     const location = useLocation()
     const [showNav, setShowNav] = useState(true)
 
-    useEffect(() => {
-        if(location.pathname === '/register' || location.pathname === '/login') {
-            setShowNav(false)
-        } else {
-            setShowNav(true)
-        }
-    }, [location])
+    // useEffect(() => {
+    //     if(location.pathname === '/register' || location.pathname === '/login') {
+    //         setShowNav(false)
+    //     } else {
+    //         setShowNav(true)
+    //     }
+    // }, [location])
 
     return (
         <>
         {showNav === true && (
             <div className="flex justify-between items-center p-2 md:mx-6">
             <div className="flex gap-2 items-center">
-                <Tooltip title="Menu" color="cyan" placement="bottom">
-                    <button 
-                    type="button"
-                    className="relative text-xl rounded-full p-3 hover:bg-light-gray"
-                    // onClick={() => setActiveMenu(prevActiveMenu => !prevActiveMenu )}
-                    onClick={() => dispatch(activeMenuFunc())}
-                    >
-                        <AiOutlineMenu className='text-[#03C9D7]' />
-                    </button>
-                </Tooltip>
                 <p className="text-gray-400 text-sm font-semibold">Thursday / 07/07/22</p>
             </div>
             <div className='flex items-center gap-3'>

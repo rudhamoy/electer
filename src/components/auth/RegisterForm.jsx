@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Input, Checkbox } from 'antd';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 const InputField = ({ labelName, onChange, value }) => (
   <div className="my-6 flex flex-col gap-y-2 w-full">
@@ -13,6 +14,8 @@ const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
 
+  const navigate = useNavigate()
+
   const submitHandler = async (e) => {
     e.preventDefault()
 
@@ -22,12 +25,17 @@ const RegisterForm = () => {
       password
     }
 
-    const res = await axios.post('http://37.44.244.212/api/auth/users/', userForm, {
+    try {
+      const res = await axios.post('http://37.44.244.212/api/auth/users/', userForm, {
       headers: {
         'Content-Type': "application/json",
       }
     })
     console.log(res)
+    navigate('/login')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
