@@ -9,6 +9,7 @@ import { Navbar, Sidebar } from './components'
 import ProtectedRoute from './utils/ProtectedRoute'
 import Layout from './components/Layout'
 import ForgotPassword from './pages/ForgotPassword';
+import Gst from './pages/Gst';
 
 const App = () => {
   const { activeMenu } = useSelector(state => state.activity)
@@ -21,6 +22,7 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Dashboard />} exact />
             <Route path="/accounts" element={<Accounts />} />
+            <Route path="/accounts/gst" element={<Gst />} />
             <Route path="/my_clients" element={<MyClients />} />
             <Route path="/my_enterprise" element={<MyEnterprise />} />
             <Route path="/payroll" element={<Payroll />} />

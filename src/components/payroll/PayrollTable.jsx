@@ -137,7 +137,11 @@ const PayrollTable = () => {
             )}
             {/* Add employee Modal */}
             {showAdd === true && (
-                <Modal title="Add New Employee" visible={showAdd} onOk={handleOk} onCancel={handleCancel}>
+                <Modal 
+                title="Add New Employee" 
+                visible={showAdd} onOk={handleOk} onCancel={handleCancel}
+                
+                >
                     <EmployeeForm setShowAdd={setShowAdd} />
                 </Modal>
             )}

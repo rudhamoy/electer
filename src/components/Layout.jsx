@@ -13,6 +13,11 @@ const Layout = ({ children }) => {
 
   const [show, setShow] = useState(false)
   const [showSide, setShowSide] = useState(false)
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
 
   const { activeMenu } = useSelector(state => state.activity)
 
@@ -32,26 +37,33 @@ const Layout = ({ children }) => {
     <div className="flex relative dark:bg-main-dark-bg">
       {/* show menu when collapsed */}
       {(show || showSide) && (
-        <div
-          onMouseEnter={() => setShowSide(true)}
-          onMouseLeave={() => setShowSide(false)}
-          className="absolute w-[20%] z-50 sidebar borderImp bg-[#E5E5EA]">
-          {/* button to collapse/expand */}
-          {collapseExpand}
-          <Sidebar />
+        <div className="absolute  left-0 top-0 bottom-0 z-50 ">
+          <div
+            onMouseEnter={() => setShowSide(true)}
+            onMouseLeave={() => setShowSide(false)}
+            className="fixed w-[18%] bg-[#E5E5EA] sidebar borderImp">
+            {/* button to collapse/expand */}
+            {collapseExpand}
+            <Sidebar />
+          </div>
         </div>
       )}
 
       {/* Show menu when expanded */}
-      <div className={`${activeMenu ? "w-[20%] dark:bg-secondary-dark-bg bg-[#E5E5EA]" : "w-[2%]"} fixed h-[100%] border border-gray-300`}>
+      <div className={`${activeMenu ? "w-[18%] dark:bg-secondary-dark-bg bg-[#E5E5EA]" : "w-[2%]"} fixed h-[100%] border border-gray-300`}>
         {activeMenu ? (
           <Sidebar />
         ) : (
           // show when collapsed - with hover function
-          <div ref={ref} onMouseEnter={() => setShow(true)}
-            onMouseLeave={() => setShow(false)} className="h-[100%]">
-
-
+          <div
+            ref={ref}
+            onMouseEnter={() => {
+              setShow(true)
+            }}
+            onMouseLeave={() => {
+              setShow(false)
+            }}
+            className="h-[100%]">
           </div>
         )}
         {/* button to collapse/expand */}
@@ -59,11 +71,11 @@ const Layout = ({ children }) => {
       </div>
 
       {/* navbar and the and ui component */}
-      <div className={`${activeMenu ? 'md:ml-[20%] w-[80%]' : 'flex-2 ml-6 w-[100%]'}  min-h-screen`}>
+      <div className={`${activeMenu ? 'md:ml-[18%] w-[82%]' : 'flex-2 ml-6 w-[98%]'}  min-h-screen`}>
         <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg  w-full">
           <Navbar />
         </div>
-        <div className={`p-4 ${activeMenu ? "px-6" : 'px-10'}`}>
+        <div className={`p-4 ${activeMenu ? "px-6" : 'px-6'}`}>
           {children}
         </div>
       </div>

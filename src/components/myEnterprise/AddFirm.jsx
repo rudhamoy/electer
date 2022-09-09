@@ -17,7 +17,7 @@ function useQuery() {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const AddFirm = () => {
+const AddFirm = ({showAdd, setShowAdd}) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -60,10 +60,11 @@ const AddFirm = () => {
   const cancelHadnler = async (e) => {
     e.preventDefault()
     dispatch(modalBtnCondition(''))
+    setShowAdd(!showAdd)
     navigate('/my_enterprise?tab=firm')
   }
 
-  const nextHandler = (e) => {
+  const addHandler = (e) => {
     e.preventDefault()
 
     const businessData = {
@@ -216,7 +217,7 @@ const AddFirm = () => {
         {/* button */}
         <div className="flex justify-around gap-x-5 items-center">
           <button onClick={cancelHadnler} className="p-2 px-4 rounded-md bg-red-500 text-blue-50 font-semibold my-6 w-full">Cancel</button>
-          <button onClick={nextHandler} className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6 w-full">Next</button>
+          <button onClick={addHandler} className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6 w-full">Add</button>
         </div>
       </div>
     </div>

@@ -74,7 +74,7 @@ const MyEnterprise = () => {
         </div>
       </div>
       <div className="border bg-white rounded-md p-4">
-        {(showAdd === true || modalBtn === 'edit' )? <AddFirm /> : tabContent === 'firm' ? (
+        {(showAdd === true || modalBtn === 'edit' )? <AddFirm showAdd={showAdd} setShowAdd={setShowAdd} /> : tabContent === 'firm' ? (
           <EnterpriseList data={business} />
         ) : (
           tabContent === 'personal' ? <PersonalDetail /> : <RoleManagement />

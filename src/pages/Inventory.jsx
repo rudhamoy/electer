@@ -16,24 +16,24 @@ import Category from '../data/icons/inventory/category.png'
 const Inventory = () => {
   return (
     <Layout>
-      <div className="w-full overflow-hidden">
-      <PageHeader pageTitle="Inventory" icon={InventoryIcon} />
+      <div className=" overflow-hidden">
+        <PageHeader pageTitle="Inventory" icon={InventoryIcon} />
 
-      {/* inventory overview data box */}
-      <div className="my-10 flex items-center justify-between">
-        <InventoryDataBox icon={StockValue} title="Total Stock Value" numData="₹12,34,590" />
-        <InventoryDataBox icon={TotalNum} title="Total No of Products" numData="251" />
-        <InventoryDataBox icon={LowStock} title="Product with Low Stock" numData="12" />
-        <InventoryDataBox icon={NoStock} title="Product with NO Stock" numData="5" />
-        <InventoryDataBox icon={Category} title="Total Categories" numData="21" />
-        <InventoryDataBox icon={SubCategory} title="Total Sub-Categories" numData="12" />
-      </div>
+        {/* inventory overview data box */}
+        <div className="my-10 flex items-center justify-between">
+          <InventoryDataBox icon={StockValue} title="Total Stock Value" numData="₹12,34,590" />
+          <InventoryDataBox icon={TotalNum} title="Total No of Products" numData="251" />
+          <InventoryDataBox icon={LowStock} title="Product with Low Stock" numData="12" />
+          <InventoryDataBox icon={NoStock} title="Product with NO Stock" numData="5" />
+          <InventoryDataBox icon={Category} title="Total Categories" numData="21" />
+          <InventoryDataBox icon={SubCategory} title="Total Sub-Categories" numData="12" />
+        </div>
 
-      {/* Table */}
-      <div className="my-10 mt-20 bg-white rounded-md p-3">
-        <InventoryTable />
+        {/* Table */}
+        <div className="my-10 mt-20 bg-white rounded-md p-3">
+          <InventoryTable />
+        </div>
       </div>
-    </div>
     </Layout>
   )
 }

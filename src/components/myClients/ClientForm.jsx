@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Input } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import InputField from '../../utils/InputField'
 import ImageUploader from '../ImageUploader'
-import { createClient, editClient } from '../../features/client/clientSlice';
 
 const { TextArea } = Input;
 
-const ClientForm = ({ setShowAdd, setShowEdit, data }) => {
-    const dispatch = useDispatch()
+const ClientForm = ({ setUpdateData, setSubmitData, setBtnDisable, data }) => {
     const clientBtn = useSelector(state => state.activity.modalBtn)
 
     const [clientCode, setClientCode] = useState('')
@@ -23,10 +21,12 @@ const ClientForm = ({ setShowAdd, setShowEdit, data }) => {
     const [email, setEmail] = useState('')
     const [mobile, setMobile] = useState('')
 
-    const submitHandler = (e) => {
-        e.preventDefault()
+    const clientState = [clientCode, billingAddress, contactPerson, name, shippingAddress, contactPersonDesig, gstin, email, mobile ]
 
-        const clientData = {
+    // collecting data for saving/adding 
+   useEffect(() => {
+    if(clientBtn === 'add') {
+        setSubmitData({
             name,
             place_of_business: businessPlace,
             billing_address: billingAddress,
@@ -36,15 +36,14 @@ const ClientForm = ({ setShowAdd, setShowEdit, data }) => {
             contact_person: contactPerson,
             contact_person_designation: contactPersonDesig,
             mobile_no: mobile,
-        }
-        dispatch(createClient(clientData))
-        setShowAdd(false)
-    }
+        })
+    } 
+   }, [name, businessPlace, billingAddress, shippingAddress, gstin, email, contactPerson, contactPersonDesig, mobile])
 
-    const updateHandler = (e) => {
-        e.preventDefault()
-
-        const editData = {
+    // collecting data for edit/update
+   useEffect(() => {
+    if(clientBtn === 'edit') {
+        setUpdateData({
             id: data.id,
             name,
             place_of_business: businessPlace,
@@ -55,12 +54,11 @@ const ClientForm = ({ setShowAdd, setShowEdit, data }) => {
             contact_person: contactPerson,
             contact_person_designation: contactPersonDesig,
             mobile_no: mobile,
-        }
-        dispatch(editClient(editData))
-        setShowEdit(false)
+        })
     }
+   }, [name, businessPlace, billingAddress, shippingAddress, gstin, email, contactPerson, contactPersonDesig, mobile])
 
-    // show data or view details
+    // show data or view details when edit button is clicked
     useEffect(() => {
         if (clientBtn === 'edit') {
             setName(data.name)
@@ -75,17 +73,18 @@ const ClientForm = ({ setShowAdd, setShowEdit, data }) => {
         }
     }, [])
 
-    // Action Button - Save/edit
-    const btnClass = "p-2 px-3 rounded-sm w-full text-white bg-blue-500"
-    let btnContent = (
-        clientBtn === 'add' ? (
-            <button className={btnClass} onClick={submitHandler}>Add</button>
-        ) : (
-            clientBtn === 'edit' && (
-                <button className={btnClass} onClick={updateHandler}>Update</button>
-            )
-        )
-    )
+    // to disable/enable submit button
+    useEffect(() => {
+        if(clientBtn === 'add') {
+            clientState.forEach(item => {
+                if(item === '') {
+                    setBtnDisable(true)
+                } else {
+                    setBtnDisable(false)
+                }
+            })
+        }
+    }, [mobile, name, businessPlace, billingAddress, shippingAddress, gstin, email, contactPerson, contactPersonDesig])
 
     return (
         <div>
@@ -93,17 +92,17 @@ const ClientForm = ({ setShowAdd, setShowEdit, data }) => {
                 <div>
                     <ImageUploader />
                     <label htmlFor="logo">Add Company Logo</label>
-                    <InputField labelName="Client Code" value={clientCode} onChange={e => setClientCode(e.target.value)} />
-                    <InputField labelName="Business Name" value={name} onChange={e => setName(e.target.value)} />
-                    <InputField labelName="Email" value={email} onChange={e => setEmail(e.target.value)} />
-                    <InputField type="number" labelName="Mobile" value={mobile} onChange={e => setMobile(e.target.value)} />
-                    <InputField labelName="Place of Business" value={businessPlace} onChange={e => setBusinessPlace(e.target.value)} />
-                    <InputField labelName="Contact Person" value={contactPerson} onChange={e => setContactPerson(e.target.value)} />
+                    <InputField my="2" labelName="Client Code" value={clientCode} onChange={e => setClientCode(e.target.value)} />
+                    <InputField my="2" labelName="Business Name" value={name} onChange={e => setName(e.target.value)} />
+                    <InputField my="2" labelName="Email" value={email} onChange={e => setEmail(e.target.value)} />
+                    <InputField my="2" type="alpha" labelName="Mobile" value={mobile} onChange={e => setMobile(e.target.value)} />
+                    <InputField my="2" labelName="Place of Business" value={businessPlace} onChange={e => setBusinessPlace(e.target.value)} />
+                    <InputField my="2" labelName="Contact Person" value={contactPerson} onChange={e => setContactPerson(e.target.value)} />
                 </div>
                 <div>
-                    <InputField labelName="Contact Person Designation" value={contactPersonDesig} onChange={e => setContactPersonDesig(e.target.value)} />
-                    <InputField labelName="GSTIN" value={gstin} onChange={e => setGstin(e.target.value)} />
-                    <div className="my-6">
+                    <InputField my="2" labelName="Contact Person Designation" value={contactPersonDesig} onChange={e => setContactPersonDesig(e.target.value)} />
+                    <InputField my="2" labelName="GSTIN" value={gstin} onChange={e => setGstin(e.target.value)} />
+                    <div className="my-2">
                         <label htmlFor="billingAddress">Billing Address</label>
                         <TextArea
                             showCount
@@ -115,7 +114,7 @@ const ClientForm = ({ setShowAdd, setShowEdit, data }) => {
                         />
 
                     </div>
-                    <div className="my-6">
+                    <div className="my-2">
                         <label htmlFor="shippingAddress">Shipping Address</label>
                         <TextArea
                             showCount
@@ -126,8 +125,7 @@ const ClientForm = ({ setShowAdd, setShowEdit, data }) => {
                             onChange={e => setShippingAddress(e.target.value)}
                         />
                     </div>
-                    {btnContent}
-                    {/* <button className="p-2 px-3 rounded-sm w-full text-white bg-blue-500">Submit</button> */}
+                    
                 </div>
             </form>
         </div>

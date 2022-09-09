@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Space, Table, Modal } from 'antd';
+import { Space, Table, Modal, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
+import { UploadOutlined } from '@ant-design/icons';
 
 import { myClientColumn } from '../../data/table/Table';
 import ClientForm from './ClientForm';
 import ActionBtn from '../../utils/ActionBtn';
-import { fetchClients, deleteClient } from '../../features/client/clientSlice';
+import { fetchClients, deleteClient, createClient, editClient } from '../../features/client/clientSlice';
 import { modalBtnCondition } from '../../features/activity/activitySlice';
 import DeleteModal from '../../utils/DeleteModal';
 
@@ -16,6 +17,9 @@ const ClientTable = () => {
 
     const [deleteId, setDeleteId] = useState()
     const [editData, setEditData] = useState()
+    const [submitData, setSubmitData] = useState()
+    const [updateData, setUpdateData] = useState()
+    const [btnDisable, setBtnDisable] = useState(true)
 
     const { clients, status } = useSelector(state => state.clients);
     const auth = useSelector(state => state.auth.auth)
@@ -26,14 +30,17 @@ const ClientTable = () => {
         setShowAdd(false)
         setDeleteModal(false)
         setShowEdit(false)
+        setBtnDisable(true)
     };
 
     const handleCancel = () => {
         setShowAdd(false)
         setDeleteModal(false)
         setShowEdit(false)
+        setBtnDisable(true)
     };
 
+    // Table columns - title
     const newColumns = [
         ...myClientColumn,
         {
@@ -59,7 +66,7 @@ const ClientTable = () => {
         },
     ]
 
-
+    // Table data to show
     const newClientData = []
     clients?.map((item, index) => {
 
@@ -75,6 +82,7 @@ const ClientTable = () => {
         return newClientData.push(newList)
     })
 
+    // fetch clients data
     useEffect(() => {
         if (status === "succeeded") {
             dispatch(fetchClients())
@@ -86,23 +94,62 @@ const ClientTable = () => {
 
     }, [dispatch])
 
+    // Submit or add new Client to the data
+    const submitHandler = (e) => {
+        e.preventDefault()
+        dispatch(createClient(submitData))
+        setShowAdd(false)
+    }
+
+    // Edit/update client data
+    const updateHandler = (e) => {
+        e.preventDefault()
+        dispatch(editClient(updateData))
+        setShowEdit(false)
+    }
+
+
     return (
         <>
             {/* Adding client modal */}
             {showAdd === true && (
-                <Modal title="Add Client" width={650} visible={showAdd} onOk={handleOk} onCancel={handleCancel}>
-                    <ClientForm setShowAdd={setShowAdd} />
+                <Modal 
+                title="Add Client" 
+                width={650} visible={showAdd} onOk={handleOk} onCancel={handleCancel}
+                footer={[
+                    <Button 
+                    type="primary" 
+                    loading={status === "loading" && true} 
+                    onClick={submitHandler} 
+                    icon={<UploadOutlined />}
+                    disabled={btnDisable}
+                    >
+                      Submit
+                    </Button>
+                   
+                  ]}
+                >
+                    <ClientForm setSubmitData={setSubmitData} setBtnDisable={setBtnDisable} />
                 </Modal>
             )}
             {/* Edit client modal */}
             {showEdit === true && (
-                <Modal title="Add Client" width={650} visible={showEdit} onOk={handleOk} onCancel={handleCancel}>
-                    <ClientForm setShowEdit={setShowEdit} data={editData} />
+                <Modal 
+                title="Edit Client" 
+                width={650} 
+                visible={showEdit} onOk={handleOk} onCancel={handleCancel}
+                footer={[
+                    <Button key="submit" type="primary" loading={status === "loading" && true} onClick={updateHandler}>
+                      Update
+                    </Button>
+                  ]}
+                >
+                    <ClientForm data={editData} setUpdateData={setUpdateData} />
                 </Modal>
             )}
             {/* delete client modal */}
             {deleteModal === true && (
-                <Modal title="Delete Client" width={650} visible={deleteModal} onOk={handleOk} onCancel={handleCancel}>
+                <Modal title="Delete Client" footer={null} width={650} visible={deleteModal} onOk={handleOk} onCancel={handleCancel}>
                     <DeleteModal
                         onClick={() => {
                             dispatch(deleteClient(deleteId))
@@ -122,7 +169,7 @@ const ClientTable = () => {
                         className={showAdd === false}
                         onClick={() => {
                             setShowAdd(!showAdd)
-                              dispatch(modalBtnCondition('add'))
+                            dispatch(modalBtnCondition('add'))
                         }}
                         btnCondition={showAdd === true}
                     />

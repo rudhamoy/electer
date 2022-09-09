@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Modal } from 'antd'
+import { useNavigate, Link } from 'react-router-dom'
 
 import GST from '../../data/icons/GST.png'
 import Reports from '../../data/icons/Reports.png'
@@ -17,6 +18,7 @@ const AccountBox = ({icon, title, onClick}) => {
 
 const Accounting = () => {
     const [showAddSale, setShowAddSale] = useState(false)
+    const navigate = useNavigate()
 
     const showAdd = ()=> {
         setShowAddSale(true)
@@ -36,7 +38,11 @@ const Accounting = () => {
             </Modal>
         )}
         <div className="flex gap-4 flex-wrap">
-        <AccountBox icon={GST} title="GST RETURNS" />
+        <AccountBox 
+          icon={GST} 
+          title="GST RETURNS"
+          onClick={() => navigate('/accounts/gst?gstTab=one')}
+          />
         <AccountBox icon={Reports} title="REPORTS" />
         <AccountBox 
         icon={Reports} 

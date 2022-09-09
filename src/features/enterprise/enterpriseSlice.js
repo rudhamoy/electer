@@ -16,17 +16,26 @@ const initialState = {
 
 export const createBusiness = createAsyncThunk('business/createBusiness', async (businessData, thunkAPI) => {
     const {businessType, industryTypes, companyName, country, states, locality, pin, landmark } = businessData
+
     const token = thunkAPI.getState().auth.auth.authToken
-    const res1 = await axios.post(`${baseUrl}/business-type/`, { name: businessType }, { headers: { 'Authorization': `Token ${token}` } })
+
+    try {
+        const res1 = await axios.post(`${baseUrl}/business-type/`, { name: businessType }, { headers: { 'Authorization': `Token ${token}` } })
     console.log('Business Type = ', res1)
+
     const res2 = await axios.post(`${baseUrl}/industry-type/`, { name: industryTypes }, { headers: { 'Authorization': `Token ${token}` } })
     console.log('Industry Type = ', res2)
+
     const res3 = await axios.post(`${baseUrl}/business/`, { company_name: companyName, business_type: res1.data.id, IndustryType: res2.data.id }, { headers: { 'Authorization': `Token ${token}` } })
     console.log('Business = ', res3)
+    
     const res4 = await axios.post(`${baseUrl}/business-address/`, { country, state: states, locality, pin, remarks: landmark, business: res3.data.id }, { headers: { 'Authorization': `Token ${token}` } })
     console.log('Business Address = ', res4)
 
     return res3.data
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 export const fetchBizAddress = createAsyncThunk('business/fetchBizAddress', async (_, thunkAPI) => {
