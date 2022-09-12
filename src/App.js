@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './App.css'
 import 'antd/dist/antd.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { Accounts, Dashboard, MyClients, MyEnterprise, Payroll, Bills, Inventory, Login, Register } from './pages'
 import { Navbar, Sidebar } from './components'
@@ -11,8 +11,25 @@ import Layout from './components/Layout'
 import ForgotPassword from './pages/ForgotPassword';
 import Gst from './pages/Gst';
 
+import { fetchSystemUser, fetchSystemUserById } from './features/auth/AuthSlice';
+
 const App = () => {
-  const { activeMenu } = useSelector(state => state.activity)
+  const { auth, systemUserById, systemUser } = useSelector(state => state.auth)
+
+  const { id } = auth
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(fetchSystemUser())
+    if(systemUser.length > 0 || id) {
+      systemUser.forEach(item => {
+        if(item.custom_user.id === id) {
+          dispatch(fetchSystemUserById(item.id))
+        }
+      })
+    }
+  }, [dispatch, id])
 
 
   return (

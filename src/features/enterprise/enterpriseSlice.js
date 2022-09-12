@@ -9,6 +9,7 @@ const initialState = {
     business: [],
     bizAddress: [],
     businessById: {},
+    businessAddressById: {},
     businessType: [],
     industryType: []
 
@@ -41,6 +42,19 @@ export const createBusiness = createAsyncThunk('business/createBusiness', async 
 export const fetchBizAddress = createAsyncThunk('business/fetchBizAddress', async (_, thunkAPI) => {
     const token = thunkAPI.getState().auth.auth.authToken
     const res = await axios.get(`${baseUrl}/business-address/`, {headers: {'Authorization' : `Token ${token}`}})
+    return res.data
+})
+
+export const fetchBusinessAddressById = createAsyncThunk('business/fetchBusinessAddressById', async (id, thunkAPI) => {
+    const token = thunkAPI.getState().auth.auth.authToken
+    const res = await axios.get(`${baseUrl}/business-address/${id}/`, {headers: {'Authorization' : `Token ${token}`}})
+    return res.data
+})
+
+export const updateBizAddress = createAsyncThunk('business/updateBizAddress', async (updateData, thunkAPI) => {
+    const { id, data } = updateData
+    const token = thunkAPI.getState().auth.auth.authToken
+    const res = await axios.put(`${baseUrl}/business-address/${id}`, data, {headers: {'Authorization' : `Token ${token}`}})
     return res.data
 })
 
@@ -107,6 +121,17 @@ const enterpriseSlice = createSlice({
             state.status = 'failed'
             state.error = action.error.message
         })
+        .addCase(updateBizAddress.pending, (state) => {
+            state.status = 'loading'
+        })
+        .addCase(updateBizAddress.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.businessAddressById = action.payload
+        })
+        .addCase(updateBizAddress.rejected, (state, action) => {
+            state.status = 'failed'
+            state.error = action.error.message
+        })
         .addCase(fetchBusinessById.pending, (state) => {
             state.status = 'loading'
         })
@@ -115,6 +140,17 @@ const enterpriseSlice = createSlice({
             state.businessById = action.payload
         })
         .addCase(fetchBusinessById.rejected, (state, action) => {
+            state.status = 'failed'
+            state.error = action.error.message
+        })
+        .addCase(fetchBusinessAddressById.pending, (state) => {
+            state.status = 'loading'
+        })
+        .addCase(fetchBusinessAddressById.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.businessAddressById = action.payload
+        })
+        .addCase(fetchBusinessAddressById.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
         })

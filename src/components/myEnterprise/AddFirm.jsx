@@ -8,7 +8,13 @@ import InputField from '../../utils/InputField'
 import SelectField from '../../utils/SelectField'
 import ImageUploader from '../ImageUploader'
 import { modalBtnCondition } from '../../features/activity/activitySlice';
-import { fetchBusinessById, createBusiness, fetchBizAddress } from '../../features/enterprise/enterpriseSlice';
+import {
+  fetchBusinessById,
+  createBusiness,
+  fetchBizAddress,
+  fetchBusinessAddressById,
+  updateBizAddress
+} from '../../features/enterprise/enterpriseSlice';
 
 const { Option } = Select
 
@@ -17,12 +23,12 @@ function useQuery() {
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-const AddFirm = ({showAdd, setShowAdd}) => {
+const AddFirm = ({ showAdd, setShowAdd }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const token = useSelector(state => state.auth.auth.authToken);
-  const { businessById, bizAddress } = useSelector(state => state.enterprise)
+  const { businessById, bizAddress, businessAddressById } = useSelector(state => state.enterprise)
   const { modalBtn } = useSelector(state => state.activity)
 
   let query = useQuery()
@@ -86,28 +92,58 @@ const AddFirm = ({showAdd, setShowAdd}) => {
 
   useEffect(() => {
     if (id) {
-      dispatch(fetchBusinessById(id))
+      dispatch(fetchBusinessById(parseInt(id)))
       dispatch(fetchBizAddress())
     }
-  }, [id])
+  }, [id, dispatch])
 
   useEffect(() => {
     if (id) {
-      setCompanyName(businessById.company_name)
-      setBusinessType(businessById.business_type.name)
-      setIndustryType(businessById.IndustryType.name)
       bizAddress.map(item => {
-        if(item.business === parseInt(id)) {
-          setCountry(item.country)
-          setStates(item.state)
-          setLocality(item.locality)
-          setPin(item.pin)
-          setLandmark(item.remarks)
+        if (item.business.id === parseInt(id)) {
+          dispatch(fetchBusinessAddressById(item.id))
         }
       })
     }
+  }, [id, dispatch, bizAddress])
+
+  useEffect(() => {
+    if (id) {
+      setCountry(businessAddressById.country)
+      setStates(businessAddressById.state)
+      setLocality(businessAddressById.locality)
+      setPin(businessAddressById.pin)
+      setLandmark(businessAddressById.remarks)
+      setCompanyName(businessAddressById.business.company_name)
+      setBusinessType(businessAddressById.business.business_type.name)
+      setIndustryType(businessAddressById.business.IndustryType.name)
+    }
   }, [id])
 
+  const updateHandler = (e) => {
+    e.preventDefault()
+
+    const updateData = {
+      id: businessAddressById?.id,
+      data: {
+        businessType,
+        industryTypes,
+        companyName,
+        country,
+        states,
+        locality,
+        pin,
+        landmark
+      }
+    }
+
+    dispatch(updateBizAddress(updateData))
+    dispatch(modalBtnCondition(''))
+    navigate('/my_enterprise?tab=firm')
+
+  }
+
+  console.log(id)
 
   return (
     <div className="grid grid-cols-2 gap-x-10">
@@ -168,7 +204,7 @@ const AddFirm = ({showAdd, setShowAdd}) => {
             <label>Business Type</label>
             <SelectField
               placeholder="Select business type"
-              defaultValue={modalBtn === 'edit' ? businessById.business_type.name : null}
+              defaultValue={modalBtn === 'edit' ? businessAddressById.business?.business_type?.name : null}
               value={businessType}
               onChange={value => setBusinessType(value)}
             >
@@ -184,7 +220,7 @@ const AddFirm = ({showAdd, setShowAdd}) => {
             <label>Industry Type</label>
             <SelectField
               placeholder="Select industry type"
-              defaultValue={modalBtn === 'edit' ? businessById.IndustryType.name : null}
+              defaultValue={modalBtn === 'edit' ? businessAddressById.business.IndustryType.name : null}
               value={industryTypes}
               onChange={value => setIndustryType(value)}>
               <Option value="agriculture">Agriculture</Option>

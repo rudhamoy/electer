@@ -39,7 +39,7 @@ export const editProduct = createAsyncThunk('client/editProduct', async (editDat
 // get product list
 export const fetchProducts = createAsyncThunk('inventory/fetchProducts', async (_, thunkAPI) => {
     const token = thunkAPI.getState().auth.auth.authToken
-    const res = await axios.get(`${baseUrl}/product/`, {headers: {'Authorization' : `Token ${token}`}})
+    const res = await axios.get(`${baseUrl}product/`, {headers: {'Authorization' : `Token ${token}`}})
     return res.data
 })
 

@@ -14,7 +14,7 @@ const initialState = {
 export const createSales = createAsyncThunk('accounts/createSales', async (salesData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.auth.authToken
-        const res = await axios.post(`${baseUrl}/accounts/sales/`, salesData, { headers: { 'Authorization': `Token ${token}` } })
+        const res = await axios.post(`${baseUrl}/accounts/sales-order/`, salesData, { headers: { 'Authorization': `Token ${token}` } })
         return res.data
     } catch (error) {
         console.log(error)

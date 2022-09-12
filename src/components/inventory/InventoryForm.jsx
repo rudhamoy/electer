@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import InputField from '../../utils/InputField'
 import SelectField from '../../utils/SelectField'
 import { createProduct, editProduct } from '../../features/inventory/inventorySlice';
+import { fetchSystemUser } from '../../features/auth/AuthSlice';
 
 
 const { Option } = Select
@@ -22,54 +23,55 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
     const [qty, setQty] = useState()
     const [uom, setUom] = useState('')
     const [unitPrice, setUnitPrice] = useState()
-    const [sellingPrice, setSellingPrice] = useState()
+    // const [sellingPrice, setSellingPrice] = useState()
     const [size, setSize] = useState('')
     const [thickness, setThickness] = useState('')
     const [material, setMaterial] = useState('')
     const [color, setColor] = useState('')
     const [model, setModel] = useState('')
 
+    const [systemId, setSystemId] = useState()
+
     const inventoryBtn = useSelector(state => state.activity.modalBtn)
 
     // Api and actions
     const baseUrl = 'http://37.44.244.212/api/'
-    const token = useSelector(state => state.auth.auth.authToken)
+    const {authToken, id} = useSelector(state => state.auth.auth)
+    const {systemUser} = useSelector(state => state.auth)
+
 
     const submitHandler = async (e) => {
         e.preventDefault()
-        const res1 = await axios.post(`${baseUrl}/product-category/`, { name: category }, { headers: { 'Authorization': `Token ${token}` } }).then((res) => {
-            let productData = {
-                item_name: itemName,
-                sku,
-                quantity: parseInt(qty),
-                UOM: uom,
-                price: unitPrice,
-                selling_price: sellingPrice,
-                size,
-                thickness,
-                material,
-                color,
-                model,
-                category: {
-                    name: res.data.name
-                },
-                sub_category: {
-                    name: subCategory,
-                    parent_category: res.data.id
-                },
-                perticulars: {
-                    name: particular
-                }
-            }
-            dispatch(createProduct(productData))
-            setShowAdd(false)
-        })
+        const res1 = await axios.post(`${baseUrl}/product-category/`, { name: category }, { headers: { 'Authorization': `Token ${authToken}` } });
+        console.log(res1)
+        const res2 = await axios.post(`${baseUrl}/sub-category/`, { name: subCategory, parent_category: res1.data.id }, { headers: { 'Authorization': `Token ${authToken}` } });
+        console.log(res2)
+        let productData = {
+            item_name: itemName,
+            sku,
+            quantity: parseInt(qty),
+            UOM: uom,
+            price: unitPrice,
+            size,
+            thickness,
+            material,
+            color,
+            model,
+            category: res1.data.id,
+            sub_category: res2.data.id,
+            perticulars: {
+                name: particular
+            },
+            system_user: systemId
+        }
+        dispatch(createProduct(productData))
+        setShowAdd(false)
     }
     const updateHandler =  async(e) => {
         e.preventDefault()
         let res1
         if(category !== data.category.name) {
-             res1 = await axios.put(`${baseUrl}product-category/${data.category.id}/`, { name: category }, { headers: { 'Authorization': `Token ${token}` } })
+             res1 = await axios.put(`${baseUrl}product-category/${data.category.id}/`, { name: category }, { headers: { 'Authorization': `Token ${authToken}` } })
             console.log(res1)
         }
         
@@ -81,7 +83,7 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             quantity: parseInt(qty),
             UOM: uom,
             price: unitPrice,
-            selling_price: sellingPrice,
+            // selling_price: sellingPrice,
             size,
             thickness,
             material,
@@ -96,7 +98,8 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             },
             perticulars: {
                 name: particular
-            }
+            },
+            system_user: systemId
         }
         dispatch(editProduct(editData))
         setShowEdit(false)
@@ -124,7 +127,6 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             setMaterial(data.material)
             setModel(data.model)
             setUnitPrice(data.price)
-            setSellingPrice(data.selling_price)
             setQty(data.quantity)
             setSize(data.size)
             setThickness(data.thickness)
@@ -133,6 +135,15 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
             setSubCategory(data.sub_category.name)
         }
     }, [])
+
+    useEffect(() => {
+        dispatch(fetchSystemUser())
+        systemUser.forEach(item => {
+            if(item.custom_user.id === id) {
+                setSystemId(item.id)
+            }
+        })
+    }, [dispatch])
 
 
     return (
@@ -168,7 +179,7 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
                     </SelectField>
                 </div>
                 <InputField my="3" labelName="Unit Price" value={unitPrice} onChange={e => setUnitPrice(e.target.value)} />
-                <InputField my="3" labelName="Selling Price" value={sellingPrice} onChange={e => setSellingPrice(e.target.value)} />
+                {/* <InputField my="3" labelName="Selling Price" value={sellingPrice} onChange={e => setSellingPrice(e.target.value)} /> */}
             </div>
             {/* Specification Details */}
             <div>

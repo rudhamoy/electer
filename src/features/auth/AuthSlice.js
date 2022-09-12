@@ -6,9 +6,10 @@ const baseUrl = 'http://37.44.244.212/api/'
 const initialState = {
     auth: {
         authToken: "",
-        id: ""
+        id: "",
     },
-    systemUser: {}
+    systemUser: [],
+    systemUserId: {}
 }
 
 const loggedUser = JSON.parse( window.localStorage.getItem('user'))
@@ -23,6 +24,16 @@ export const fetchSystemUser = createAsyncThunk('auth/fetchSystemUser', async(_,
     try {
         const token = thunkAPI.getState().auth.auth.authToken
         const res = await axios.get(`${baseUrl}/system-user/`, { headers: { 'Authorization': `Token ${token}` } })
+        return res.data
+    } catch (error) {
+        
+    }
+})
+
+export const fetchSystemUserById = createAsyncThunk('auth/fetchSystemUserById', async(id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.auth.authToken
+        const res = await axios.get(`${baseUrl}/system-user/${id}/`, { headers: { 'Authorization': `Token ${token}` } })
         return res.data
     } catch (error) {
         
@@ -48,6 +59,17 @@ const authSlice = createSlice({
             state.systemUser = action.payload
         })
         .addCase(fetchSystemUser.rejected, (state, action) => {
+            state.status = 'failed'
+            state.error = action.error.message
+        })
+        .addCase(fetchSystemUserById.pending, (state) => {
+            state.status = 'loading'
+        })
+        .addCase(fetchSystemUserById.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.systemUserId = action.payload
+        })
+        .addCase(fetchSystemUserById.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
         })
