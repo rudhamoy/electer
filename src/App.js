@@ -14,7 +14,7 @@ import Gst from './pages/Gst';
 import { fetchSystemUser, fetchSystemUserById } from './features/auth/AuthSlice';
 
 const App = () => {
-  const { auth, systemUserById, systemUser } = useSelector(state => state.auth)
+  const { auth, systemUser } = useSelector(state => state.auth)
 
   const { id } = auth
 
@@ -22,6 +22,9 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchSystemUser())
+  }, [dispatch])
+
+  useEffect(() => {
     if(systemUser.length > 0 || id) {
       systemUser.forEach(item => {
         if(item.custom_user.id === id) {
@@ -29,7 +32,7 @@ const App = () => {
         }
       })
     }
-  }, [dispatch, id])
+  }, [dispatch, id, systemUser])
 
 
   return (

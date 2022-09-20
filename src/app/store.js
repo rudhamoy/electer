@@ -6,6 +6,7 @@ import inventoryReducer from '../features/inventory/inventorySlice'
 import clientReducer from '../features/client/clientSlice'
 import payrollReducer from '../features/payroll/payrollSlice'
 import accountReducer from '../features/account/accountSlice'
+import billsReducer from '../features/bills/billsSlice'
 
 export const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
         inventory: inventoryReducer,
         clients: clientReducer,
         payroll: payrollReducer,
-        accounts: accountReducer
+        accounts: accountReducer,
+        bills: billsReducer,
     }
 })

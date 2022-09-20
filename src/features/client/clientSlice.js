@@ -7,6 +7,7 @@ const initialState = {
     status: 'idle',
     error: null,
     clients: [],
+    clientById: {},
 
 }
 
@@ -26,6 +27,17 @@ export const fetchClients = createAsyncThunk('client/fetchClients', async (_, th
     try {
         const token = thunkAPI.getState().auth.auth.authToken
         const res = await axios.get(`${baseUrl}/client/`, { headers: { 'Authorization': `Token ${token}` } })
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// get client by id
+export const getClientById = createAsyncThunk('client/getClientById', async (id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.auth.authToken
+        const res = await axios.get(`${baseUrl}/client/${id}/`, { headers: { 'Authorization': `Token ${token}` } })
         return res.data
     } catch (error) {
         console.log(error)
@@ -80,6 +92,17 @@ const clientSlice = createSlice({
                 state.clients = action.payload
             })
             .addCase(fetchClients.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(getClientById.pending, (state) => {
+                state.status = 'loading'
+            })
+            .addCase(getClientById.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.clientById = action.payload
+            })
+            .addCase(getClientById.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

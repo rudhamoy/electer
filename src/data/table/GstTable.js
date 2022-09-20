@@ -126,3 +126,56 @@ export const gstTwoColumn = [
       render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
     },
   ];
+
+  // invoice table
+export const invoiceColumn = [
+  {
+    title: 'Sl No',
+    dataIndex: 'index',
+    key: 'index',
+    className: 'text-[10px]',
+    render: (text) => <p className="text-xs -mb-[1px]">{text + 1}</p>,
+  },
+  {
+    title: 'Item Description',
+    dataIndex: 'item_name',
+    key: 'item_name',
+    className: 'text-[10px]',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+  {
+    title: 'Qty',
+    dataIndex: 'quantity',
+    key: 'quantity',
+    className: 'text-[10px]',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+  {
+    title: 'UOM',
+    dataIndex: 'UOM',
+    key: 'UOM',
+    className: 'text-[10px]',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+  {
+    title: 'Rate',
+    dataIndex: 'price',
+    key: 'price',
+    className: 'text-[10px]',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+  {
+    title: 'Tax %',
+    dataIndex: 'taxes',
+    key: 'taxes',
+    className: 'text-[10px]',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+  {
+    title: 'Amount',
+    dataIndex: 'total_amount',
+    key: 'total_amount',
+    className: 'text-[10px]',
+    render: (text) => <p className="text-xs -mb-[1px]">{text}</p>,
+  },
+];

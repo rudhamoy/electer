@@ -18,7 +18,8 @@ const ActionBtn = ({ className, onClick, createName, btnCondition }) => {
 
     return (
         <button
-            className={`${(className) ? 'bg-blue-500' : 'bg-red-500'} rounded-md p-2 px-3 text-xs text-white flex gap-x-1 items-center`}
+            // className={`p-2 px-3 text-xs text-blue-500 flex gap-x-1 items-center font-semibold`}
+            className={`${(className) ? 'text-blue-500' : 'text-red-500'} p-2 px-3 text-xs flex gap-x-1 items-center font-semibold`}
             onClick={onClick}
         >
             {btnContent}

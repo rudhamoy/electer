@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
+import { FileSyncOutlined, IdcardOutlined } from '@ant-design/icons';
 import axios from 'axios'
-import { Select } from 'antd'
+import { Select, Tabs } from 'antd'
 import { useSelector, useDispatch } from 'react-redux';
 
 import InputField from '../../utils/InputField'
@@ -10,7 +11,7 @@ import { fetchSystemUser } from '../../features/auth/AuthSlice';
 
 
 const { Option } = Select
-
+const { TabPane } = Tabs;
 
 const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
     const dispatch = useDispatch()
@@ -36,8 +37,8 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
 
     // Api and actions
     const baseUrl = 'http://37.44.244.212/api/'
-    const {authToken, id} = useSelector(state => state.auth.auth)
-    const {systemUser} = useSelector(state => state.auth)
+    const { authToken, id } = useSelector(state => state.auth.auth)
+    const { systemUser } = useSelector(state => state.auth)
 
 
     const submitHandler = async (e) => {
@@ -67,15 +68,15 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
         dispatch(createProduct(productData))
         setShowAdd(false)
     }
-    const updateHandler =  async(e) => {
+    const updateHandler = async (e) => {
         e.preventDefault()
         let res1
-        if(category !== data.category.name) {
-             res1 = await axios.put(`${baseUrl}product-category/${data.category.id}/`, { name: category }, { headers: { 'Authorization': `Token ${authToken}` } })
+        if (category !== data.category.name) {
+            res1 = await axios.put(`${baseUrl}product-category/${data.category.id}/`, { name: category }, { headers: { 'Authorization': `Token ${authToken}` } })
             console.log(res1)
         }
-        
-        
+
+
         let editData = {
             id: data.id,
             item_name: itemName,
@@ -106,10 +107,10 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
     }
 
     // Action Button - Save/edit
-    const btnClass = "p-2 px-3 rounded-sm w-full text-white bg-blue-500"
+    const btnClass = "p-2 px-6 rounded-md text-white bg-blue-500 absolute bottom-4"
     let btnContent = (
         inventoryBtn === 'add' ? (
-            <button className={btnClass} onClick={submitHandler}>Add</button>
+            <button className={btnClass} onClick={submitHandler}>Submit</button>
         ) : (
             inventoryBtn === 'edit' && (
                 <button className={btnClass} onClick={updateHandler}>Update</button>
@@ -139,7 +140,7 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
     useEffect(() => {
         dispatch(fetchSystemUser())
         systemUser.forEach(item => {
-            if(item.custom_user.id === id) {
+            if (item.custom_user.id === id) {
                 setSystemId(item.id)
             }
         })
@@ -147,50 +148,72 @@ const InventoryForm = ({ data, setShowAdd, setShowEdit }) => {
 
 
     return (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="">
+            <Tabs defaultActiveKey="1">
             {/* Basic Details */}
-            <div>
-                <h1 className="mb-3 font-semibold">Basic Details</h1>
-                <InputField my="3" type="number" labelName="SKU No" value={sku} onChange={e => setSku(e.target.value)} />
-                <InputField my="3" labelName="Item Name" value={itemName} onChange={e => setItemName(e.target.value)} />
-                <InputField my="3" labelName="Particular" value={particular} onChange={e => setParticular(e.target.value)} />
-                <div className='flex flex-col my-3'>
-                    <label className="" htmlFor="category">Category</label>
-                    <SelectField placeholder="Category" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.catName : null} value={category} onChange={value => setCategory(value)} >
-                        <Option value="chair">Chair</Option>
-                        <Option value="table">Table</Option>
-                    </SelectField>
+            <TabPane
+                tab={
+                    <span>
+                        <IdcardOutlined />
+                        Basic Details
+                    </span>
+                }
+                key="1"
+            >
+                <div className="grid grid-cols-2 gap-x-4 borderImp rounded-md p-2">
+                    {/* <h1 className="mb-3 font-semibold">Basic Details</h1> */}
+                    <InputField my="3" type="number" labelName="SKU No" value={sku} onChange={e => setSku(e.target.value)} />
+                    <InputField my="3" labelName="Item Name" value={itemName} onChange={e => setItemName(e.target.value)} />
+                    <InputField my="3" labelName="Particular" value={particular} onChange={e => setParticular(e.target.value)} />
+                    <div className='flex flex-col my-3'>
+                        <label className="" htmlFor="category">Category</label>
+                        <SelectField placeholder="Category" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.catName : null} value={category} onChange={value => setCategory(value)} >
+                            <Option value="chair">Chair</Option>
+                            <Option value="table">Table</Option>
+                        </SelectField>
+                    </div>
+                    <div className='flex flex-col my-3'>
+                        <label className="" htmlFor="sub-Category">Sub-Category</label>
+                        <SelectField placeholder="Sub-Category" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.subCatName : null} value={subCategory} onChange={value => setSubCategory(value)}>
+                            <Option value="wood">Wood</Option>
+                            <Option value="plastic">Plastic</Option>
+                            <Option value="carbon">Carbon</Option>
+                        </SelectField>
+                    </div>
+                    <InputField my="3" type="number" labelName="Quantity" value={qty} onChange={e => setQty(e.target.value)} />
+                    <div className='flex flex-col my-3'>
+                        <label className="" htmlFor="uom">UOM</label>
+                        <SelectField placeholder="UOM" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.UOM : null} value={uom} onChange={value => setUom(value)}>
+                            <Option value="kilogram">KG</Option>
+                            <Option value="gram">gram</Option>
+                            <Option value="litre ">Litre </Option>
+                        </SelectField>
+                    </div>
+                    <InputField my="3" labelName="Unit Price" value={unitPrice} onChange={e => setUnitPrice(e.target.value)} />
+                    {/* <InputField my="3" labelName="Selling Price" value={sellingPrice} onChange={e => setSellingPrice(e.target.value)} /> */}
                 </div>
-                <div className='flex flex-col my-3'>
-                    <label className="" htmlFor="sub-Category">Sub-Category</label>
-                    <SelectField placeholder="Sub-Category" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.subCatName : null} value={subCategory} onChange={value => setSubCategory(value)}>
-                        <Option value="wood">Wood</Option>
-                        <Option value="plastic">Plastic</Option>
-                        <Option value="carbon">Carbon</Option>
-                    </SelectField>
-                </div>
-                <InputField my="3" type="number" labelName="Quantity" value={qty} onChange={e => setQty(e.target.value)} />
-                <div className='flex flex-col my-3'>
-                    <label className="" htmlFor="uom">UOM</label>
-                    <SelectField placeholder="UOM" defaultValue={(inventoryBtn === '' || inventoryBtn === 'edit') ? data?.UOM : null} value={uom} onChange={value => setUom(value)}>
-                        <Option value="kilogram">KG</Option>
-                        <Option value="gram">gram</Option>
-                        <Option value="litre ">Litre </Option>
-                    </SelectField>
-                </div>
-                <InputField my="3" labelName="Unit Price" value={unitPrice} onChange={e => setUnitPrice(e.target.value)} />
-                {/* <InputField my="3" labelName="Selling Price" value={sellingPrice} onChange={e => setSellingPrice(e.target.value)} /> */}
-            </div>
+            </TabPane>
             {/* Specification Details */}
-            <div>
-                <h1 className="mb-3 font-semibold">Specification Details</h1>
-                <InputField my="3" labelName="Size" value={size} onChange={e => setSize(e.target.value)} />
-                <InputField my="3" labelName="Thickness" value={thickness} onChange={e => setThickness(e.target.value)} />
-                <InputField my="3" labelName="Material" value={material} onChange={e => setMaterial(e.target.value)} />
-                <InputField my="3" labelName="Color" value={color} onChange={e => setColor(e.target.value)} />
-                <InputField my="3" labelName="Model" value={model} onChange={e => setModel(e.target.value)} />
-                {btnContent}
-            </div>
+            <TabPane
+                tab={
+                    <span>
+                        <FileSyncOutlined />
+                        Specification Details
+                    </span>
+                }
+                key="2"
+            >
+                <div className="borderImp rounded-md p-2">
+                    {/* <h1 className="mb-3 font-semibold">Specification Details</h1> */}
+                    <InputField my="3" labelName="Size" value={size} onChange={e => setSize(e.target.value)} />
+                    <InputField my="3" labelName="Thickness" value={thickness} onChange={e => setThickness(e.target.value)} />
+                    <InputField my="3" labelName="Material" value={material} onChange={e => setMaterial(e.target.value)} />
+                    <InputField my="3" labelName="Color" value={color} onChange={e => setColor(e.target.value)} />
+                    <InputField my="3" labelName="Model" value={model} onChange={e => setModel(e.target.value)} />
+                </div>
+            </TabPane>
+            </Tabs>
+            {btnContent}
         </div>
     )
 }

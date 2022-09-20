@@ -7,10 +7,11 @@ const initialState = {
     status: 'idle',
     error: null,
     sales: [],
-
+    saleById: {},
+    selectedSalesList: []
 }
 
-// create client
+// create sales
 export const createSales = createAsyncThunk('accounts/createSales', async (salesData, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.auth.authToken
@@ -21,11 +22,22 @@ export const createSales = createAsyncThunk('accounts/createSales', async (sales
     }
 })
 
-// fetch client
+// fetch sales
 export const fetchSales = createAsyncThunk('accounts/fetchClients', async (_, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.auth.authToken
-        const res = await axios.get(`${baseUrl}/accounts/sales/`, { headers: { 'Authorization': `Token ${token}` } })
+        const res = await axios.get(`${baseUrl}/accounts/sales-order/`, { headers: { 'Authorization': `Token ${token}` } })
+        return res.data
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// fetch sales by id
+export const fetchSaleById = createAsyncThunk('accounts/fetchSaleById', async (id, thunkAPI) => {
+    try {
+        const token = thunkAPI.getState().auth.auth.authToken
+        const res = await axios.get(`${baseUrl}/accounts/sales-order/${id}`, { headers: { 'Authorization': `Token ${token}` } })
         return res.data
     } catch (error) {
         console.log(error)
@@ -36,7 +48,9 @@ export const fetchSales = createAsyncThunk('accounts/fetchClients', async (_, th
 const accountSlice = createSlice({
     name: "client",
     initialState,
-    reducers: {},
+    reducers: {
+    
+    },
     extraReducers(builder) {
         builder
             .addCase(createSales.pending, (state) => {
@@ -61,8 +75,20 @@ const accountSlice = createSlice({
                 state.status = 'failed'
                 state.error = action.error.message
             })
+            .addCase(fetchSaleById.pending, (state) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchSaleById.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.saleById = action.payload
+            })
+            .addCase(fetchSaleById.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
             
     }
 })
+
 
 export default accountSlice.reducer

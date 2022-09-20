@@ -11,7 +11,7 @@ import { editEmployee, createEmployee } from '../../features/payroll/payrollSlic
 
 const { TabPane } = Tabs;
 
-const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
+const EmployeeForm = ({ setShowEdit, setShowAdd, data }) => {
     const dispatch = useDispatch()
 
     const [firstName, setFirstName] = useState('')
@@ -37,11 +37,12 @@ const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
     const [accountNo, setAccountNo] = useState()
     const [ifsc, setIfsc] = useState('')
 
-    const buttonCond = useSelector(state => state.activity.modalBtn)
-
+    
     // action handler - post to api
     const baseUrl = 'http://37.44.244.212/api'
+    const buttonCond = useSelector(state => state.activity.modalBtn)
     const token = useSelector(state => state.auth.auth.authToken)
+    const { systemUserId } = useSelector(state => state.auth)
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -51,7 +52,8 @@ const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
                 bank_name: bankName,
                 account_holder_name: acHolderName,
                 account_no: parseInt(accountNo),
-                ifsc_code: ifsc
+                ifsc_code: ifsc,
+                system_user: systemUserId.id
             },
             salary_detail: {
                 basic_salary: parseInt(basicSalary),
@@ -60,7 +62,8 @@ const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
                 food_allowance: parseInt(foodAllow),
                 petrol_allowance: parseInt(petrolAllow),
                 provident_fund: parseInt(pf),
-                employee_state_insurance: parseInt(esi)
+                employee_state_insurance: parseInt(esi),
+                system_user: systemUserId.id
             },
             first_name: firstName,
             sur_name: lastName,
@@ -71,7 +74,8 @@ const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
             // date_of_joining: joiningDate,
             employee_code: employeeCode,
             aadhar_no: aadhaar,
-            pan_details: pan
+            pan_details: pan,
+            system_user: systemUserId.id
         }
         dispatch(createEmployee(employeeData))
         setShowAdd(false)
@@ -113,7 +117,7 @@ const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
     }
 
     // Action Button - Save/edit
-    const btnClass = "p-2 px-3 rounded-sm w-full text-white bg-blue-500"
+    const btnClass = "p-2 px-7 rounded-md text-white bg-blue-500 absolute bottom-10"
     let btnContent = (
         buttonCond === 'add' ? (
             <button className={btnClass} onClick={submitHandler}>Submit</button>
@@ -124,8 +128,8 @@ const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
         )
     )
 
-     // show data or view details
-     useEffect(() => {
+    // show data or view details
+    useEffect(() => {
         if (buttonCond === '' || buttonCond === 'edit') {
             setFirstName(data.first_name)
             setLastName(data.sur_name)
@@ -151,125 +155,127 @@ const EmployeeForm = ({setShowEdit, setShowAdd, data}) => {
     }, [])
 
     return (
-        <Tabs defaultActiveKey="1">
-            <TabPane
-                tab={
-                    <span>
-                        <IdcardOutlined />
-                        Basic Information
-                    </span>
-                }
-                key="1"
-            >
-                {/* Basic Info */}
+        <div className="">
+            <Tabs defaultActiveKey="1">
+                <TabPane
+                    tab={
+                        <span>
+                            <IdcardOutlined />
+                            Basic Information
+                        </span>
+                    }
+                    key="1"
+                >
+                    {/* Basic Info */}
 
-                <div className="grid grid-cols-2 gap-x-2">
-                    <InputField my="2" labelName="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
-                    <InputField my="2" labelName="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
-                    <InputField my="2" labelName="Department" value={department} onChange={e => setDepartment(e.target.value)} />
-                    <InputField my="2" labelName="Post" value={post} onChange={e => setPost(e.target.value)} />
-                    <InputField my="2" labelName="Mobile" type="number" value={mobile} onChange={e => setMobile(e.target.value)} />
-                    <InputField my="2" labelName="Email Id" type="email" value={email} onChange={e => setEmail(e.target.value)} />
-                    {/* <InputField my="2" labelName="Date of Joining" type="date" value={joiningDate} onChange={e => setJoiningDate(e.target.value)} /> */}
-                    <div className='my-2'>
-                        <label htmlFor="joiningDate">Date of Joining</label>
-                        <input type="datetime-local" className="border w-full p-1 outline-sky-500 outline-[1px]" value={joiningDate} onChange={e => setJoiningDate(e.target.value)} />
-                        {/* <DatePicker style={{width: "100%"}} value={joiningDate} onChange={date => setJoiningDate(date)} /> */}
+                    <div className="grid grid-cols-2 gap-x-2 borderImp p-2 rounded-md">
+                        <InputField my="2" labelName="First Name" value={firstName} onChange={e => setFirstName(e.target.value)} />
+                        <InputField my="2" labelName="Last Name" value={lastName} onChange={e => setLastName(e.target.value)} />
+                        <InputField my="2" labelName="Department" value={department} onChange={e => setDepartment(e.target.value)} />
+                        <InputField my="2" labelName="Post" value={post} onChange={e => setPost(e.target.value)} />
+                        <InputField my="2" labelName="Mobile" type="number" value={mobile} onChange={e => setMobile(e.target.value)} />
+                        <InputField my="2" labelName="Email Id" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+                        {/* <InputField my="2" labelName="Date of Joining" type="date" value={joiningDate} onChange={e => setJoiningDate(e.target.value)} /> */}
+                        <div className='my-2'>
+                            <label htmlFor="joiningDate">Date of Joining</label>
+                            <input type="datetime-local" className="border w-full p-1 outline-sky-500 outline-[1px]" value={joiningDate} onChange={e => setJoiningDate(e.target.value)} />
+                            {/* <DatePicker style={{width: "100%"}} value={joiningDate} onChange={date => setJoiningDate(date)} /> */}
+                        </div>
+                        <InputField my="2" labelName="Employe Code" value={employeeCode} onChange={e => setEmployeeCode(e.target.value)} />
                     </div>
-                    <InputField my="2" labelName="Employe Code" value={employeeCode} onChange={e => setEmployeeCode(e.target.value)} />
-                </div>
-            </TabPane>
-            <TabPane
-                tab={
-                    <span>
-                        <FileSyncOutlined />
-                        Salary Information
-                    </span>
-                }
-                key="2"
-            >
-                {/* Salary Info */}
-                <div className="grid grid-cols-2 gap-x-2">
-                    <InputField my="2" labelName="Basic Salary" type="number" value={basicSalary} onChange={e => setBasicSalary(e.target.value)} />
-                    <InputField my="2" labelName="Deatness Allowance" type="number" value={deatAllow} onChange={e => setDeatAllow(e.target.value)} />
-                    <InputField my="2" labelName="Travelling Allowance" type="number" value={travelAllow} onChange={e => setTravelAllow(e.target.value)} />
-                    <InputField my="2" labelName="Food Allowance" type="number" value={foodAllow} onChange={e => setFoodAllow(e.target.value)} />
-                    <InputField my="2" labelName="Petrol Allowance" type="number" value={petrolAllow} onChange={e => setPetrolAllow(e.target.value)} />
-                    <InputField my="2" labelName="Provident Fund (PF)" type="number" value={pf} onChange={e => setPf(e.target.value)} />
-                    <InputField my="2" labelName="Employe State Insurance (ESI)" type="number" value={esi} onChange={e => setEsi(e.target.value)} />
-                    <InputField my="2" labelName="Total Salary" type="number" value={totalSalary} onChange={e => setTotalSalary(e.target.value)} />
-                </div>
-            </TabPane>
-            <TabPane
-                tab={
-                    <span>
-                        <FileSyncOutlined />
-                        Documentation
-                    </span>
-                }
-                key="3"
-            >
-                {/* Documentation */}
-                <div className="grid grid-cols-2 gap-x-3">
-                    <InputField my="2" labelName="Aadhaar Number" type="number" value={aadhaar} onChange={e => setAadhaar(e.target.value)} />
-                    <InputField my="2" labelName="Pan Details" value={pan} onChange={e => setPan(e.target.value)} />
-                    <div className="my-2">
-                        <label htmlFor="docs1">Document 1 : </label>
-                        <div className="flex items-center gap-x-1">
-                            <UploadDocs />
-                            <button className="bg-blue-500 p-1 px-3 text-white">View</button>
+                </TabPane>
+                <TabPane
+                    tab={
+                        <span>
+                            <FileSyncOutlined />
+                            Salary Information
+                        </span>
+                    }
+                    key="2"
+                >
+                    {/* Salary Info */}
+                    <div className="grid grid-cols-2 gap-x-2 borderImp p-2 rounded-md">
+                        <InputField my="2" labelName="Basic Salary" type="number" value={basicSalary} onChange={e => setBasicSalary(e.target.value)} />
+                        <InputField my="2" labelName="Deatness Allowance" type="number" value={deatAllow} onChange={e => setDeatAllow(e.target.value)} />
+                        <InputField my="2" labelName="Travelling Allowance" type="number" value={travelAllow} onChange={e => setTravelAllow(e.target.value)} />
+                        <InputField my="2" labelName="Food Allowance" type="number" value={foodAllow} onChange={e => setFoodAllow(e.target.value)} />
+                        <InputField my="2" labelName="Petrol Allowance" type="number" value={petrolAllow} onChange={e => setPetrolAllow(e.target.value)} />
+                        <InputField my="2" labelName="Provident Fund (PF)" type="number" value={pf} onChange={e => setPf(e.target.value)} />
+                        <InputField my="2" labelName="Employe State Insurance (ESI)" type="number" value={esi} onChange={e => setEsi(e.target.value)} />
+                        <InputField my="2" labelName="Total Salary" type="number" value={totalSalary} onChange={e => setTotalSalary(e.target.value)} />
+                    </div>
+                </TabPane>
+                <TabPane
+                    tab={
+                        <span>
+                            <FileSyncOutlined />
+                            Documentation
+                        </span>
+                    }
+                    key="3"
+                >
+                    {/* Documentation */}
+                    <div className="grid grid-cols-2 gap-x-3 borderImp p-2 rounded-md">
+                        <InputField my="2" labelName="Aadhaar Number" type="number" value={aadhaar} onChange={e => setAadhaar(e.target.value)} />
+                        <InputField my="2" labelName="Pan Details" value={pan} onChange={e => setPan(e.target.value)} />
+                        <div className="my-2">
+                            <label htmlFor="docs1">Document 1 : </label>
+                            <div className="flex items-center gap-x-1">
+                                <UploadDocs />
+                                <button className="bg-blue-500 p-1 px-3 text-white">View</button>
+                            </div>
+                        </div>
+                        <div className="my-2">
+                            <label htmlFor="docs1">Document 2 : </label>
+                            <div className="flex items-center gap-x-1">
+                                <UploadDocs />
+                                <button className="bg-blue-500 p-1 px-3 text-white">View</button>
+                            </div>
+                        </div>
+                        <div className="my-2">
+                            <label htmlFor="docs1">Document 3 : </label>
+                            <div className="flex items-center gap-x-1">
+                                <UploadDocs />
+                                <button className="bg-blue-500 p-1 px-3 text-white">View</button>
+                            </div>
+                        </div>
+                        <div className="my-2">
+                            <label htmlFor="docs1">Document 4 : </label>
+                            <div className="flex items-center gap-x-1">
+                                <UploadDocs />
+                                <button className="bg-blue-500 p-1 px-3 text-white">View</button>
+                            </div>
+                        </div>
+                        <div className="my-2">
+                            <label htmlFor="docs1">Resume : </label>
+                            <div className="flex items-center gap-x-1">
+                                <UploadDocs />
+                                <button className="bg-blue-500 p-1 px-3 text-white">View</button>
+                            </div>
                         </div>
                     </div>
-                    <div className="my-2">
-                        <label htmlFor="docs1">Document 2 : </label>
-                        <div className="flex items-center gap-x-1">
-                            <UploadDocs />
-                            <button className="bg-blue-500 p-1 px-3 text-white">View</button>
-                        </div>
+                </TabPane>
+                <TabPane
+                    tab={
+                        <span>
+                            <FileSyncOutlined />
+                            Bank Details
+                        </span>
+                    }
+                    key="4"
+                >
+                    {/* Bank Details */}
+                    <div className="borderImp p-2 rounded-md">
+                        <ImageUploader />
+                        <InputField my="2" labelName="Bank Name" value={bankName} onChange={e => setBankName(e.target.value)} />
+                        <InputField my="2" labelName="Account Holder Name" value={acHolderName} onChange={e => setAcHolderName(e.target.value)} />
+                        <InputField my="2" labelName="Account Number" value={accountNo} onChange={e => setAccountNo(e.target.value)} />
+                        <InputField my="2" labelName="IFSC" value={ifsc} onChange={e => setIfsc(e.target.value)} />
                     </div>
-                    <div className="my-2">
-                        <label htmlFor="docs1">Document 3 : </label>
-                        <div className="flex items-center gap-x-1">
-                            <UploadDocs />
-                            <button className="bg-blue-500 p-1 px-3 text-white">View</button>
-                        </div>
-                    </div>
-                    <div className="my-2">
-                        <label htmlFor="docs1">Document 4 : </label>
-                        <div className="flex items-center gap-x-1">
-                            <UploadDocs />
-                            <button className="bg-blue-500 p-1 px-3 text-white">View</button>
-                        </div>
-                    </div>
-                    <div className="my-2">
-                        <label htmlFor="docs1">Resume : </label>
-                        <div className="flex items-center gap-x-1">
-                            <UploadDocs />
-                            <button className="bg-blue-500 p-1 px-3 text-white">View</button>
-                        </div>
-                    </div>
-                </div>
-            </TabPane>
-            <TabPane
-                tab={
-                    <span>
-                        <FileSyncOutlined />
-                        Bank Details
-                    </span>
-                }
-                key="4"
-            >
-                {/* Bank Details */}
-                <div className="">
-                    <ImageUploader />
-                    <InputField my="2" labelName="Bank Name" value={bankName} onChange={e => setBankName(e.target.value)} />
-                    <InputField my="2" labelName="Account Holder Name" value={acHolderName} onChange={e => setAcHolderName(e.target.value)} />
-                    <InputField my="2" labelName="Account Number" value={accountNo} onChange={e => setAccountNo(e.target.value)} />
-                    <InputField my="2" labelName="IFSC" value={ifsc} onChange={e => setIfsc(e.target.value)} />
-                </div>
-                {btnContent}
-            </TabPane>
-        </Tabs>
+                </TabPane>
+            </Tabs>
+            {btnContent}
+        </div>
     )
 }
 

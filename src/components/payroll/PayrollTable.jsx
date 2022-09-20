@@ -10,6 +10,7 @@ import ActionBtn from '../../utils/ActionBtn';
 import { modalBtnCondition } from '../../features/activity/activitySlice';
 import { fetchEmployees, deleteEmployee } from '../../features/payroll/payrollSlice';
 import Attendance from './Attendance';
+import Drawer from '../../utils/Drawer'
 
 // salary info modal
 const info = (data) => {
@@ -32,8 +33,8 @@ const PayrollTable = () => {
     const dispatch = useDispatch()
 
     const auth = useSelector(state => state.auth.auth)
-    const {employees, status} = useSelector(state => state.payroll)
-    
+    const { employees, status } = useSelector(state => state.payroll)
+
 
     const [modalData, setModalData] = useState([])
     const [isEmployeInfoVisible, setIsEmployeInfoVisible] = useState(false);
@@ -83,16 +84,16 @@ const PayrollTable = () => {
             key: 'action',
             render: (_, record) => {
                 return (<Space wrap>
-                    <button className="text-green-500 border px-1 rounded-sm border-green-500" onClick={() => info(record)}>Salary Slip</button>
-                    <button 
-                    className="text-blue-500 border px-1 rounded-sm border-blue-500"
-                    onClick={() => {
-                        setShowEdit(true)
-                        setEditData(record)
-                        dispatch(modalBtnCondition('edit'))
-                    }}
+                    <button className="text-green-700 text-xs p-1 px-3 rounded-full bg-green-200" onClick={() => info(record)}>Salary Slip</button>
+                    <button
+                        className="text-blue-600 text-xs p-1 px-3 rounded-full bg-blue-200"
+                        onClick={() => {
+                            setShowEdit(true)
+                            setEditData(record)
+                            dispatch(modalBtnCondition('edit'))
+                        }}
                     >Edit</button>
-                    <button className="text-red-500 border px-1 rounded-sm border-red-500">Delete</button>
+                    <button className="text-red-600 text-xs p-1 px-3 rounded-full bg-red-200">Delete</button>
                 </Space>
                 )
             },
@@ -101,7 +102,7 @@ const PayrollTable = () => {
 
 
     useEffect(() => {
-        if(auth.authToken) {
+        if (auth.authToken) {
             dispatch(fetchEmployees())
         }
     }, [dispatch])
@@ -131,30 +132,35 @@ const PayrollTable = () => {
         <div>
             {/* Info Modal */}
             {modalData && isEmployeInfoVisible === true && (
-                <Modal title="Employee Profile" visible={isEmployeInfoVisible} onOk={handleOk} onCancel={handleCancel}>
+                <Drawer
+                setOpen={setIsEmployeInfoVisible}
+                title="View employee"
+                >
                     <EmployeeForm data={modalData} />
-                </Modal>
+                </Drawer>
             )}
             {/* Add employee Modal */}
             {showAdd === true && (
-                <Modal 
-                title="Add New Employee" 
-                visible={showAdd} onOk={handleOk} onCancel={handleCancel}
-                
+                <Drawer
+                setOpen={setShowAdd}
+                title="Create a new employee"
                 >
                     <EmployeeForm setShowAdd={setShowAdd} />
-                </Modal>
+                </Drawer>
             )}
             {/* Edit employee Modal */}
             {showEdit === true && (
-                <Modal title="Add New Employee" visible={showEdit} onOk={handleOk} onCancel={handleCancel}>
+                <Drawer
+                setOpen={setShowEdit}
+                title="Edit employee"
+                >
                     <EmployeeForm setShowEdit={setShowEdit} data={editData} />
-                </Modal>
+                </Drawer>
             )}
 
-                {/* Buttons - add - attendance */}
+            {/* Buttons - add - attendance */}
             <div className="flex items-center justify-end gap-x-2 mb-2">
-               
+
                 <ActionBtn
                     createName="Attendance"
                     className={showAttendance === false}
@@ -169,7 +175,7 @@ const PayrollTable = () => {
                     className={showAdd === false}
                     onClick={() => {
                         setShowAdd(!showAdd)
-                          dispatch(modalBtnCondition('add'))
+                        dispatch(modalBtnCondition('add'))
                     }}
                     btnCondition={showAdd === true}
                 />
@@ -178,13 +184,15 @@ const PayrollTable = () => {
             {showAttendance === true ? (
                 <Attendance />
             ) : (
-                 <Table 
-                 columns={payrollColumn} 
-                 dataSource={newEmployeesData} 
-                 loading={status === 'loading' && true} 
-                 />
+                <div className="borderImp rounded-md p-1 bg-white text-xs">
+                    <Table
+                        columns={payrollColumn}
+                        dataSource={newEmployeesData}
+                        loading={status === 'loading' && true}
+                    />
+                </div>
             )}
-           
+
         </div>
     )
 }

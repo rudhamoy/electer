@@ -20,16 +20,16 @@ const Accounts = () => {
     <Layout>
       <PageHeader pageTitle="Accounts" icon={AccountImage} />
       <div className="grid grid-cols-2 gap-10 my-10">
-        <div className="bg-white rounded-md shadow-md p-4">
+        <div className="shadoww rounded-md borderImp p-4">
           <h1>Sales and Expenditure Grap</h1>
           <SalesExpenditureGraph />
         </div>
-        <div className="bg-white rounded-md shadow-md p-4">
+        <div className=" rounded-md borderImp p-4">
           <h1>Sales This Month</h1>
           <MonthlySales />
         </div>
         <Accounting setOpen={setOpen} />
-        <div className="bg-white rounded-md shadow-md p-4">
+        <div className=" rounded-md borderImp p-4">
           <MonthlyExpense />
         </div>
       </div>

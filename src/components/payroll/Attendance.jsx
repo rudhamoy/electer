@@ -196,9 +196,10 @@ const Attendance = () => {
 
     return (
         <div>
+             <p className="font-semibold text-sm">Attendance</p>
             <div className="flex justify-between mt-20">
                 {/* Table */}
-                <div className="bg-gray-100 rounded-sm p-3 w-[65%]">
+                <div className="bg-gray-100 borderImp rounded-md p-1 w-[65%]">
                     <Table columns={newColumnList} dataSource={newEmployeesData} />
 
                 </div>

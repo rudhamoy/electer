@@ -3,7 +3,7 @@ import './inventory.css'
 
 const InventoryDataBox = ({icon, title, numData}) => {
   return (
-    <div className="bg-white p-2 rounded-md w-[150px] h-[110px] relative inventory__box">
+    <div className="p-2 w-[150px] h-[110px] relative">
         {/* icon */}
         <img src={icon} alt="icoon" className="w-[20px]" />
         {/* title */}

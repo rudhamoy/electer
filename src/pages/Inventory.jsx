@@ -20,7 +20,7 @@ const Inventory = () => {
         <PageHeader pageTitle="Inventory" icon={InventoryIcon} />
 
         {/* inventory overview data box */}
-        <div className="my-10 flex items-center justify-between">
+        <div className="mt-10 flex items-center justify-between borderImp rounded-md bg-gray-50 p-3">
           <InventoryDataBox icon={StockValue} title="Total Stock Value" numData="₹12,34,590" />
           <InventoryDataBox icon={TotalNum} title="Total No of Products" numData="251" />
           <InventoryDataBox icon={LowStock} title="Product with Low Stock" numData="12" />
@@ -30,7 +30,7 @@ const Inventory = () => {
         </div>
 
         {/* Table */}
-        <div className="my-10 mt-20 bg-white rounded-md p-3">
+        <div className="my-10 borderImp rounded-md p-3">
           <InventoryTable />
         </div>
       </div>
