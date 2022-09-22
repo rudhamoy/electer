@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { FaRegStopCircle } from 'react-icons/fa'
+import { Link, useLocation } from 'react-router-dom'
+
 import InfoForm from '../components/auth/InfoForm'
+import LoginForm from '../components/auth/LoginForm'
 import RegisterBg from '../components/auth/RegisterBg'
 import RegisterForm from '../components/auth/RegisterForm'
 import Logo from '../data/icons/electerlogo.png'
 import BgIcon from '../data/svg/undraw_add_information_j2wg.svg'
+import Drawer from '../utils/Drawer'
 
-import { Link, useLocation } from 'react-router-dom'
 
 function useQuery() {
     const { search } = useLocation();
@@ -17,11 +20,12 @@ function useQuery() {
 const Register = () => {
 
     let query = useQuery()
-
     let tabContent = query.get("tab")
 
+    const [showLogin, setShowLogin] = useState(false)
+
     return (
-        <div className="py-10">
+        <div className="py-10 relative h-[100%] bg-white">
             <div className="flex flex-col justify-center items-center">
                 <img src={Logo} alt="electer" className="w-[180px]" />
                 <h1 className="text-3xl font-bold mt-6">Business & Accounting Software</h1>
@@ -44,7 +48,7 @@ const Register = () => {
                 </div>
             </div>
 
-            <div className="flex justify-evenly mt-20 w-full ">
+            <div className="flex justify-evenly py-20 w-full">
 
                 {tabContent === "addInfo" ? (
                     <>
@@ -55,15 +59,21 @@ const Register = () => {
                     </>
                 ) : (
                     <>
-                        <div className=" shadow-md p-2 ">
-                            <RegisterForm />
+                        <div className="borderImp rounded-md p-2 ">
+                            <RegisterForm setShowLogin={setShowLogin} />
                         </div>
                         <div>
                             <img src={BgIcon} alt="bg" className="w-[420px]" />
                         </div>
                     </>
                 )}
-
+                {showLogin === true && (
+                    <Drawer>
+                        <div className='flex justify-center items-center'>
+                            <LoginForm />
+                        </div>
+                    </Drawer>
+                )}
             </div>
         </div>
     )

@@ -9,7 +9,7 @@ const InputField = ({ labelName, onChange, value }) => (
   </div>
 )
 
-const RegisterForm = () => {
+const RegisterForm = ({setShowLogin}) => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
@@ -32,7 +32,8 @@ const RegisterForm = () => {
       }
     })
     console.log(res)
-    navigate('/login')
+    // navigate('/login')
+    setShowLogin(true)
     } catch (error) {
       console.log(error)
     }
@@ -46,7 +47,7 @@ const RegisterForm = () => {
         <InputField labelName="Email" value={email} onChange={e => setEmail(e.target.value)} />
         <InputField labelName="Password" value={password} onChange={e => setPassword(e.target.value)} />
         <Checkbox>I Agree with  <span className="text-blue-500">Terms of service</span></Checkbox>
-        <button className="bg-blue-500 p-2 w-full text-white rounded-sm my-4">GET STARTED</button>
+        <button className="bg-blue-500 p-2 w-full text-white rounded-md my-4">GET STARTED</button>
       </form>
     </div>
   )

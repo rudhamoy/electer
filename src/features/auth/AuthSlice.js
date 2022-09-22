@@ -7,8 +7,9 @@ const initialState = {
     auth: {
         authToken: "",
         id: "",
+        systemUserId: '',
     },
-    systemUser: [],
+    systemUser: {},
     systemUserId: {}
 }
 
@@ -17,6 +18,7 @@ const loggedUser = JSON.parse( window.localStorage.getItem('user'))
 if(loggedUser) {
     initialState.auth.authToken = loggedUser.token
     initialState.auth.id = loggedUser.id
+    initialState.auth.systemUserId = loggedUser.systemUserId
 }
 
 

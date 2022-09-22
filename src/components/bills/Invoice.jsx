@@ -28,10 +28,10 @@ const Invoice = ({ setAddInvoice }) => {
     const invoiceList = []
     invoices.forEach((item) => {
         // const res = await axios.get(`${baseUrl}/client/${item.client}/`, { headers: { 'Authorization': `Token ${authToken}` } })
-        const { name } = clients?.find(i => i.id === item.client)
+        const client = clients?.find(i => i.id === item.client)
         const invoiceListing = {
             ...item,
-            clientName: name
+            clientName: client.name
         }
         return invoiceList.push(invoiceListing)
     })

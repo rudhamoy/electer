@@ -16,7 +16,7 @@ import { fetchSystemUser, fetchSystemUserById } from './features/auth/AuthSlice'
 const App = () => {
   const { auth, systemUser } = useSelector(state => state.auth)
 
-  const { id } = auth
+  // const { id } = auth
 
   const dispatch = useDispatch()
 
@@ -24,15 +24,13 @@ const App = () => {
     dispatch(fetchSystemUser())
   }, [dispatch])
 
-  useEffect(() => {
-    if(systemUser.length > 0 || id) {
-      systemUser.forEach(item => {
-        if(item.custom_user.id === id) {
-          dispatch(fetchSystemUserById(item.id))
-        }
-      })
-    }
-  }, [dispatch, id, systemUser])
+  // useEffect(() => {
+  //   if(auth) {
+  //       if(systemUser?.custom_user.id === auth?.id) {
+  //         dispatch(fetchSystemUserById(systemUser?.id))
+  //       }
+  //   }
+  // }, [dispatch, auth.id, systemUser])
 
 
   return (
