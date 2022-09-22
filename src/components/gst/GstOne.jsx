@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Table, Space } from 'antd'
 import { FcViewDetails } from 'react-icons/fc'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { gstOneColumn } from '../../data/table/GstTable'
+import { gstOneColumn } from '../../data/table/GstTable';
+import { fetchSalesInvoice } from '../../features/bills/billsSlice';
 
 const GstOne = () => {
+    const dispatch = useDispatch()
+    const { invoices } = useSelector(state => state.bills)
+
+    useEffect(() => {
+        dispatch(fetchSalesInvoice())
+    }, [dispatch])
 
     const gstoneColumn = [
         ...gstOneColumn,
@@ -12,11 +20,11 @@ const GstOne = () => {
             title: 'View Invoice',
             dataIndex: 'view',
             key: 'view',
-            className: 'text-[10px]',
+            className: 'text-xs',
             render: (_, record) => {
                 return (<Space wrap>
-                    <button className="">
-                        <FcViewDetails />
+                    <button>
+                        <FcViewDetails className="text-xl" />
                     </button>
                 </Space>
                 )
@@ -24,9 +32,21 @@ const GstOne = () => {
           },
     ]
 
+    const invoiceList = []
+
+    invoices.forEach((item, index) => {
+        const list = {
+            ...item,
+            index
+        }
+        return invoiceList.push(list)
+    })
+
+    console.log(invoices)
+
   return (
-    <div>
-        <Table columns={gstoneColumn} />
+    <div className="borderImp rounded-md p-1 bg-gray-50">
+        <Table columns={gstoneColumn} dataSource={invoiceList} />
     </div>
   )
 }
