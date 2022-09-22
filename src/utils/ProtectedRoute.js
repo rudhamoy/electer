@@ -6,12 +6,14 @@ const ProtectedRoute = () => {
     }
 
     const logged = JSON.parse(window.localStorage.getItem('user'))
-        if (logged !== null) {
-            auth.token = true
-        }
+    const system = JSON.parse(window.localStorage.getItem('systemUID'))
+    console.log('protected Route', system)
+    if (logged !== null) {
+        auth.token = true
+    }
 
     return (
-        auth.token ? <Outlet /> : <Navigate to="/login" />
+        auth.token ? system?.systemUserId !== null ? <Outlet /> : <Navigate to="/register?tab=addInfo" /> : <Navigate to="/login" />
     )
 }
 

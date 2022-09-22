@@ -41,20 +41,23 @@ const InfoForm = () => {
 
     useEffect(() => {
       dispatch(fetchSystemUser())
+    }, [ dispatch])
 
-      if(systemUser) {
+    useEffect(() => {
+      if(systemUser?.length > 0) {
+        window.localStorage.setItem('systemUID', JSON.stringify({ systemUserId: systemUser ? systemUser[0]?.id : null }))
         navigate('/')
       }
-    }, [systemUser])
+    })
 
     useEffect(() => {
       if(auth.authToken === '') {
         navigate('/login')
       }
-    }, [])
+    }, [auth])
 
   return (
-    <section className='shadow-md rounded-sm w-[300px] p-2'>
+    <section className='borderImp rounded-md w-[300px] p-2'>
         <h1 className="font-bold text-lg text-center">Add Info</h1>
          <form onSubmit={submitHandler}>
         <InputField labelName="Designation" value={designation} onChange={e => setDesignation(e.target.value)} />

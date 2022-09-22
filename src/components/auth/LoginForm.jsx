@@ -27,15 +27,16 @@ const LoginForm = () => {
     e.preventDefault()
     try {
       const res1 = await axios.post('http://37.44.244.212/api/auth/token/login/', { email, password })
-      const res2 = await axios.get(`http://37.44.244.212/api/get-user-by-email/${email}`, { email }).then(res => {
-        window.localStorage.setItem('user', JSON.stringify({ token: res1.data.auth_token, id: res.data.id, isLogged: true, systemUserId: systemUser?.id }))
-        dispatch(loginUser({ authToken: res1.data.auth_token, id: res.data.id }))
-        if (!systemUser) {
-          return navigate('/register?tab=addInfo')
-        } else {
-          return navigate('/')
-        }
-      })
+      const res2 = await axios.get(`http://37.44.244.212/api/get-user-by-email/${email}`, { email })
+      window.localStorage.setItem('user', JSON.stringify({ token: res1.data.auth_token, id: res2.data.id, isLogged: true }))
+      window.localStorage.setItem('systemUID', JSON.stringify({ systemUserId: systemUser ? systemUser[0]?.id : null }))
+      dispatch(loginUser({ authToken: res1.data.auth_token, id: res2.data.id }))
+      navigate('/')
+      if (systemUser === null) {
+        navigate('/register?tab=addInfo')
+      } else {
+       navigate('/')
+      }
     } catch (error) {
       console.log(error)
       setErrorMsg(error.response.data.non_field_errors)
