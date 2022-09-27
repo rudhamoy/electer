@@ -198,7 +198,6 @@ const CreateSale = ({
                         <InputField my="2" type="number" labelName="Quantity" value={qty} onChange={e => setQty(e.target.value)} />
                         {/* Total Price */}
                         <InputField my="2" type="number" labelName="Amount" value={totalPriceWithoutTax} />
-                        {/* Save into the list button */}
                         <div className="">
                             <button className="mt-2 p-[5px] border-2 border-green-900 font-semibold rounded-md w-full text-green-900" onClick={saveHandler}>Save item</button>
                         </div>

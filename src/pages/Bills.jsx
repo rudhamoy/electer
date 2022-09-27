@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
+import AddDC from '../components/bills/AddDC'
 import AddInvoice from '../components/bills/AddInvoice'
+import AddPurchaseOrder from '../components/bills/AddPurchaseOrder'
+import AddQuotation from '../components/bills/AddQuotation'
 import BillsInfo from '../components/bills/BillsInfo'
 import DeliveryChalan from '../components/bills/DeliveryChalan'
 import Invoice from '../components/bills/Invoice'
@@ -28,17 +31,17 @@ const Bills = () => {
       )}
       {addPurchase === true && (
         <Drawer setOpen={setAddPurchase} title="Purchase">
-          <p>Add Purchase order here</p>
+          <AddPurchaseOrder />
         </Drawer>
       )}
       {addQuotation === true && (
         <Drawer setOpen={setAddQuotation} title="Quotation">
-          <p>Add Quotation here</p>
+          <AddQuotation />
         </Drawer>
       )}
       {addDeliveryCalan === true && (
         <Drawer setOpen={setAddDeliveryChalan} title="Delivery Chalan">
-          <p>Add Delivery Chalan here</p>
+          <AddDC />
         </Drawer>
       )}
       <Layout>

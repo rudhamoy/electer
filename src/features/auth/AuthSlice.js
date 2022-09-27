@@ -9,7 +9,7 @@ const initialState = {
         id: "",
         systemUserId: '',
     },
-    systemUser: {},
+    systemUser: [],
     systemUserId: {}
 }
 

@@ -73,7 +73,7 @@ const MyEnterprise = () => {
            />
         </div>
       </div>
-      <div className="border bg-white rounded-md p-4">
+      <div className="borderImp bg-gray-50 rounded-md p-4">
         {(showAdd === true || modalBtn === 'edit' )? <AddFirm showAdd={showAdd} setShowAdd={setShowAdd} /> : tabContent === 'firm' ? (
           <EnterpriseList data={business} />
         ) : (

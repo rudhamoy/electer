@@ -8,6 +8,7 @@ import { Skeleton, Space } from 'antd';
 import { useSearchParams } from 'react-router-dom'
 
 import { modalBtnCondition } from '../../features/activity/activitySlice'
+import { deleteBusiness } from '../../features/enterprise/enterpriseSlice'
 
 
 const EnterpriseItem = ({ item, setClickId }) => {
@@ -36,7 +37,10 @@ const EnterpriseItem = ({ item, setClickId }) => {
             >
                 <TiPencil className="text-orange-700 text-2xl p-1 rounded-full bg-white shadoww" /> Edit
             </button>
-            <button className={classContent}
+            <button className={classContent}   
+            onClick={() => {
+                dispatch(deleteBusiness(item.id))
+            }}
             >
                 <AiOutlineDelete className="text-red-500 text-2xl p-1 rounded-full bg-white shadoww" />  Delete
             </button>

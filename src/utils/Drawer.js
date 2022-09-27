@@ -15,7 +15,7 @@ const Drawer = ({ setOpen, children, title }) => {
                             <button className="border rounded-md text-xs p-1 px-3 bg-white hover:bg-red-400 hover:text-gray-50" onClick={() => setOpen(false)}>Close</button>
                         </div>
                     </div>
-                    <div className="p-1 px-8">
+                    <div className="px-6 pb-10 overflow-y-auto h-[90vh]">
                         {children}
                     </div>
                 </div>

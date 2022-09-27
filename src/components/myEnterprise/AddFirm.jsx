@@ -13,7 +13,8 @@ import {
   createBusiness,
   fetchBizAddress,
   fetchBusinessAddressById,
-  updateBizAddress
+  updateBizAddress,
+  updateBusiness
 } from '../../features/enterprise/enterpriseSlice';
 
 const { Option } = Select
@@ -27,14 +28,19 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  // useSelector 
   const token = useSelector(state => state.auth.auth.authToken);
   const { businessById, bizAddress, businessAddressById } = useSelector(state => state.enterprise)
   const { modalBtn } = useSelector(state => state.activity)
+  const { systemUser, auth } = useSelector(state => state.auth)
 
+  // utils - helper
+  const baseUrl = 'http://37.44.244.212/api/'
   let query = useQuery()
   let id = query.get("id")
+  const { authToken } = auth
 
-
+  console.log('businessById', businessById)
 
   const [companyName, setCompanyName] = useState("")
   const [businessPlace, setBusinessPlace] = useState("")
@@ -59,6 +65,7 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
   const [firmType, setFirmType] = useState('')
 
   const [businessTypeId, setBusinessTypeId] = useState()
+  const [industryTypeId, setIndustryTypeId] = useState()
 
 
   // const baseUrl = 'http://37.44.244.212/api/'
@@ -66,7 +73,7 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
   const cancelHadnler = async (e) => {
     e.preventDefault()
     dispatch(modalBtnCondition(''))
-    setShowAdd(!showAdd)
+    setShowAdd(false)
     navigate('/my_enterprise?tab=firm')
   }
 
@@ -77,15 +84,17 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
       businessType,
       industryTypes,
       companyName,
+      system_user: systemUser[0].id,
       country,
       states,
       locality,
       pin,
-      landmark
+      landmark,
     }
 
     dispatch(createBusiness(businessData))
     dispatch(modalBtnCondition(''))
+    setShowAdd(false)
     navigate('/my_enterprise?tab=firm')
 
   }
@@ -93,51 +102,66 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
   useEffect(() => {
     if (id) {
       dispatch(fetchBusinessById(parseInt(id)))
-      dispatch(fetchBizAddress())
     }
   }, [id, dispatch])
 
   useEffect(() => {
-    if (id) {
-      bizAddress.map(item => {
-        if (item.business.id === parseInt(id)) {
-          dispatch(fetchBusinessAddressById(item.id))
-        }
-      })
-    }
-  }, [id, dispatch, bizAddress])
+      if(modalBtn === 'edit') {
+      setCompanyName(businessById?.company_name)
+      setBusinessType(businessById?.business_type?.name)
+      setBusinessTypeId(businessById?.business_type?.id)
+      setIndustryType(businessById?.IndustryType?.name)
+      setIndustryTypeId(businessById?.IndustryType?.id)
+      setCountry(businessById?.business_address?.country)
+      setStates(businessById?.business_address?.state)
+      setPin(businessById?.business_address?.pin)
+      setLandmark(businessById?.business_address?.remarks)
+      setLocality(businessById?.business_address?.locality)
+      }
+  }, [modalBtn, id])
 
-  useEffect(() => {
-    if (id) {
-      setCountry(businessAddressById.country)
-      setStates(businessAddressById.state)
-      setLocality(businessAddressById.locality)
-      setPin(businessAddressById.pin)
-      setLandmark(businessAddressById.remarks)
-      setCompanyName(businessAddressById.business.company_name)
-      setBusinessType(businessAddressById.business.business_type.name)
-      setIndustryType(businessAddressById.business.IndustryType.name)
-    }
-  }, [id])
-
-  const updateHandler = (e) => {
+  // update busines handler
+  const updateHandler = async (e) => {
     e.preventDefault()
+    let res1 = {}
+    let res2 = {}
+    // update new business type
+    if(businessById?.business_type?.name !== businessType) {
+      res1 = await axios.post(`${baseUrl}/business-type/`, { name: businessType }, { headers: { 'Authorization': `Token ${authToken}` } }).then(res => {
+        const { data } = res
+        console.log('Business Type = ', res)
+        return data
+      })
+    } 
+
+    // update new industry type
+    if(businessById?.IndustryType?.name !== industryTypes) {
+      res2 = await axios.post(`${baseUrl}/industry-type/`, { name: industryTypes }, { headers: { 'Authorization': `Token ${authToken}` } }).then(res => {
+        const { data } = res
+        console.log('Industry Type = ', res)
+        return data
+      })
+    } 
 
     const updateData = {
-      id: businessAddressById?.id,
+      id: id,
       data: {
-        businessType,
-        industryTypes,
-        companyName,
-        country,
-        states,
-        locality,
-        pin,
-        landmark
+        company_name: companyName,
+        business_type: businessById?.business_type?.name !== businessType ? res1.id : businessTypeId,
+        IndustryType: businessById?.IndustryType?.name !== industryTypes ? res2.id :industryTypeId,
+        system_user: systemUser[0].id,
+        business_address: {
+          system_user: systemUser[0].id,
+          country,
+          state: states,
+          remarks: landmark,
+          pin,
+          locality,
+        }
       }
     }
 
-    dispatch(updateBizAddress(updateData))
+    dispatch(updateBusiness(updateData))
     dispatch(modalBtnCondition(''))
     navigate('/my_enterprise?tab=firm')
 
@@ -204,7 +228,7 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
             <label>Business Type</label>
             <SelectField
               placeholder="Select business type"
-              defaultValue={modalBtn === 'edit' ? businessAddressById.business?.business_type?.name : null}
+              defaultValue={modalBtn === 'edit' ? businessById?.business_type?.name : null}
               value={businessType}
               onChange={value => setBusinessType(value)}
             >
@@ -220,7 +244,7 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
             <label>Industry Type</label>
             <SelectField
               placeholder="Select industry type"
-              defaultValue={modalBtn === 'edit' ? businessAddressById.business.IndustryType.name : null}
+              defaultValue={modalBtn === 'edit' ? businessById?.IndustryType?.name : null}
               value={industryTypes}
               onChange={value => setIndustryType(value)}>
               <Option value="agriculture">Agriculture</Option>
@@ -253,7 +277,11 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
         {/* button */}
         <div className="flex justify-around gap-x-5 items-center">
           <button onClick={cancelHadnler} className="p-2 px-4 rounded-md bg-red-500 text-blue-50 font-semibold my-6 w-full">Cancel</button>
-          <button onClick={addHandler} className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6 w-full">Add</button>
+          {modalBtn === 'edit' ? (
+            <button onClick={updateHandler} className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6 w-full">Update</button>
+          ) : (
+            <button onClick={addHandler} className="p-2 px-4 rounded-md bg-blue-500 text-blue-50 font-semibold my-6 w-full">Add</button>
+          )}
         </div>
       </div>
     </div>
