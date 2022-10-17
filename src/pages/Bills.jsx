@@ -3,6 +3,7 @@ import AddDC from '../components/bills/AddDC'
 import AddInvoice from '../components/bills/AddInvoice'
 import AddPurchaseOrder from '../components/bills/AddPurchaseOrder'
 import AddQuotation from '../components/bills/AddQuotation'
+import AddReceivedInvoice from '../components/bills/AddReceivedInvoice'
 import BillsInfo from '../components/bills/BillsInfo'
 import DeliveryChalan from '../components/bills/DeliveryChalan'
 import Invoice from '../components/bills/Invoice'
@@ -20,6 +21,7 @@ const Bills = () => {
   const [addPurchase, setAddPurchase] = useState(false)
   const [addQuotation, setAddQuotation] = useState(false)
   const [addDeliveryCalan, setAddDeliveryChalan] = useState(false)
+  const [addReceivedInvoice, setAddReceivedInvoice] = useState(false)
 
 
   return (
@@ -27,6 +29,11 @@ const Bills = () => {
       {addInvoice === true && (
         <Drawer setOpen={setAddInvoice} title="Invoice">
           <AddInvoice setAddInvoice={setAddInvoice} />
+        </Drawer>
+      )}
+      {addReceivedInvoice === true && (
+        <Drawer setOpen={setAddReceivedInvoice} title="Received Invoice">
+          <AddReceivedInvoice />
         </Drawer>
       )}
       {addPurchase === true && (
@@ -52,7 +59,7 @@ const Bills = () => {
             <BillsInfo />
           </div>
           <div className=" borderImp rounded-md p-2 shadoww">
-            <Invoice setAddInvoice={setAddInvoice} />
+            <Invoice setAddInvoice={setAddInvoice} setAddReceivedInvoice={setAddReceivedInvoice} />
           </div>
           <div className=" borderImp rounded-md p-2">
             <PurchaseOrder setAddPurchase={setAddPurchase} />

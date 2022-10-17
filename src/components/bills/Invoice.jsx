@@ -5,35 +5,49 @@ import { GrList } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 
-import { fetchSalesInvoice } from '../../features/bills/billsSlice';
+import { fetchReceiveInvoice, fetchSalesInvoice } from '../../features/bills/billsSlice';
 import { fetchClients, getClientById } from '../../features/client/clientSlice';
 
 const { TabPane } = Tabs;
 
-const Invoice = ({ setAddInvoice }) => {
+const Invoice = ({ setAddInvoice, setAddReceivedInvoice }) => {
     const dispatch = useDispatch()
 
     const baseUrl = 'http://37.44.244.212/api'
     const { authToken } = useSelector(state => state.auth.auth)
-    const { invoices } = useSelector(state => state.bills)
+    const { invoices, purchaseInvoice } = useSelector(state => state.bills)
     const { clients } = useSelector(state => state.clients)
 
     // const [invoiceList, setInvoiceList] = useState([])
 
     useEffect(() => {
         dispatch(fetchSalesInvoice())
+        dispatch(fetchReceiveInvoice())
         dispatch(fetchClients())
     }, [dispatch])
 
+    // list of invoice 
     const invoiceList = []
     invoices.forEach((item) => {
         // const res = await axios.get(`${baseUrl}/client/${item.client}/`, { headers: { 'Authorization': `Token ${authToken}` } })
         const client = clients?.find(i => i.id === item.client)
         const invoiceListing = {
             ...item,
-            clientName: client.name
+            clientName: client?.name
         }
         return invoiceList.push(invoiceListing)
+    })
+
+    // list of received invoices
+    const receivedInvoiceList = []
+    purchaseInvoice.forEach((item) => {
+        // const res = await axios.get(`${baseUrl}/client/${item.client}/`, { headers: { 'Authorization': `Token ${authToken}` } })
+        const client = clients?.find(i => i.id === item.client)
+        const receiveInvoiceListing = {
+            ...item,
+            clientName: client?.name
+        }
+        return receivedInvoiceList.push(receiveInvoiceListing)
     })
 
 
@@ -44,6 +58,7 @@ const Invoice = ({ setAddInvoice }) => {
                 <p className="font-semibold">Invoice</p>
                 <div className="flex gap-x-4 text-xs">
                     <button className="flex items-center gap-x-1 rounded-full"><GrList /> Templates</button>
+                    <button onClick={() => setAddReceivedInvoice(true)} className="p-2 flex items-center gap-x-1 text-blue-500 hover:bg-gray-50 rounded-full font-semibold"><BsPlus className="text-base" /> Add Received Invoice</button>
                     <button onClick={() => setAddInvoice(true)} className="p-2 flex items-center gap-x-1 text-blue-500 hover:bg-gray-50 rounded-full font-semibold"><BsPlus className="text-base" /> Create New</button>
                 </div>
             </div>
@@ -97,7 +112,26 @@ const Invoice = ({ setAddInvoice }) => {
                         }
                         key="3"
                     >
-                        <h1>tab pane three content</h1>
+                        <div className="text-xs">
+                            {receivedInvoiceList.map((item, index) => {
+                                return (
+                                    <div key={item.id} className="flex justify-between items-center border-b">
+                                        <div>
+                                        <p className="font-semibold">{item.clientName}</p>
+                                        <div className="grid grid-cols-2 divide-x-2">
+                                        <p className="text-cyan-500">{item.invoice_no}</p>
+                                        <p className="pl-2 text-gray-400 text-[11px]">{item.invoice_date}</p>
+                                        </div>
+                                        </div>
+                                       <div>
+                                       <p className="font-semibold">₹{item.total_invoice_value}</p>
+                                       <p>SENT</p>
+                                       </div>
+
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </TabPane>
                     
                 </Tabs>

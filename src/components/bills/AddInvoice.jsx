@@ -135,12 +135,6 @@ const AddInvoice = ({ setAddInvoice }) => {
         dispatch(createSalesInvoice(invoiceData))
         // setAddInvoice(false)
     }
-    console.log('sum', sum)
-    console.log('items', items)
-    console.log('salesOrder', salesOrder)
-    console.log('salesOrderData', salesOrderData)
-    console.log('newArr', newArr)
-    console.log(igstRate, cgstRate, sgstRate, utgstRate)
 
     return (
         <>
