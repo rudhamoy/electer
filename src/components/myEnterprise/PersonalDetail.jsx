@@ -51,11 +51,11 @@ const PersonalDetail = () => {
 
   useEffect(() => {
     dispatch(fetchSystemUser())
-    setFirstName(systemUser[0].custom_user.first_name)
-    setLastName(systemUser[0].custom_user.last_name)
-    setEmail(systemUser[0].custom_user.email)
-    setDesignation(systemUser[0].designation)
-    setMobile(systemUser[0].mobile_no)
+    setFirstName(systemUser[0]?.custom_user.first_name)
+    setLastName(systemUser[0]?.custom_user.last_name)
+    setEmail(systemUser[0]?.custom_user.email)
+    setDesignation(systemUser[0]?.designation)
+    setMobile(systemUser[0]?.mobile_no)
   } ,[dispatch])
 
   return (
