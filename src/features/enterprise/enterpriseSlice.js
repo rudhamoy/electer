@@ -11,7 +11,8 @@ const initialState = {
     businessById: {},
     businessAddressById: {},
     businessType: [],
-    industryType: []
+    industryType: [],
+    bank: []
 
 }
 
@@ -110,6 +111,19 @@ export const fetchBusinessType = createAsyncThunk('business/fetchBusinessType', 
 export const fetchIndustryType = createAsyncThunk('business/fetchIndustryType', async (_, thunkAPI) => {
     const token = thunkAPI.getState().auth.auth.authToken
     const res = await axios.get(`${baseUrl}/industry-type/`, {headers: {'Authorization' : `Token ${token}`}})
+    return res.data
+})
+
+// create bank 
+export const createBank = createAsyncThunk('business/createBank', async (bankData, thunkAPI) => {
+    const token = thunkAPI.getState().auth.auth.authToken
+    const res = await axios.post(`${baseUrl}/bank/`, bankData, {headers: {'Authorization' : `Token ${token}`}})
+    return res.data
+})
+// fetch bank 
+export const fetchBank = createAsyncThunk('business/fetchBank', async (_, thunkAPI) => {
+    const token = thunkAPI.getState().auth.auth.authToken
+    const res = await axios.get(`${baseUrl}/bank/`, {headers: {'Authorization' : `Token ${token}`}})
     return res.data
 })
 
@@ -241,6 +255,30 @@ const enterpriseSlice = createSlice({
             state.industryType = action.payload
         })
         .addCase(fetchIndustryType.rejected, (state, action) => {
+            state.status = 'failed'
+            state.error = action.error.message
+        })
+        // create Bank
+        .addCase(createBank.pending, (state) => {
+            state.status = 'loading'
+        })
+        .addCase(createBank.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.bank = action.payload
+        })
+        .addCase(createBank.rejected, (state, action) => {
+            state.status = 'failed'
+            state.error = action.error.message
+        })
+        // fetch bank details
+        .addCase(fetchBank.pending, (state) => {
+            state.status = 'loading'
+        })
+        .addCase(fetchBank.fulfilled, (state, action) => {
+            state.status = 'succeeded'
+            state.bank = action.payload
+        })
+        .addCase(fetchBank.rejected, (state, action) => {
             state.status = 'failed'
             state.error = action.error.message
         })
