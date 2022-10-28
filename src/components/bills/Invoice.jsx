@@ -50,6 +50,11 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice }) => {
         return receivedInvoiceList.push(receiveInvoiceListing)
     })
 
+    // click handler
+    const invoiceDetail = (item) => {
+        console.log(item)
+    }
+
 
     return (
         <div>
@@ -78,17 +83,16 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice }) => {
                                 return (
                                     <div key={item.id} className="flex justify-between items-center border-b">
                                         <div>
-                                        <p className="font-semibold">{item.clientName}</p>
-                                        <div className="grid grid-cols-2 divide-x-2">
-                                        <p className="text-cyan-500">{item.invoice_no}</p>
-                                        <p className="pl-2 text-gray-400 text-[11px]">{item.invoice_date}</p>
+                                            <p className="font-semibold">{item.clientName}</p>
+                                            <div className="grid grid-cols-2 divide-x-2">
+                                                <p onClick={() => invoiceDetail(item)} className="text-cyan-500 cursor-pointer">{item.invoice_no}</p>
+                                                <p className="pl-2 text-gray-400 text-[11px]">{item.invoice_date}</p>
+                                            </div>
                                         </div>
+                                        <div>
+                                            <p className="font-semibold">₹{item.total_invoice_value}</p>
+                                            <p className='px-1 p-[2px] rounded-md text-xs'>pending</p>
                                         </div>
-                                       <div>
-                                       <p className="font-semibold">₹{item.total_invoice_value}</p>
-                                       <p>SENT</p>
-                                       </div>
-
                                     </div>
                                 )
                             })}
@@ -117,23 +121,23 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice }) => {
                                 return (
                                     <div key={item.id} className="flex justify-between items-center border-b">
                                         <div>
-                                        <p className="font-semibold">{item.clientName}</p>
-                                        <div className="grid grid-cols-2 divide-x-2">
-                                        <p className="text-cyan-500">{item.invoice_no}</p>
-                                        <p className="pl-2 text-gray-400 text-[11px]">{item.invoice_date}</p>
+                                            <p className="font-semibold">{item.clientName}</p>
+                                            <div className="grid grid-cols-2 divide-x-2">
+                                                <p className="text-cyan-500">{item.invoice_no}</p>
+                                                <p className="pl-2 text-gray-400 text-[11px]">{item.invoice_date}</p>
+                                            </div>
                                         </div>
+                                        <div>
+                                            <p className="font-semibold">₹{item.total_invoice_value}</p>
+                                            <p>SENT</p>
                                         </div>
-                                       <div>
-                                       <p className="font-semibold">₹{item.total_invoice_value}</p>
-                                       <p>SENT</p>
-                                       </div>
 
                                     </div>
                                 )
                             })}
                         </div>
                     </TabPane>
-                    
+
                 </Tabs>
             </div>
         </div>

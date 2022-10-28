@@ -20,7 +20,6 @@ const AddInvoice = ({ setAddInvoice }) => {
     const dispatch = useDispatch()
     const { clients } = useSelector(state => state.clients)
     const { systemUser } = useSelector(state => state.auth)
-    const { sales } = useSelector(state => state.accounts)
 
     const [invoiceNo, setInvoiceNo] = useState()
     const [invoiceDate, setInvoiceDate] = useState()
@@ -39,18 +38,11 @@ const AddInvoice = ({ setAddInvoice }) => {
     const [sgstRate, setSgstRate] = useState(6)
     const [utgstRate, setUtgstRate] = useState(6)
 
-    const [items, setItems] = useState([])
-    const [salesOrderData, setSalesOrderData] = useState([])
-
     // utils
-    const [editClient, setEditClient] = useState(false)
     const [add, setAdd] = useState(false)
-    const [editTax, setEditTax] = useState(false)
-    const [next, setNext] = useState(false)
-    const [newArr, setNewArr] = useState([])
-
     const [salesOrder, setSalesOrder] = useState([])
     const [salesItem, setSalesItem] = useState([])
+    const [error, setError]= useState(false)
 
     useEffect(() => {
         dispatch(fetchClients())
@@ -138,7 +130,13 @@ const AddInvoice = ({ setAddInvoice }) => {
             system_user: systemUser[0].id,
         }
 
-        dispatch(createSalesInvoice(invoiceData))
+        if(!client || !invoiceDate || !invoiceNo || !salesOrder.length) {
+            setError(true)
+        } else {
+            dispatch(createSalesInvoice(invoiceData))
+            // console.log('Submitted')
+            setError(false)
+        }
         // setAddInvoice(false)
     }
 
@@ -209,6 +207,11 @@ const AddInvoice = ({ setAddInvoice }) => {
 
             {/* submit button */}
             <div>
+                {error === true && (
+                    <div>
+                        <p className='p-2 bg-red-200 rounded-md text-center'>Please Check the Mandatory Input Field</p>
+                    </div>
+                )}
                 <button className="bg-blue-500 px-5 p-2 rounded-md text-white" onClick={submitHandler}>Create Invoice</button>
             </div>
         </div>
