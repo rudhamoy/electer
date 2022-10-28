@@ -61,10 +61,11 @@ const PersonalDetail = () => {
   return (
     <div className="grid grid-cols-2 space-x-20">
 
-      {/* Left */}
+      {/* Left - personal info */}
       <div>
         <h1 className="font-semibold text-lg text-gray-600">Personal Details</h1>
         {/* photo */}
+        {/* Background process - backend */}
         <ImageUploader />
         <div >
           <InputField labelName="First Name" value={firstName} />
@@ -86,7 +87,7 @@ const PersonalDetail = () => {
 
       </div>
 
-      {/* Right */}
+      {/* Right - Bank Details */}
       <div>
         <h1 className="font-semibold text-lg text-gray-600">Bank Details</h1>
         {status === 'loading' ? (

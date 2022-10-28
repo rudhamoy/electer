@@ -38,9 +38,11 @@ const AddReceivedInvoice = () => {
     // utils
     const [add, setAdd] = useState(false)
 
+    // calcaulate total tax
     const totalTaxRate = parseInt(igstRate) + parseInt(cgstRate) + parseInt(sgstRate) + parseInt(utgstRate)
     console.log(purchaseItem)
 
+    // get object from redux
     const { clients } = useSelector(state => state.clients)
     const { systemUser } = useSelector(state => state.auth)
 
@@ -74,6 +76,7 @@ const AddReceivedInvoice = () => {
         amountList.push(item.amount)
        })
        
+    //    calculate each tax total
        setTotalCgst(cgstList.reduce((prev, current) => prev + current, 0))
        setTotalIgst(igstList.reduce((prev, current) => prev + current, 0))
        setTotalSgst(sgstList.reduce((prev, current) => prev + current, 0))
@@ -110,6 +113,7 @@ const AddReceivedInvoice = () => {
         })
     }, [purchaseItem])
 
+    // object to submit in the backend
     const submitData = {
         total_purchase: productListData,
         invoice_no: invoiceNo,
@@ -123,7 +127,7 @@ const AddReceivedInvoice = () => {
         client: traderName,
         system_user: systemUser[0].id,
     }
-
+    // submit to backend api
     const submitHandler = () => {
         dispatch(createReceivedInvoice(submitData))
     }

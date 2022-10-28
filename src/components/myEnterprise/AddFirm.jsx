@@ -171,7 +171,9 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
 
   return (
     <div className="grid grid-cols-2 gap-x-10">
+
       {/* Left */}
+
       <div className="px-4">
         {/* Logo and name */}
         <div className="flex">
@@ -190,7 +192,9 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
           {/* <InputField labelName="Company Address" /> */}
           <div className="my-6">
             <div className="grid grid-cols-2 gap-x-4">
+              {/* Country select list */}
               <InputField labelName="Country" value={country} onChange={e => setCountry(e.target.value)} />
+              {/* state select list */}
               <InputField labelName="State" value={states} onChange={e => setStates(e.target.value)} />
               <InputField labelName="Locality" value={locality} onChange={e => setLocality(e.target.value)} />
               <InputField labelName="Pin" value={pin} onChange={e => setPin(e.target.value)} />
@@ -223,7 +227,8 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
       <div className="px-4">
 
         <div className="grid grid-cols-2 gap-x-4">
-          {/* business type */}
+          {/* business type*/}
+          {/* Fetch business type list from api- backend */}
           <div className='flex flex-col'>
             <label>Business Type</label>
             <SelectField
@@ -239,7 +244,9 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
               <Option value="services">Services</Option>
             </SelectField>
           </div>
+
           {/* industry type */}
+          {/* fetch industry type list from backend api */}
           <div className='flex flex-col'>
             <label>Industry Type</label>
             <SelectField
@@ -271,6 +278,8 @@ const AddFirm = ({ showAdd, setShowAdd }) => {
                 <Option value="3">3</Option>
               </SelectField>
             </div>
+            {/* Add partner */}
+            {/* add new parnter button - new input field */}
             <InputField labelName="Add Partner" />
           </div>
         </div>
