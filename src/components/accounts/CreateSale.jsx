@@ -123,7 +123,7 @@ const CreateSale = ({
         setAdd(false)
     }
 
-    // submit handler
+    // next handler
     const nextHandler = (e) => {
         e.preventDefault()
 

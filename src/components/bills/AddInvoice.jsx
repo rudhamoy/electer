@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { Select, DatePicker } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 
+import InputField from '../../utils/InputField';
+import SelectField from '../../utils/SelectField'
 import { createSalesInvoice } from '../../features/bills/billsSlice';
 import { fetchClients } from '../../features/client/clientSlice'
 import { fetchSales } from '../../features/account/accountSlice'
@@ -8,15 +11,18 @@ import CreateSale from '../accounts/CreateSale'
 import Tax from './Tax'
 import SelectClient from './SelectClient'
 import InvoiceForm from './InvoiceForm';
+import SalesOrderList from './SalesOrderList';
+
+const { Option } = Select
 
 const AddInvoice = ({ setAddInvoice }) => {
 
     const dispatch = useDispatch()
     const { clients } = useSelector(state => state.clients)
-    const { systemUserId } = useSelector(state => state.auth)
+    const { systemUser } = useSelector(state => state.auth)
     const { sales } = useSelector(state => state.accounts)
 
-    const [invoiceNo, setInvoiceNo] = useState('invo1238')
+    const [invoiceNo, setInvoiceNo] = useState()
     const [invoiceDate, setInvoiceDate] = useState()
     const [totalInvoiceValue, setTotalInvoiceValue] = useState()
     const [totalTaxableValue, setTotalTaxableValue] = useState()
@@ -44,82 +50,82 @@ const AddInvoice = ({ setAddInvoice }) => {
     const [newArr, setNewArr] = useState([])
 
     const [salesOrder, setSalesOrder] = useState([])
+    const [salesItem, setSalesItem] = useState([])
 
     useEffect(() => {
         dispatch(fetchClients())
         dispatch(fetchSales())
     }, [dispatch])
 
-    // calculate total amount along with tax inclusive
-    let sum = 0;
-    items.forEach(element => {
-        sum += element.total_price;
-    });
-
-    // calculate total amount along without tax
-    let totalAmount = 0;
-    items.forEach(element => {
-        totalAmount += element.total_amount;
-    });
-
     const totalTaxRate = parseInt(igstRate) + parseInt(cgstRate) + parseInt(sgstRate) + parseInt(utgstRate)
 
     // count total slab rates of all the items
     useEffect(() => {
-        let sgst = 0
-        let cgst = 0
-        let igst = 0
-        let utgst = 0
-       items.forEach(el => {
-        sgst += el.sgst_slab_rate
-        const sgstCalc =  ((sgst / 100) * sum)
-        setTotalSgst(sgstCalc)
-        cgst += el.cgst_slab_rate
-        const cgstCalc =  ((cgst / 100) * sum)
-        setTotalCgst(cgstCalc)
-        igst += el.igst_slab_rate
-        const igstCalc =  ((igst / 100) * sum)
-        setTotalIgst(igstCalc)
-        utgst += el.utgst_slab_rate
-        const utgstCalc =  ((utgst / 100) * sum)
-        setTotalUtgst(utgstCalc)
+        const cgstList = []
+       salesItem.forEach(item => {
+        cgstList.push(item.cgst)
        })
-       console.log(sgst, cgst, igst)
-    }, [sum])
+        const igstList = []
+       salesItem.forEach(item => {
+        igstList.push(item.igst)
+       })
+        const sgstList = []
+       salesItem.forEach(item => {
+        sgstList.push(item.sgst)
+       })
+        const utgstList = []
+       salesItem.forEach(item => {
+        utgstList.push(item.utgst)
+       })
+        const taxList = []
+       salesItem.forEach(item => {
+        taxList.push(item.taxAmount)
+       })
+        const amountList = []
+       salesItem.forEach(item => {
+        amountList.push(item.amount)
+       })
+       
+    //    calculate each tax total
+       setTotalCgst(cgstList.reduce((prev, current) => prev + current, 0))
+       setTotalIgst(igstList.reduce((prev, current) => prev + current, 0))
+       setTotalSgst(sgstList.reduce((prev, current) => prev + current, 0))
+       setTotalUtgst(utgstList.reduce((prev, current) => prev + current, 0))
+       setTotalTaxableValue(taxList.reduce((prev, current) => prev + current, 0))
+       setTotalInvoiceValue(amountList.reduce((prev, current) => prev + current, 0))
+    }, [salesItem])
 
-    // actual list for sale order api
-    useEffect(() => {
-        newArr.map(item => {
+     // actual list for sale order api
+     useEffect(() => {
+        salesItem.map(item => {
             const orderList = {
+                date: invoiceDate,
                 quantity: item.quantity,
-                total_price: item.total_price,
+                igst: item.igst,
+                cgst: item.cgst,
+                sgst: item.sgst,
+                utgst: item.utgst,
+                total_price: parseInt(item.amount),
                 system_user: item.system_user,
                 product: item.product,
-                cgst_slab_rate: item.cgst_slab_rate_id,
-                sgst_slab_rate: item.sgst_slab_rate_id,
-                igst_slab_rate: item.igst_slab_rate_id,
-                utgst_slab_rate: item.utgst_slab_rate_id
+                client: client,
+                cgst_slab_rate: item.cgst_slab_rate,
+                sgst_slab_rate: item.sgst_slab_rate,
+                igst_slab_rate: item.igst_slab_rate,
+                utgst_slab_rate: item.utgst_slab_rate
             }
             const newItems = {
-                ...orderList,
-                client,
-                date: invoiceDate,
-            }
-            const salesOrderList = {
-                ...item,
-                client,
-                date: invoiceDate,
+                ...orderList
             }
             
-            setSalesOrderData([...salesOrderData, newItems])
-            setSalesOrder([...salesOrder, salesOrderList])
+            setSalesOrder([...salesOrder, newItems])
             
         })
-    }, [newArr])
+    }, [salesItem])
 
     const submitHandler = () => {
         const invoiceData = {
-            total_sales: salesOrderData,
+            total_sales: salesOrder,
             invoice_no: invoiceNo,
             invoice_date: invoiceDate,
             total_invoice_value: totalInvoiceValue,
@@ -129,7 +135,7 @@ const AddInvoice = ({ setAddInvoice }) => {
             total_sgst: totalSgst,
             total_utgst: totalUtgst,
             client: client,
-            system_user: systemUserId.id,
+            system_user: systemUser[0].id,
         }
 
         dispatch(createSalesInvoice(invoiceData))
@@ -137,66 +143,75 @@ const AddInvoice = ({ setAddInvoice }) => {
     }
 
     return (
-        <>
-            {next === true ? (
-                <InvoiceForm
-                    client={client}
-                    clients={clients}
-                    date={invoiceDate}
-                    orderList={salesOrder}
-                    totalCgst={totalCgst}
-                    totalSgst={totalSgst}
-                    totalIgst={totalIgst}
-                    totalUtgst={totalUtgst}
-                    totalAmount={totalAmount}
-                    grandTotal={sum}
-                    submitHandler={submitHandler}
+        <div className="text-xs">
+
+            <div className="borderImp rounded-md">
+                <div className="border-b p-2">
+                    <p className="font-semibold">General Info</p>
+                </div>
+                <div className="grid grid-cols-3 gap-x-3 p-2">
+                    {/* <InputField type="date" my="2" labelName="Invoice Date" /> */}
+                    <div className='my-2 flex flex-col w-full'>
+                            <label htmlFor="date" className="">Invoice Date: </label>
+                            <div className="border rounded-md">
+                                <DatePicker className="w-full" bordered={false} onChange={(date, dateString) => {
+                                    setInvoiceDate(dateString)
+                                }}
+                                />
+                            </div>
+                        </div>
+                    <InputField my="2" labelName="Invoice Number" value={invoiceNo} onChange={e => setInvoiceNo(e.target.value)} />
+                    <div className="my-2">
+                            <label htmlFor="client">Client Name</label>
+                            <SelectField
+                                placeholder="Select Client"
+                                onChange={value => setClient(value)}
+                            >
+                                {clients.length > 0 && clients.map(item => (
+                                    <Option key={item.id} className="rounded-md" value={item.id}>{item.name}</Option>
+                                )
+                                )}
+                            </SelectField>
+                        </div>
+                </div>
+            </div>
+
+            {/* Tax */}
+            <div className="grid grid-cols-4 gap-x-3 borderImp rounded-md p-2 my-5">
+                <InputField my="2" labelName="CGST Rate" value={cgstRate} onChange={(e) => setCgstRate(e.target.value)} />
+                <InputField my="2" labelName="SGST Rate" value={sgstRate} onChange={e => setSgstRate(e.target.value)} />
+                <InputField my="2" labelName="IGST Rate" value={igstRate} onChange={e => setIgstRate(e.target.value)} />
+                <InputField my="2" labelName="UTGST Rate" value={utgstRate} onChange={e => setUtgstRate(e.target.value)} />
+            </div>
+
+            {/* create purchase order list */}
+            <div className="">
+                <SalesOrderList
+                    setAdd={setAdd} add={add}
+                    igstRate={igstRate} setIgstRate={setIgstRate}
+                    cgstRate={cgstRate} setCgstRate={setCgstRate}
+                    sgstRate={sgstRate} setSgstRate={setSgstRate}
+                    utgstRate={utgstRate} setUtgstRate={setUtgstRate}
+                    tax={totalTaxRate}
+                    setSalesItem={setSalesItem}
                 />
-            ) : (
-                <div className={`relative text-xs`}>
-                    <SelectClient
-                        editClient={editClient}
-                        setEditClient={setEditClient}
-                        setClient={setClient}
-                        setInvoiceDate={setInvoiceDate}
-                        clients={clients}
+            </div>
 
-                    />
-                    <div>
-                        <Tax
-                            editTax={editTax}
-                            setEditTax={setEditTax}
-                            cgstRate={cgstRate}
-                            setCgstRate={setCgstRate}
-                            sgstRate={sgstRate}
-                            setSgstRate={setSgstRate}
-                            igstRate={igstRate}
-                            setIgstRate={setIgstRate}
-                            utgstRate={utgstRate}
-                            setUtgstRate={setUtgstRate}
-                        />
-                        <CreateSale
-                            add={add}
-                            setNext={setNext}
-                            setAdd={setAdd}
-                            client={client}
-                            items={items}
-                            setItems={setItems}
-                            newArr={newArr}
-                            setNewArr={setNewArr}
-                            tax={totalTaxRate}
-                            cgstRate={cgstRate}
-                            sgstRate={sgstRate}
-                            igstRate={igstRate}
-                            utgstRate={utgstRate}
-                            salesOrder={salesOrderData}
-                            setSalesOrder={setSalesOrderData}
-                            invoiceDate={invoiceDate}
-                        />
-                    </div>
-                </div >)}
+            {/* calculation */}
+            <div className="mt-5">
+                <p>Total Amount: <span>{totalInvoiceValue - totalTaxableValue}</span></p>
+                <p>CGST: <span>₹ {totalCgst}</span></p>
+                <p>IGST: <span>₹ {totalIgst}</span></p>
+                <p>SGST: <span>₹ {totalSgst}</span></p>
+                <p>UTGST: <span>₹ {totalUtgst}</span></p>
+                <p>Grand Total: <span>{totalInvoiceValue}</span></p>
+            </div>
 
-        </>
+            {/* submit button */}
+            <div>
+                <button className="bg-blue-500 px-5 p-2 rounded-md text-white" onClick={submitHandler}>Create Invoice</button>
+            </div>
+        </div>
     )
 }
 

@@ -12,6 +12,9 @@ const { Option } = Select
 
 const AddReceivedInvoice = () => {
     const dispatch = useDispatch()
+    // get object from redux
+    const { clients } = useSelector(state => state.clients)
+    const { systemUser } = useSelector(state => state.auth)
 
     const [invoiceDate, setInvoiceDate] = useState()
     const [invoiceNo, setInvoiceNo] = useState()
@@ -41,10 +44,6 @@ const AddReceivedInvoice = () => {
     // calcaulate total tax
     const totalTaxRate = parseInt(igstRate) + parseInt(cgstRate) + parseInt(sgstRate) + parseInt(utgstRate)
     console.log(purchaseItem)
-
-    // get object from redux
-    const { clients } = useSelector(state => state.clients)
-    const { systemUser } = useSelector(state => state.auth)
 
     useEffect(() => {
         dispatch(fetchClients())
