@@ -50,12 +50,15 @@ const ReceivedOrderList = ({ add, setAdd, igstRate, sgstRate, cgstRate, utgstRat
     // save handler
     const saveHandler = (e) => {
         e.preventDefault()
+
         setItems([...items, formData])
+
         setAdd(false)
+
     }
 
-     // actual list rendering
-     useEffect(() => {
+    // actual list rendering
+    useEffect(() => {
         items.map((item, index) => {
             // setItemPriceList([...itemPriceList, item.total_price])
             let { item_name, UOM, price } = products.find(i => i.id === item.product)
@@ -65,11 +68,11 @@ const ReceivedOrderList = ({ add, setAdd, igstRate, sgstRate, cgstRate, utgstRat
                 item_name,
                 UOM,
                 price,
-                igst: price * (igstRate/100).toFixed(2),
-                cgst: price * (cgstRate/100).toFixed(2),
-                sgst: price * (sgstRate/100).toFixed(2),
-                utgst: price * (utgstRate/100).toFixed(2),
-                taxAmount: (tax / 100) * price ,
+                igst: price * (igstRate / 100).toFixed(2),
+                cgst: price * (cgstRate / 100).toFixed(2),
+                sgst: price * (sgstRate / 100).toFixed(2),
+                utgst: price * (utgstRate / 100).toFixed(2),
+                taxAmount: (tax / 100) * price,
                 amount: parseInt(totalPriceWithoutTax) + ((tax / 100) * price),
                 index,
                 tax
@@ -78,7 +81,17 @@ const ReceivedOrderList = ({ add, setAdd, igstRate, sgstRate, cgstRate, utgstRat
             setItemList([...itemList, newItems])
             setPurchaseItem([...itemList, newItems])
         })
+        console.log(itemList)
     }, [items])
+
+    // Write a function to check    whether the item is present in the list and return true if exists else false
+    // based on that we can set disable and enable state for that perticulars item
+    const checkItemAlreadyExists = (item) => {
+        if (itemList.contains(item)) {
+            console.log("THE Item is already present in the list")
+        }
+        return true
+    }
 
     useEffect(() => {
         dispatch(fetchProducts())
@@ -102,9 +115,9 @@ const ReceivedOrderList = ({ add, setAdd, igstRate, sgstRate, cgstRate, utgstRat
                                     placeholder="Select product"
                                     onChange={value => setProduct(value)}
                                 >
+
                                     {products.map(item => (
-                                        <Option className="rounded-md" key={item.id} value={item.id}>{item.item_name}</Option>
-                                    ))}
+                                        <Option disabled={itemList.some(existItem => existItem.item_name === item.item_name) ? true : false} className="rounded-md " key={item.id} value={item.id}>{item.item_name}</Option>))}
                                 </SelectField>
                             </div>
                         </div>

@@ -1,4 +1,4 @@
-import React, { useState,  useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select, DatePicker } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -43,7 +43,7 @@ const AddReceivedInvoice = () => {
 
     // calcaulate total tax
     const totalTaxRate = parseInt(igstRate) + parseInt(cgstRate) + parseInt(sgstRate) + parseInt(utgstRate)
-    console.log(purchaseItem)
+    // console.log(purchaseItem)
 
     useEffect(() => {
         dispatch(fetchClients())
@@ -51,37 +51,37 @@ const AddReceivedInvoice = () => {
 
     useEffect(() => {
         const cgstList = []
-       purchaseItem.forEach(item => {
-        cgstList.push(item.cgst)
-       })
+        purchaseItem.forEach(item => {
+            cgstList.push(item.cgst)
+        })
         const igstList = []
-       purchaseItem.forEach(item => {
-        igstList.push(item.igst)
-       })
+        purchaseItem.forEach(item => {
+            igstList.push(item.igst)
+        })
         const sgstList = []
-       purchaseItem.forEach(item => {
-        sgstList.push(item.sgst)
-       })
+        purchaseItem.forEach(item => {
+            sgstList.push(item.sgst)
+        })
         const utgstList = []
-       purchaseItem.forEach(item => {
-        utgstList.push(item.utgst)
-       })
+        purchaseItem.forEach(item => {
+            utgstList.push(item.utgst)
+        })
         const taxList = []
-       purchaseItem.forEach(item => {
-        taxList.push(item.taxAmount)
-       })
+        purchaseItem.forEach(item => {
+            taxList.push(item.taxAmount)
+        })
         const amountList = []
-       purchaseItem.forEach(item => {
-        amountList.push(item.amount)
-       })
-       
-    //    calculate each tax total
-       setTotalCgst(cgstList.reduce((prev, current) => prev + current, 0))
-       setTotalIgst(igstList.reduce((prev, current) => prev + current, 0))
-       setTotalSgst(sgstList.reduce((prev, current) => prev + current, 0))
-       setTotalUtgst(utgstList.reduce((prev, current) => prev + current, 0))
-       setTotalTaxableValue(taxList.reduce((prev, current) => prev + current, 0))
-       setTotalInvoiceValue(amountList.reduce((prev, current) => prev + current, 0))
+        purchaseItem.forEach(item => {
+            amountList.push(item.amount)
+        })
+
+        //    calculate each tax total
+        setTotalCgst(cgstList.reduce((prev, current) => prev + current, 0))
+        setTotalIgst(igstList.reduce((prev, current) => prev + current, 0))
+        setTotalSgst(sgstList.reduce((prev, current) => prev + current, 0))
+        setTotalUtgst(utgstList.reduce((prev, current) => prev + current, 0))
+        setTotalTaxableValue(taxList.reduce((prev, current) => prev + current, 0))
+        setTotalInvoiceValue(amountList.reduce((prev, current) => prev + current, 0))
     }, [purchaseItem])
 
     // actual list for sale order api
@@ -106,9 +106,9 @@ const AddReceivedInvoice = () => {
             const newItems = {
                 ...orderList
             }
-            
+
             setProductListData([...productListData, newItems])
-            
+
         })
     }, [purchaseItem])
 
@@ -141,29 +141,29 @@ const AddReceivedInvoice = () => {
                 <div className="grid grid-cols-3 gap-x-3 p-2">
                     {/* <InputField type="date" my="2" labelName="Invoice Date" /> */}
                     <div className='my-2 flex flex-col w-full'>
-                            <label htmlFor="date" className="">Invoice Date: </label>
-                            <div className="border rounded-md">
-                                <DatePicker className="w-full" bordered={false} onChange={(date, dateString) => {
-                                    setInvoiceDate(dateString)
-                                }}
-                                />
-                            </div>
+                        <label htmlFor="date" className="">Invoice Date: </label>
+                        <div className="border rounded-md">
+                            <DatePicker className="w-full" bordered={false} onChange={(date, dateString) => {
+                                setInvoiceDate(dateString)
+                            }}
+                            />
                         </div>
+                    </div>
                     <InputField my="2" labelName="Invoice Number" value={invoiceNo} onChange={e => setInvoiceNo(e.target.value)} />
                     <InputField type="number" my="2" labelName="Mobile Number" value={mobileNo} onChange={e => setMobileNo(e.target.value)} />
                     <div className="my-2">
-                            <label htmlFor="client">Trader Name</label>
-                            <SelectField
-                                placeholder="Select Client"
-                                onChange={value => setTraderName(value)}
-                            >
-                                {clients.length > 0 && clients.map(item => (
-                                    <Option key={item.id} className="rounded-md" value={item.id}>{item.name}</Option>
-                                )
-                                )}
-                            </SelectField>
-                        </div>
-                    <InputField my="2" labelName="GSTIN" value={gstin} onChange={e => 
+                        <label htmlFor="client">Trader Name</label>
+                        <SelectField
+                            placeholder="Select Client"
+                            onChange={value => setTraderName(value)}
+                        >
+                            {clients.length > 0 && clients.map(item => (
+                                <Option key={item.id} className="rounded-md" value={item.id}>{item.name}</Option>
+                            )
+                            )}
+                        </SelectField>
+                    </div>
+                    <InputField my="2" labelName="GSTIN" value={gstin} onChange={e =>
                         (e.target.value)} />
                     <InputField my="2" labelName="State" value={states} onChange={e => setStates(e.target.value)} />
                 </div>
