@@ -2,7 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     activeMenu : true,
-    modalBtn: ''
+    modalBtn: '',
+    view: {
+        viewType: '',
+        viewData: {}
+    },
 }
 
 
@@ -19,9 +23,12 @@ const activitySlice = createSlice({
         modalBtnCondition: (state, action) => {
             state.modalBtn = action.payload
         },
+        viewCondition: (state, action) => {
+            state.view = action.payload
+        }
     }
 })
 
-export const { activeMenuFunc, hideSidebar, modalBtnCondition } = activitySlice.actions
+export const { activeMenuFunc, hideSidebar, modalBtnCondition, viewCondition } = activitySlice.actions
 
 export default activitySlice.reducer

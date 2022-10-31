@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react'
 import { BsPlus } from 'react-icons/bs'
 import { GrList } from 'react-icons/gr'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 
 import { fetchReceiveInvoice, fetchSalesInvoice } from '../../features/bills/billsSlice';
-import { fetchClients, getClientById } from '../../features/client/clientSlice';
+import { fetchClients } from '../../features/client/clientSlice';
+import { viewCondition } from '../../features/activity/activitySlice';
 
 const { TabPane } = Tabs;
 
-const Invoice = ({ setAddInvoice, setAddReceivedInvoice }) => {
+const Invoice = ({ setAddInvoice, setAddReceivedInvoice, setViewInvoice }) => {
     const dispatch = useDispatch()
 
     const baseUrl = 'http://37.44.244.212/api'
@@ -51,9 +51,12 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice }) => {
     })
 
     // click handler
-    const invoiceDetail = (item) => {
-        console.log(item)
-    }
+    // const invoiceDetail = (item) => {
+    //     dispatch(viewCondition({
+    //         viewType: 'invoiceDetail',
+    //         viewData: item
+    //     }))
+    // }
 
 
     return (
@@ -85,7 +88,7 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice }) => {
                                         <div>
                                             <p className="font-semibold">{item.clientName}</p>
                                             <div className="grid grid-cols-2 divide-x-2">
-                                                <p onClick={() => invoiceDetail(item)} className="text-cyan-500 cursor-pointer">{item.invoice_no}</p>
+                                                <p onClick={() => setViewInvoice(true)} className="text-cyan-500 cursor-pointer">{item.invoice_no}</p>
                                                 <p className="pl-2 text-gray-400 text-[11px]">{item.invoice_date}</p>
                                             </div>
                                         </div>

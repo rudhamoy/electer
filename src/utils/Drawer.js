@@ -1,7 +1,18 @@
 import React from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { GrFormClose } from 'react-icons/gr'
 
+import { viewCondition } from '../features/activity/activitySlice'
+
 const Drawer = ({ setOpen, children, title }) => {
+    const dispatch = useDispatch()
+
+    // const closeFun = ()=> {
+    //     dispatch(viewCondition({
+    //         viewType: '',
+    //         viewData: {}
+    //     }))
+    // }
 
     return (
         <div style={{ backgroundColor: '#00000070' }} className="absolute left-0 right-0 top-0 bottom-0 w-[100vw] z-50">

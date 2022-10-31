@@ -100,7 +100,7 @@ const ReceivedOrderList = ({ add, setAdd, igstRate, sgstRate, cgstRate, utgstRat
     return (
         <div>
             <div className={`${add === true ? 'block absolute top-0 left-0 bottom-0 right-0 h-[100%] z-50 backdrop-blur-sm bg-white/30' : "hidden"}`}>
-                <div className={`${add === true ? 'block absolute top-[38%] w-[100%] shadow-gray-500 z-50 bg-white' : "hidden"} border rounded-md shadow-md `}>
+                <div className={`${add === true ? 'block absolute top-[38%] left-2 right-0 w-[98%] shadow-gray-500 z-50 bg-white' : "hidden"} border rounded-md shadow-md `}>
                     <div className="border-b  px-3 flex items-baseline justify-between">
                         <p className="font-semibold">Item List</p>
                         <button onClick={() => setAdd(!add)} className="p-2 flex items-center gap-x-1 text-blue-500 font-semibold"><BsPlus className={`${add === true && 'rotate-45 text-red-500'} text-base`} /></button>
