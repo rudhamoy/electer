@@ -26,7 +26,7 @@ const RegisterForm = ({setShowLogin}) => {
     }
 
     try {
-      const res = await axios.post('http://37.44.244.212/api/auth/users/', userForm, {
+      const res = await axios.post('https://drinkwaterpark.in/api/auth/users/', userForm, {
       headers: {
         'Content-Type': "application/json",
       }

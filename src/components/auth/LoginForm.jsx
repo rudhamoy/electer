@@ -26,8 +26,8 @@ const LoginForm = () => {
   const submitHandler = async (e) => {
     e.preventDefault()
     try {
-      const res1 = await axios.post('http://37.44.244.212/api/auth/token/login/', { email, password })
-      const res2 = await axios.get(`http://37.44.244.212/api/get-user-by-email/${email}`, { email })
+      const res1 = await axios.post('https://drinkwaterpark.in/api/auth/token/login/', { email, password })
+      const res2 = await axios.get(`https://drinkwaterpark.in/api/get-user-by-email/${email}`, { email })
       window.localStorage.setItem('user', JSON.stringify({ token: res1.data.auth_token, id: res2.data.id, isLogged: true }))
       window.localStorage.setItem('systemUID', JSON.stringify({ systemUserId: systemUser ? systemUser[0]?.id : null }))
       dispatch(loginUser({ authToken: res1.data.auth_token, id: res2.data.id }))

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const baseUrl = 'http://37.44.244.212/api/'
+const baseUrl = 'https://drinkwaterpark.in/api/'
 
 const initialState = {
     auth: {
