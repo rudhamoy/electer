@@ -56,13 +56,13 @@ const Bills = () => {
           <AddDC />
         </Drawer>
       )}
-      {view.viewType === 'invoiceDetail' && (
+      {/* {view.viewType === 'invoiceDetail' && (
         <Drawer setOpen={view.viewType}>
           <h1>view details of invoice</h1>
         </Drawer>
-      )}
+      )} */}
       {viewInvoice === true && (
-        <Drawer setOpen={setViewInvoice}>
+        <Drawer setOpen={setViewInvoice} title="View Invoice">
           <h1>view details of invoice</h1>
         </Drawer>
       )}

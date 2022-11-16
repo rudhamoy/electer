@@ -39,7 +39,7 @@ const LoginForm = () => {
       }
     } catch (error) {
       console.log(error)
-      setErrorMsg(error.response.data.non_field_errors)
+      setErrorMsg(error.message)
     }
   }
 

@@ -51,12 +51,13 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice, setViewInvoice }) => {
     })
 
     // click handler
-    // const invoiceDetail = (item) => {
-    //     dispatch(viewCondition({
-    //         viewType: 'invoiceDetail',
-    //         viewData: item
-    //     }))
-    // }
+    const invoiceDetail = (item) => {
+        setViewInvoice(true)
+        dispatch(viewCondition({
+            viewType: 'invoiceDetail',
+            viewData: item
+        }))
+    }
 
 
     return (
@@ -88,7 +89,7 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice, setViewInvoice }) => {
                                         <div>
                                             <p className="font-semibold">{item.clientName}</p>
                                             <div className="grid grid-cols-2 divide-x-2">
-                                                <p onClick={() => setViewInvoice(true)} className="text-cyan-500 cursor-pointer">{item.invoice_no}</p>
+                                                <p onClick={() => invoiceDetail(item) } className="text-cyan-500 cursor-pointer">{item.invoice_no}</p>
                                                 <p className="pl-2 text-gray-400 text-[11px]">{item.invoice_date}</p>
                                             </div>
                                         </div>
