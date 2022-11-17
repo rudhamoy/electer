@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchReceiveInvoice, fetchSalesInvoice } from '../../features/bills/billsSlice';
 import { fetchClients } from '../../features/client/clientSlice';
 import { viewCondition } from '../../features/activity/activitySlice';
+import BillBoxCointainer from './billsComponents/BillBoxContainer';
 
 const { TabPane } = Tabs;
 
@@ -72,8 +73,8 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice, setViewInvoice }) => {
                 </div>
             </div>
 
-            <div className="borderImp rounded-md p-1 px-2 bg-gray-50 text-xs">
-                <Tabs size="small" defaultActiveKey="1">
+            <BillBoxCointainer>
+                <Tabs size="small" defaultActiveKey="1" className='h-[100%] overflow-hidden overflow-y-scroll'>
                     <TabPane
                         tab={
                             <span className="text-xs font-semibold">
@@ -143,7 +144,7 @@ const Invoice = ({ setAddInvoice, setAddReceivedInvoice, setViewInvoice }) => {
                     </TabPane>
 
                 </Tabs>
-            </div>
+            </BillBoxCointainer>
         </div>
     )
 }

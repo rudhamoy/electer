@@ -2,6 +2,7 @@ import React from 'react'
 import { BsPlus } from 'react-icons/bs'
 import { GrList } from 'react-icons/gr'
 import { Tabs } from 'antd';
+import BillBoxCointainer from './billsComponents/BillBoxContainer';
 
 const { TabPane } = Tabs;
 
@@ -17,7 +18,7 @@ const Quotation = ({setAddQuotation}) => {
                 </div>
             </div>
 
-            <div className="borderImp rounded-md p-1 px-2 bg-gray-50 text-xs">
+            <BillBoxCointainer>
             <Tabs size="small" defaultActiveKey="1">
                     <TabPane
                         tab={
@@ -42,7 +43,7 @@ const Quotation = ({setAddQuotation}) => {
                         <h1>tab pane two content</h1>
                     </TabPane> 
                 </Tabs>
-            </div>
+            </BillBoxCointainer>
 
         </div>
     )

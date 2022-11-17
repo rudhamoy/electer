@@ -19,7 +19,7 @@ import Drawer from '../utils/Drawer'
 
 const Bills = () => {
 
-  const {view} = useSelector(state => state.activity)
+  const { view } = useSelector(state => state.activity)
 
   const [addInvoice, setAddInvoice] = useState(false)
   const [addPurchase, setAddPurchase] = useState(false)
@@ -68,7 +68,7 @@ const Bills = () => {
       )}
       <Layout>
         <PageHeader icon={BillsIcon} pageTitle="Bill" />
-        <div className='mt-10 grid grid-cols-2 gap-5'>
+        <div className='mt-10 grid grid-cols-2 gap-5 h-[80vh]'>
           {/* INFo */}
           <div className="col-span-2">
             <BillsInfo />
